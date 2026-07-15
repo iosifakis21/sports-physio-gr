@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export interface Athlete {
   id: string;
@@ -24,8 +25,8 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete }) => {
     >
       {/* Photo Container with Blue Duotone Overlay */}
       <div className="relative h-[220px] sm:h-[260px] w-full bg-slate-800 flex items-center justify-center overflow-hidden">
-        
-        {/* Grey background placeholder */}
+
+        {/* Fallback placeholder (shown only when no photo is set) */}
         <div className="absolute inset-0 bg-slate-700 flex items-center justify-center text-white/30" aria-hidden="true">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,6 +43,17 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete }) => {
             />
           </svg>
         </div>
+
+        {/* Athlete Photo */}
+        {athlete.photo && (
+          <Image
+            src={athlete.photo}
+            alt={athlete.name}
+            fill
+            sizes="(max-width: 640px) 280px, 320px"
+            className="object-cover object-top"
+          />
+        )}
 
         {/* CSS Blue Duotone Overlay: Black/White + Blue blend layers */}
         <div className="absolute inset-0 bg-blue-700/35 mix-blend-color group-hover:bg-blue-600/40 transition-colors duration-200" aria-hidden="true" />
