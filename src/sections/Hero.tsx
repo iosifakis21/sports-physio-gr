@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Button } from "@/components/Button";
 import { CheckItem } from "@/components/CheckItem";
 import { RatingBadge } from "@/components/RatingBadge";
@@ -6,14 +7,22 @@ import { RatingBadge } from "@/components/RatingBadge";
 export const Hero: React.FC = () => {
   return (
     <section className="relative bg-slate-950 text-white overflow-hidden min-h-[500px] lg:min-h-[600px] flex items-center py-10 md:py-20 z-10">
-      {/* Background Gradient & Placeholder Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-850 to-indigo-950 z-0" aria-hidden="true" />
+      {/* Background Photo & Overlay */}
+      <Image
+        src="/images/hero.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover z-0"
+        aria-hidden="true"
+      />
       <div className="absolute inset-0 bg-black/50 z-0" aria-hidden="true" /> {/* 50% overlay */}
 
       <div className="max-w-[1280px] mx-auto w-full px-4 md:px-8 relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12">
         {/* Left column - Text, Checklist, and CTA */}
         <div className="w-full lg:max-w-[62%] flex flex-col gap-4 md:gap-6 text-left">
-          
+
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold font-display leading-tight text-white tracking-tight">
             Εξειδικευμένη Φυσικοθεραπεία για Πόνους, Τραυματισμούς και Αποκατάσταση.
           </h1>
@@ -29,7 +38,7 @@ export const Hero: React.FC = () => {
             <CheckItem text="Δεκτές όλες οι ιδιωτικές ασφαλιστικές" />
             <CheckItem text="Κράτηση σε λιγότερο από 1 λεπτό" />
           </div>
-          
+
           {/* Action Button & Rating Badge on Mobile/Tablet */}
           <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center gap-4 mt-2">
             <Button
