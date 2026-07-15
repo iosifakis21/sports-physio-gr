@@ -1,0 +1,49 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme {
+  --color-primary: var(--blue-700);
+  --color-primary-hover: var(--blue-800);
+  --color-primary-link: var(--blue-600);
+  --color-ink-900: var(--ink-900);
+  --color-ink-600: var(--ink-600);
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-success: var(--success);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+
+  --radius-btn: var(--radius-button);
+  --radius-card: var(--radius-card);
+
+  --spacing-section-desktop: var(--section-padding-desktop);
+  --spacing-section-mobile: var(--section-padding-mobile);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* matches header height */
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--ink-600);
+  font-family: var(--font-body), sans-serif;
+  line-height: 1.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

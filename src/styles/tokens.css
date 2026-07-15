@@ -1,0 +1,24 @@
+:root {
+  /* Colors */
+  --blue-700: #1D4ED8;
+  --blue-800: #1E40AF;
+  --blue-600: #2563EB;
+  --ink-900: #0F172A;
+  --ink-600: #475569;
+  --surface: #FFFFFF;
+  --surface-alt: #F8FAFC;
+  --success: #16A34A;
+
+  /* Typography */
+  --font-display: var(--font-manrope);
+  --font-body: var(--font-inter);
+
+  /* Borders & Radius */
+  --radius-button: 12px;
+  --radius-card: 12px;
+
+  /* Layout Spacing */
+  --section-padding-desktop: 96px;
+  --section-padding-mobile: 56px;
+  --max-width: 1280px;
+}

@@ -1,0 +1,125 @@
+{
+  "$schema_note": "Each entry: name (display), nickname (optional, shown in quotes), sport, accomplishment (one punchy line), photo (path in /public/images/athletes/), priority (lower = shown first), consent (MUST be true before the athlete appears on the live site).",
+  "athletes": [
+    {
+      "id": "kambosos",
+      "name": "George Kambosos Jr",
+      "nickname": "Ferocious",
+      "sport": "Πυγμαχία (Lightweight)",
+      "accomplishment": "Αδιαμφισβήτητος παγκόσμιος πρωταθλητής lightweight — ένωσε τους τίτλους WBA, IBF, WBO & WBC νικώντας τον Teofimo Lopez (2021)",
+      "photo": "/images/athletes/kambosos.webp",
+      "priority": 1,
+      "consent": false
+    },
+    {
+      "id": "zambidis",
+      "name": "Mike Zambidis",
+      "nickname": "Iron Mike",
+      "sport": "Kickboxing / Muay Thai",
+      "accomplishment": "Πολλαπλός παγκόσμιος πρωταθλητής kickboxing — από τους κορυφαίους Έλληνες μαχητές όλων των εποχών",
+      "photo": "/images/athletes/zambidis.webp",
+      "priority": 2,
+      "consent": false
+    },
+    {
+      "id": "linardatou",
+      "name": "Christina Linardatou",
+      "nickname": "Medusa",
+      "sport": "Πυγμαχία (Super Lightweight)",
+      "accomplishment": "2x παγκόσμια πρωταθλήτρια WBO super lightweight — η πρώτη παγκόσμια πρωταθλήτρια πυγμαχίας με έδρα την Ελλάδα",
+      "photo": "/images/athletes/linardatou.webp",
+      "priority": 3,
+      "consent": false
+    },
+    {
+      "id": "michailidis",
+      "name": "Andreas Michailidis",
+      "nickname": "The Spartan",
+      "sport": "MMA (ex-UFC)",
+      "accomplishment": "Ο πρώτος μαχητής με έδρα την Ελλάδα που αγωνίστηκε στο UFC — πρωταθλητής EFL Light Heavyweight",
+      "photo": "/images/athletes/michailidis.webp",
+      "priority": 4,
+      "consent": false
+    },
+    {
+      "id": "pilidis",
+      "name": "Γιώργος Πιλίδης",
+      "nickname": null,
+      "sport": "Πάλη (Freestyle) / MMA",
+      "accomplishment": "Χρυσό μετάλλιο στο Παγκόσμιο Πρωτάθλημα U23 2021 (65 κιλά) — Ολυμπιονίκης συμμετοχής, Τόκιο 2020",
+      "photo": "/images/athletes/pilidis.webp",
+      "priority": 5,
+      "consent": false
+    },
+    {
+      "id": "tsamalidis",
+      "name": "Μιχάλης Τσαμαλίδης",
+      "nickname": "The Spartan",
+      "sport": "Πυγμαχία (ερασιτεχνική, middleweight)",
+      "accomplishment": "Πρωταθλητής Ευρώπης ερασιτεχνικής πυγμαχίας",
+      "photo": "/images/athletes/tsamalidis.webp",
+      "priority": 6,
+      "consent": false
+    },
+    {
+      "id": "triphylli",
+      "name": "Anna Maria Triphylli",
+      "nickname": "The Gun",
+      "sport": "Πυγμαχία (46 κιλά)",
+      "accomplishment": "Παγκόσμια πρωταθλήτρια ερασιτεχνικής πυγμαχίας στα 46 κιλά",
+      "photo": "/images/athletes/triphylli.webp",
+      "priority": 7,
+      "consent": false
+    },
+    {
+      "id": "stoforidis",
+      "name": "Giannis Stoforidis",
+      "nickname": "Hercules",
+      "sport": "Kickboxing (Heavyweight)",
+      "accomplishment": "Νοκ άουτ 31 δευτερολέπτων στο ντεμπούτο του στο ONE Championship — από τα ταχύτερα KO στην ιστορία της διοργάνωσης",
+      "photo": "/images/athletes/stoforidis.webp",
+      "priority": 8,
+      "consent": false
+    },
+    {
+      "id": "kiatipis",
+      "name": "Matt Kiatipis",
+      "nickname": "MK",
+      "sport": "Μπάσκετ (1v1 streetball / creator)",
+      "accomplishment": "Δημιουργός του viral 1v1 league «ISO» — παγκόσμιο brand με πάνω από $1 εκατ. ετήσια έσοδα",
+      "photo": "/images/athletes/kiatipis.webp",
+      "priority": 9,
+      "consent": false
+    },
+    {
+      "id": "ivanov",
+      "name": "Tihomir Ivanov",
+      "nickname": null,
+      "sport": "Στίβος — Άλμα εις ύψος (Βουλγαρία)",
+      "accomplishment": "8ος στους Ολυμπιακούς Αγώνες του Παρισιού 2024 — η καλύτερη ολυμπιακή επίδοση της Βουλγαρίας στο ύψος",
+      "photo": "/images/athletes/ivanov.webp",
+      "priority": 10,
+      "consent": false
+    },
+    {
+      "id": "tsochataridis",
+      "name": "Παναγιώτης Τσοχαταρίδης",
+      "nickname": "Panos",
+      "sport": "Πυγμαχία (Welterweight)",
+      "accomplishment": "Αήττητος επαγγελματίας welterweight — διεκδίκησε τον διεθνή τίτλο WBF welterweight",
+      "photo": "/images/athletes/tsochataridis.webp",
+      "priority": 11,
+      "consent": false
+    },
+    {
+      "id": "arnaoutis",
+      "name": "Mike Arnaoutis",
+      "nickname": "Mighty Mike",
+      "sport": "Πυγμαχία (Light Welterweight)",
+      "accomplishment": "Διεκδικητής παγκόσμιου τίτλου WBO light welterweight (2006) — κάτοχος τίτλων WBO-NABO & IBF-USBA",
+      "photo": "/images/athletes/arnaoutis.webp",
+      "priority": 12,
+      "consent": false
+    }
+  ]
+}
