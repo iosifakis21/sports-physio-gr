@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Button } from "@/components/Button";
 
 interface NavLinkItem {
@@ -10,7 +11,7 @@ interface NavLinkItem {
 
 const navLinks: NavLinkItem[] = [
   { label: "Υπηρεσίες", href: "#ypiresies" },
-  { label: "Φυσικοθεραπεία", href: "#physikotherapeia" },
+  { label: "Φυσικοθεραπεία", href: "#fysikotherapeia" },
   { label: "Διαδικασία", href: "#diadikasia" },
   { label: "Γνωρίστε με", href: "#gnoriste-me" },
   { label: "Αξιολογήσεις", href: "#axiologiseis" },
@@ -101,24 +102,7 @@ export const Header: React.FC = () => {
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           {/* Logo Mark */}
           <a href="#" className="flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              className="w-8 h-8 text-primary group-hover:scale-105 transition-transform duration-200"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-            <span className="font-display font-extrabold text-lg md:text-xl text-ink-900 tracking-tight">
-              Sports-Physio<span className="text-primary">.gr</span>
-            </span>
+            <Image src="/images/logo.webp" alt="Sports-Physio.gr" width={200} height={48} priority className="h-9 md:h-10 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
           </a>
 
           {/* Desktop Navigation */}
@@ -138,7 +122,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-3">
             {/* Header Primary CTA (Desktop and Tablet) */}
             <Button
-              href="#booking"
+              href="#kleiste-rantevou"
               variant="primary"
               label="Κλείστε Ραντεβού"
               className="hidden sm:inline-flex"
