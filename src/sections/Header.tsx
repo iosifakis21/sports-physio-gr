@@ -102,7 +102,7 @@ export const Header: React.FC = () => {
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           {/* Logo Mark */}
           <a href="#" className="flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
-            <Image src="/images/logo.webp" alt="Sports-Physio.gr" width={200} height={48} priority className="h-9 md:h-10 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
+            <Image src="/images/logo.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
           </a>
 
           {/* Desktop Navigation */}
