@@ -54,7 +54,7 @@ export const Footer: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {/* Column 1: Clinic Identity & Description */}
         <div className="flex flex-col gap-4">
-          <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={180} height={121} className="h-10 md:h-12 w-auto mb-3" />
+          <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={180} height={121} className="h-10 md:h-12 w-auto mb-3 brightness-0 invert" />
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
