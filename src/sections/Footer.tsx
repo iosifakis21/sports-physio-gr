@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 
 export const Footer: React.FC = () => {
   const schemaData = {
@@ -53,8 +54,8 @@ export const Footer: React.FC = () => {
 
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {/* Column 1: Clinic Identity & Description */}
-        <div className="flex flex-col gap-4">
-          <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={180} height={121} className="h-10 md:h-12 w-auto mb-3 brightness-0 invert" />
+        <AnimatedContainer delay={0.1} className="flex flex-col gap-4">
+          <Image src="/images/logo-white.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={180} height={121} className="h-10 md:h-12 w-auto mb-3" />
           <div className="flex items-center gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,10 +79,10 @@ export const Footer: React.FC = () => {
           <p className="font-sans text-sm text-slate-400 leading-relaxed">
             Επιστημονικά τεκμηριωμένη φυσικοθεραπεία για πόνους, τραυματισμούς και αθλητική αποκατάσταση. Δίπλα σας σε κάθε βήμα της αποθεραπείας σας.
           </p>
-        </div>
+        </AnimatedContainer>
 
         {/* Column 2: NAP & Contact Details */}
-        <div className="flex flex-col gap-4">
+        <AnimatedContainer delay={0.2} className="flex flex-col gap-4">
           <h3 className="font-display font-bold text-base text-white tracking-wide uppercase">
             Στοιχεία Επικοινωνίας
           </h3>
@@ -125,10 +126,10 @@ export const Footer: React.FC = () => {
               </div>
             </li>
           </ul>
-        </div>
+        </AnimatedContainer>
 
         {/* Column 3: Business Hours */}
-        <div className="flex flex-col gap-4">
+        <AnimatedContainer delay={0.3} className="flex flex-col gap-4">
           <h3 className="font-display font-bold text-base text-white tracking-wide uppercase">
             Ωράριο Λειτουργίας
           </h3>
@@ -146,10 +147,10 @@ export const Footer: React.FC = () => {
               <span className="text-red-400 font-medium">Κλειστά</span>
             </li>
           </ul>
-        </div>
+        </AnimatedContainer>
 
         {/* Column 4: Links & Legals */}
-        <div className="flex flex-col gap-4">
+        <AnimatedContainer delay={0.4} className="flex flex-col gap-4">
           <h3 className="font-display font-bold text-base text-white tracking-wide uppercase">
             Χρήσιμοι Σύνδεσμοι
           </h3>
@@ -179,7 +180,7 @@ export const Footer: React.FC = () => {
               Πολιτική Απορρήτου
             </a>
           </nav>
-        </div>
+        </AnimatedContainer>
       </div>
 
       {/* Legal and Copyright row */}
