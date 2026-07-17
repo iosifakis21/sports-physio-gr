@@ -39,7 +39,7 @@ const LogoImage: React.FC<{ insurer: Insurer; decorative?: boolean }> = ({
       width={dim.width}
       height={dim.height}
       sizes="(max-width: 768px) 120px, 160px"
-      className="h-10 md:h-12 w-auto object-contain grayscale opacity-70 shrink-0"
+      className="h-10 md:h-12 w-auto object-contain opacity-70 shrink-0"
     />
   );
 };
