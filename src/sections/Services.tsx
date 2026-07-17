@@ -1,6 +1,7 @@
 import React from "react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Card } from "@/components/Card";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 import servicesData from "@/content/services.json";
 
 interface ServiceItem {
@@ -75,18 +76,23 @@ export const Services: React.FC = () => {
 
         {/* 3-column / 1-column responsive grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {servicesList.map((service) => (
-            <Card
+          {servicesList.map((service, index) => (
+            <AnimatedContainer
               key={service.id}
-              icon={renderIcon(service.iconName)}
+              className="h-full"
+              delay={index * 0.1}
+              initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
             >
-              <h3 className="font-display font-bold text-lg md:text-xl text-ink-900 leading-tight">
-                {service.title}
-              </h3>
-              <p className="font-sans text-sm md:text-base text-ink-600 leading-relaxed mt-2">
-                {service.description}
-              </p>
-            </Card>
+              <Card className="h-full" icon={renderIcon(service.iconName)}>
+                <h3 className="font-display font-bold text-lg md:text-xl text-ink-900 leading-tight">
+                  {service.title}
+                </h3>
+                <p className="font-sans text-sm md:text-base text-ink-600 leading-relaxed mt-2">
+                  {service.description}
+                </p>
+              </Card>
+            </AnimatedContainer>
           ))}
         </div>
 
