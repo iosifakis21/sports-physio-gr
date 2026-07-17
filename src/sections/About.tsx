@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 
 export const About: React.FC = () => {
   const credentials = [
@@ -24,7 +25,11 @@ export const About: React.FC = () => {
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
 
           {/* Left Column - Portrait (4/12 width) */}
-          <div className="w-full lg:w-[33%] flex justify-center">
+          <AnimatedContainer
+            className="w-full lg:w-[33%] flex justify-center"
+            initial={{ opacity: 0, translateX: -24 }}
+            whileInView={{ opacity: 1, translateX: 0 }}
+          >
             <div className="w-full max-w-[340px] aspect-[4/5] bg-slate-100 rounded-card border border-ink-900/5 relative shadow-sm overflow-hidden select-none">
 
               {/* Portrait photo */}
@@ -41,10 +46,14 @@ export const About: React.FC = () => {
                 10+ Χρόνια Εμπειρίας
               </div>
             </div>
-          </div>
+          </AnimatedContainer>
 
           {/* Right Column - Credentials and Bio text (8/12 width) */}
-          <div className="w-full lg:w-[67%] flex flex-col items-start gap-6 text-left">
+          <AnimatedContainer
+            className="w-full lg:w-[67%] flex flex-col items-start gap-6 text-left"
+            initial={{ opacity: 0, translateX: 24 }}
+            whileInView={{ opacity: 1, translateX: 0 }}
+          >
             <div>
               <h3 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 leading-tight">
                 Μιχάλης Σιούλης
@@ -76,7 +85,7 @@ export const About: React.FC = () => {
               <span className="text-emerald-500 font-bold" aria-hidden="true">✔</span>
               <span>Επίσημο Μέλος του Πανελληνίου Συλλόγου Φυσικοθεραπευτών (Π.Σ.Φ.)</span>
             </div>
-          </div>
+          </AnimatedContainer>
 
         </div>
 
