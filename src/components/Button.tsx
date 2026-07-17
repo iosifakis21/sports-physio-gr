@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
+import { motion } from "motion/react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -12,6 +16,8 @@ interface ButtonProps {
   icon?: React.ReactNode;
 }
 
+const MotionLink = motion.create(Link);
+
 export const Button: React.FC<ButtonProps> = ({
   children,
   label,
@@ -22,6 +28,8 @@ export const Button: React.FC<ButtonProps> = ({
   className = "",
   icon,
 }) => {
+  const reduced = usePrefersReducedMotion();
+
   const content = (
     <>
       {icon && <span className="mr-2 inline-flex items-center select-none" aria-hidden="true">{icon}</span>}
@@ -50,24 +58,37 @@ export const Button: React.FC<ButtonProps> = ({
     console.warn(`WARNING: Primary CTA label "${textCheck}" violates branding rules. It must strictly be "Κλείστε Ραντεβού".`);
   }
 
+  // Spring-based scale on hover/tap, layered on top of the existing CSS hover
+  // lift + shadow. Motion animates `scale` via the `transform` property; the
+  // Tailwind hover lift uses the independent `translate` property, so the two
+  // compose without conflict (no double lift). When reduced motion is preferred
+  // we pass no motion props, leaving only the (instant) CSS hover styling.
+  const motionProps = reduced
+    ? {}
+    : {
+        whileHover: { scale: 1.03 },
+        whileTap: { scale: 0.98 },
+        transition: { type: "spring" as const, stiffness: 400, damping: 17 },
+      };
+
   if (href) {
     if (href.startsWith("#")) {
       return (
-        <a href={href} className={combinedStyles} onClick={onClick}>
+        <motion.a href={href} className={combinedStyles} onClick={onClick} {...motionProps}>
           {content}
-        </a>
+        </motion.a>
       );
     }
     return (
-      <Link href={href} className={combinedStyles} onClick={onClick}>
+      <MotionLink href={href} className={combinedStyles} onClick={onClick} {...motionProps}>
         {content}
-      </Link>
+      </MotionLink>
     );
   }
 
   return (
-    <button type={type} className={combinedStyles} onClick={onClick}>
+    <motion.button type={type} className={combinedStyles} onClick={onClick} {...motionProps}>
       {content}
-    </button>
+    </motion.button>
   );
 };
