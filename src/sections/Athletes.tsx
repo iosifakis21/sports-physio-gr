@@ -3,6 +3,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { AthleteCard, Athlete } from "@/components/AthleteCard";
 import { SectionHeading } from "@/components/SectionHeading";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 import athletesData from "@/content/athletes.json";
 
 export const Athletes: React.FC = () => {
@@ -77,7 +78,11 @@ export const Athletes: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-10 md:gap-16">
         
         {/* Section Heading & Dev Preview Badge */}
-        <div className="flex flex-col items-center gap-4 text-center">
+        <AnimatedContainer
+          className="flex flex-col items-center gap-4 text-center"
+          initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
+        >
           <SectionHeading
             eyebrow="Elite Social Proof"
             heading="Αθλητές που εμπιστεύονται τον Μιχάλη Σιούλη"
@@ -91,11 +96,18 @@ export const Athletes: React.FC = () => {
               ⚠️ DEV-ONLY PREVIEW MODE: ΔΕΝ ΥΠΑΡΧΟΥΝ ΑΘΛΗΤΕΣ ΜΕ ΣΥΓΚΑΤΑΘΕΣΗ (HIDES IN PRODUCTION)
             </div>
           )}
-        </div>
+        </AnimatedContainer>
 
-        {/* Carousel Container with Absolute Arrows */}
-        <div className="relative w-full group/carousel">
-          
+        {/* Carousel Container with Absolute Arrows — single fade-in for the whole
+            wrapper. Individual AthleteCards are intentionally NOT wrapped in their
+            own scroll animation, since that would conflict with scroll-snap swipe/
+            drag and keyboard-focusable cards inside. */}
+        <AnimatedContainer
+          className="relative w-full group/carousel"
+          delay={0.1}
+          initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
+        >
           {/* Scroll Area */}
           <div
             ref={scrollRef}
@@ -153,7 +165,7 @@ export const Athletes: React.FC = () => {
               </svg>
             </button>
           )}
-        </div>
+        </AnimatedContainer>
 
       </div>
     </section>
