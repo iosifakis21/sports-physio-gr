@@ -30,9 +30,37 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const reduced = usePrefersReducedMotion();
 
+  // Gentle periodic wiggle on the icon only: a brief rotation swing, then a
+  // pause, then it repeats — never a constant motion. Fully disabled under
+  // prefers-reduced-motion, explicitly pinned back to rotate:0 (rather than
+  // just omitting animate props) so a mid-swing value never freezes in place
+  // if reduced-motion is detected partway through a cycle. Runs independently
+  // of the button's own whileHover/whileTap scale below, so both compose
+  // without conflict.
+  const iconWiggleProps = reduced
+    ? { animate: { rotate: 0 }, transition: { duration: 0 } }
+    : {
+        animate: { rotate: [0, -8, 8, -8, 0] },
+        transition: {
+          duration: 0.6,
+          repeat: Infinity,
+          repeatDelay: 3,
+          ease: "easeInOut" as const,
+        },
+      };
+
   const content = (
     <>
-      {icon && <span className="mr-2 inline-flex items-center select-none" aria-hidden="true">{icon}</span>}
+      {icon && (
+        <motion.span
+          className="mr-2 inline-flex items-center select-none"
+          style={{ transformOrigin: "50% 50%" }}
+          aria-hidden="true"
+          {...iconWiggleProps}
+        >
+          {icon}
+        </motion.span>
+      )}
       <span>{children || label}</span>
     </>
   );
