@@ -1,6 +1,7 @@
 import React from "react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CheckItem } from "@/components/CheckItem";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 import conditionsData from "@/content/conditions.json";
 
 interface ConditionGroup {
@@ -25,21 +26,26 @@ export const Conditions: React.FC = () => {
 
         {/* 2-column layout for the groups on desktop */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto w-full">
-          {groups.map((group) => (
-            <div
+          {groups.map((group, index) => (
+            <AnimatedContainer
               key={group.id}
-              className="bg-surface rounded-card p-6 md:p-8 border border-ink-900/5 shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="h-full"
+              delay={index * 0.1}
+              initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+              whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
             >
-              <h3 className="font-display font-bold text-lg md:text-xl text-ink-900 border-b border-ink-900/10 pb-3 mb-4 flex items-center gap-2">
-                <span className="text-primary font-normal text-base select-none">🔵</span>
-                {group.areaTitle}
-              </h3>
-              <div className="flex flex-col gap-3">
-                {group.items.map((item, index) => (
-                  <CheckItem key={index} text={item} />
-                ))}
+              <div className="h-full bg-surface rounded-card p-6 md:p-8 border border-ink-900/5 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <h3 className="font-display font-bold text-lg md:text-xl text-ink-900 border-b border-ink-900/10 pb-3 mb-4 flex items-center gap-2">
+                  <span className="text-primary font-normal text-base select-none">🔵</span>
+                  {group.areaTitle}
+                </h3>
+                <div className="flex flex-col gap-3">
+                  {group.items.map((item, itemIndex) => (
+                    <CheckItem key={itemIndex} text={item} />
+                  ))}
+                </div>
               </div>
-            </div>
+            </AnimatedContainer>
           ))}
         </div>
 
