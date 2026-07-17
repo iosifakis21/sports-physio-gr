@@ -2,6 +2,7 @@ import React from "react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { CheckItem } from "@/components/CheckItem";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
+import { ConditionsAnnotatedPhoto } from "@/components/ConditionsAnnotatedPhoto";
 import conditionsData from "@/content/conditions.json";
 
 interface ConditionGroup {
@@ -16,7 +17,10 @@ export const Conditions: React.FC = () => {
   return (
     <section id="fysikotherapeia" className="py-[56px] md:py-[96px] bg-surface-alt border-y border-ink-900/5 select-none scroll-mt-20">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-12 md:gap-16">
-        
+
+        {/* Interactive annotated-photo block (new) */}
+        <ConditionsAnnotatedPhoto />
+
         {/* Section Title */}
         <SectionHeading
           eyebrow="Παθήσεις"

@@ -1,0 +1,8 @@
+[
+  { "id": "head-neck", "label": "Αυχένας & Μέση", "photo": "/images/headneck.jpg", "conditionGroupId": "back-neck" },
+  { "id": "shoulder", "label": "Ώμος", "photo": "/images/shoulder.jpg", "conditionGroupId": "shoulder" },
+  { "id": "elbow", "label": "Αγκώνας", "photo": "/images/elbow.webp", "conditionGroupId": "sports-injuries" },
+  { "id": "hip", "label": "Ισχίο", "photo": "/images/hip.jpg", "conditionGroupId": "hip-knee" },
+  { "id": "knee", "label": "Γόνατο", "photo": "/images/knee.webp", "conditionGroupId": "hip-knee" },
+  { "id": "foot-ankle", "label": "Αστράγαλος & Άκρο Πόδι", "photo": "/images/footankle.webp", "conditionGroupId": "ankle-foot" }
+]
