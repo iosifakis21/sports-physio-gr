@@ -162,7 +162,7 @@ export const Footer: React.FC = () => {
               Υπηρεσίες
             </a>
             <a
-              href="#physikotherapeia"
+              href="#fysikotherapeia"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Φυσικοθεραπεία
