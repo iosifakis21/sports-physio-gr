@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { RatingBadge } from "@/components/RatingBadge";
 import { ReviewCard, Review } from "@/components/ReviewCard";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 import { motion, useAnimate, useReducedMotion } from "motion/react";
 import reviewsData from "@/content/reviews.json";
 
@@ -112,7 +113,11 @@ export const Reviews: React.FC = () => {
         />
 
         {/* Aggregate Ratings & Google Link Block */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 bg-surface p-6 rounded-card border border-ink-900/5 max-w-2xl mx-auto w-full shadow-sm">
+        <AnimatedContainer
+          className="flex flex-col sm:flex-row items-center justify-center gap-6 bg-surface p-6 rounded-card border border-ink-900/5 max-w-2xl mx-auto w-full shadow-sm"
+          initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
+        >
           <RatingBadge />
           <div className="flex flex-col items-center sm:items-start text-center sm:text-left gap-1">
             <span className="font-sans text-sm text-ink-600 font-medium">
@@ -127,38 +132,47 @@ export const Reviews: React.FC = () => {
               Δείτε όλες τις αξιολογήσεις στο Google →
             </a>
           </div>
-        </div>
+        </AnimatedContainer>
 
-        {/* Review Layout */}
-        {showMarquee ? (
-          <div className="relative h-[650px] overflow-hidden">
-            {/* Elegant fading gradients at the top and bottom of the marquee */}
-            <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-surface-alt to-transparent pointer-events-none z-10" />
-            <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface-alt to-transparent pointer-events-none z-10" />
+        {/* Review Layout — single fade-in for the whole marquee/grid container.
+            Individual review cards are intentionally NOT wrapped in their own
+            scroll animation, since that would conflict with the marquee's
+            continuous scroll and hover/focus/touch pause behavior. */}
+        <AnimatedContainer
+          delay={0.1}
+          initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
+        >
+          {showMarquee ? (
+            <div className="relative h-[650px] overflow-hidden">
+              {/* Elegant fading gradients at the top and bottom of the marquee */}
+              <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-surface-alt to-transparent pointer-events-none z-10" />
+              <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface-alt to-transparent pointer-events-none z-10" />
 
-            <div
-              className="grid gap-6 md:gap-8 h-full"
-              style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
-            >
-              {columns.map((colReviews, idx) => (
-                <MarqueeColumn
-                  key={`${columnCount}-${idx}`}
-                  reviews={colReviews}
-                  // Duration scales with card count so scroll speed stays consistent,
-                  // with a small per-column offset for a natural staggered feel
-                  speed={colReviews.length * 8 + idx * 2}
-                />
+              <div
+                className="grid gap-6 md:gap-8 h-full"
+                style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+              >
+                {columns.map((colReviews, idx) => (
+                  <MarqueeColumn
+                    key={`${columnCount}-${idx}`}
+                    reviews={colReviews}
+                    // Duration scales with card count so scroll speed stays consistent,
+                    // with a small per-column offset for a natural staggered feel
+                    speed={colReviews.length * 8 + idx * 2}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            /* Stacked/Grid Static Layout for Mobile, SSR, or Prefers Reduced Motion */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+              {reviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
               ))}
             </div>
-          </div>
-        ) : (
-          /* Stacked/Grid Static Layout for Mobile, SSR, or Prefers Reduced Motion */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {reviews.map((review) => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
-        )}
+          )}
+        </AnimatedContainer>
 
       </div>
     </section>
