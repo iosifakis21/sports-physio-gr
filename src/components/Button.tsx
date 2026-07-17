@@ -3,7 +3,6 @@
 import Link from "next/link";
 import React from "react";
 import { motion } from "motion/react";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -28,26 +27,19 @@ export const Button: React.FC<ButtonProps> = ({
   className = "",
   icon,
 }) => {
-  const reduced = usePrefersReducedMotion();
-
   // Gentle periodic wiggle on the icon only: a brief rotation swing, then a
-  // pause, then it repeats — never a constant motion. Fully disabled under
-  // prefers-reduced-motion, explicitly pinned back to rotate:0 (rather than
-  // just omitting animate props) so a mid-swing value never freezes in place
-  // if reduced-motion is detected partway through a cycle. Runs independently
-  // of the button's own whileHover/whileTap scale below, so both compose
+  // pause, then it repeats — never a constant motion. Runs independently of
+  // the button's own whileHover/whileTap scale below, so both compose
   // without conflict.
-  const iconWiggleProps = reduced
-    ? { animate: { rotate: 0 }, transition: { duration: 0 } }
-    : {
-        animate: { rotate: [0, -8, 8, -8, 0] },
-        transition: {
-          duration: 0.6,
-          repeat: Infinity,
-          repeatDelay: 3,
-          ease: "easeInOut" as const,
-        },
-      };
+  const iconWiggleProps = {
+    animate: { rotate: [0, -8, 8, -8, 0] },
+    transition: {
+      duration: 0.6,
+      repeat: Infinity,
+      repeatDelay: 3,
+      ease: "easeInOut" as const,
+    },
+  };
 
   const content = (
     <>
@@ -89,15 +81,12 @@ export const Button: React.FC<ButtonProps> = ({
   // Spring-based scale on hover/tap, layered on top of the existing CSS hover
   // lift + shadow. Motion animates `scale` via the `transform` property; the
   // Tailwind hover lift uses the independent `translate` property, so the two
-  // compose without conflict (no double lift). When reduced motion is preferred
-  // we pass no motion props, leaving only the (instant) CSS hover styling.
-  const motionProps = reduced
-    ? {}
-    : {
-        whileHover: { scale: 1.03 },
-        whileTap: { scale: 0.98 },
-        transition: { type: "spring" as const, stiffness: 400, damping: 17 },
-      };
+  // compose without conflict (no double lift).
+  const motionProps = {
+    whileHover: { scale: 1.03 },
+    whileTap: { scale: 0.98 },
+    transition: { type: "spring" as const, stiffness: 400, damping: 17 },
+  };
 
   if (href) {
     if (href.startsWith("#")) {
