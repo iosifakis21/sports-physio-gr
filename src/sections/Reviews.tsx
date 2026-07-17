@@ -55,6 +55,10 @@ const MarqueeColumn: React.FC<MarqueeColumnProps> = ({ reviews, speed }) => {
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
+      // Hold-to-pause on touch devices so mobile users can read a card
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+      onTouchCancel={() => setIsPaused(false)}
     >
       <div ref={scope} className="flex flex-col gap-6 py-3">
         {[...reviews, ...reviews].map((review, idx) => (
@@ -68,32 +72,33 @@ const MarqueeColumn: React.FC<MarqueeColumnProps> = ({ reviews, speed }) => {
 export const Reviews: React.FC = () => {
   const reviews: Review[] = reviewsData as Review[];
   const [isMounted, setIsMounted] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [columnCount, setColumnCount] = useState(1);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setIsMounted(true);
-    
-    // Check if the screen is desktop (min-width: 1024px)
-    const mediaQuery = window.matchMedia("(min-width: 1024px)");
-    setIsDesktop(mediaQuery.matches);
 
-    const listener = (e: MediaQueryListEvent) => {
-      setIsDesktop(e.matches);
+    // Responsive column count: 1 on mobile, 2 on tablet (>=768px), 3 on desktop (>=1024px)
+    const lg = window.matchMedia("(min-width: 1024px)");
+    const md = window.matchMedia("(min-width: 768px)");
+    const update = () => setColumnCount(lg.matches ? 3 : md.matches ? 2 : 1);
+    update();
+
+    lg.addEventListener("change", update);
+    md.addEventListener("change", update);
+    return () => {
+      lg.removeEventListener("change", update);
+      md.removeEventListener("change", update);
     };
-    mediaQuery.addEventListener("change", listener);
-    return () => mediaQuery.removeEventListener("change", listener);
   }, []);
 
-  // Split reviews into 3 columns for desktop marquee
-  // Column 1: Reviews 1 & 4
-  // Column 2: Reviews 2 & 5
-  // Column 3: Reviews 3 & 6
-  const col1 = [reviews[0], reviews[3]];
-  const col2 = [reviews[1], reviews[4]];
-  const col3 = [reviews[2], reviews[5]];
+  // Distribute reviews round-robin across the active number of columns
+  const columns: Review[][] = Array.from({ length: columnCount }, () => []);
+  reviews.forEach((review, i) => {
+    columns[i % columnCount].push(review);
+  });
 
-  const showMarquee = isMounted && isDesktop && !prefersReducedMotion;
+  const showMarquee = isMounted && !prefersReducedMotion;
 
   return (
     <section id="axiologiseis" className="py-[56px] md:py-[96px] bg-surface-alt border-y border-ink-900/5 select-none scroll-mt-20">
@@ -130,11 +135,20 @@ export const Reviews: React.FC = () => {
             {/* Elegant fading gradients at the top and bottom of the marquee */}
             <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-surface-alt to-transparent pointer-events-none z-10" />
             <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface-alt to-transparent pointer-events-none z-10" />
-            
-            <div className="grid grid-cols-3 gap-8 h-full">
-              <MarqueeColumn reviews={col1} speed={15} />
-              <MarqueeColumn reviews={col2} speed={19} />
-              <MarqueeColumn reviews={col3} speed={17} />
+
+            <div
+              className="grid gap-6 md:gap-8 h-full"
+              style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
+            >
+              {columns.map((colReviews, idx) => (
+                <MarqueeColumn
+                  key={`${columnCount}-${idx}`}
+                  reviews={colReviews}
+                  // Duration scales with card count so scroll speed stays consistent,
+                  // with a small per-column offset for a natural staggered feel
+                  speed={colReviews.length * 8 + idx * 2}
+                />
+              ))}
             </div>
           </div>
         ) : (
