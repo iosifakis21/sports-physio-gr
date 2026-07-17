@@ -1,5 +1,5 @@
 import { Hero } from "@/sections/Hero";
-import { TrustStrip } from "@/sections/TrustStrip";
+import { InsuranceMarquee } from "@/sections/InsuranceMarquee";
 import { Services } from "@/sections/Services";
 import { Conditions } from "@/sections/Conditions";
 import { Process } from "@/sections/Process";
@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full relative">
       <Hero />
-      <TrustStrip />
+      <InsuranceMarquee />
       <Services />
       <Conditions />
       <Process />
