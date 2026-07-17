@@ -108,23 +108,6 @@ const MarqueeRow: React.FC<{ insurers: Insurer[] }> = ({ insurers }) => {
 export const InsuranceMarquee: React.FC = () => {
   const insurers = insurersData as Insurer[];
 
-  // Detect reduced-motion via matchMedia + a mount gate. Until mounted (and on
-  // the server) we render the static wrapped row, so reduced-motion users never
-  // see the animated variant and there is no hydration flash.
-  const [reduceMotion, setReduceMotion] = useState(true);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduceMotion(mq.matches);
-    setMounted(true);
-    const onChange = () => setReduceMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  const animateMarquee = mounted && !reduceMotion;
-
   return (
     <section className="bg-surface-alt border-y border-ink-900/5 py-8 md:py-10 w-full select-none overflow-hidden">
       <div className="flex flex-col gap-6">
@@ -133,16 +116,7 @@ export const InsuranceMarquee: React.FC = () => {
           ΔΕΚΤΕΣ ΟΛΕΣ ΟΙ ΑΣΦΑΛΙΣΤΙΚΕΣ
         </span>
 
-        {animateMarquee ? (
-          <MarqueeRow insurers={insurers} />
-        ) : (
-          /* Static wrapped row for reduced-motion / SSR / first paint */
-          <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-            {insurers.map((insurer) => (
-              <LogoImage key={insurer.name} insurer={insurer} />
-            ))}
-          </div>
-        )}
+        <MarqueeRow insurers={insurers} />
       </div>
     </section>
   );
