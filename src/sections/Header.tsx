@@ -125,7 +125,7 @@ export const Header: React.FC = () => {
               href="#kleiste-rantevou"
               variant="primary"
               label="Κλείστε Ραντεβού"
-              className="hidden sm:inline-flex"
+              className="!hidden sm:!inline-flex"
               icon={
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
