@@ -1,5 +1,6 @@
 import React from "react";
 import { SectionHeading } from "@/components/SectionHeading";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 import faqData from "@/content/faq.json";
 
 interface FAQItem {
@@ -41,8 +42,14 @@ export const FAQ: React.FC = () => {
           subcopy="Βρείτε απαντήσεις σε συχνά ερωτήματα σχετικά με τις συνεδρίες, το κόστος, την κάλυψη ασφαλειών και τη διαδικασία."
         />
 
-        {/* Styled details/summary Accordion container */}
-        <div className="w-full max-w-[800px] flex flex-col gap-4">
+        {/* Styled details/summary Accordion container — single fade-in for the
+            whole container. Individual accordion items' open/close is native
+            <details>/<summary> browser behavior and is untouched. */}
+        <AnimatedContainer
+          className="w-full max-w-[800px] flex flex-col gap-4"
+          initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+          whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
+        >
           {faqs.map((faq, index) => (
             <details
               key={index}
@@ -63,7 +70,7 @@ export const FAQ: React.FC = () => {
               </div>
             </details>
           ))}
-        </div>
+        </AnimatedContainer>
 
       </div>
     </section>
