@@ -4,6 +4,7 @@ import { Button } from "@/components/Button";
 import { CheckItem } from "@/components/CheckItem";
 import { RatingBadge } from "@/components/RatingBadge";
 import { HeroReveal } from "@/components/HeroReveal";
+import { TypewriterCycle } from "@/components/TypewriterCycle";
 
 export const Hero: React.FC = () => {
   return (
@@ -26,7 +27,11 @@ export const Hero: React.FC = () => {
 
           <HeroReveal delay={0}>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold font-display leading-tight text-white tracking-tight">
-              Εξειδικευμένη Φυσικοθεραπεία για Πόνους, Τραυματισμούς και Αποκατάσταση.
+              Εξειδικευμένη Φυσικοθεραπεία για{" "}
+              <TypewriterCycle
+                words={["Πόνους", "Τραυματισμούς", "Αποκατάσταση"]}
+                srText="Πόνους, Τραυματισμούς και Αποκατάσταση."
+              />
             </h1>
           </HeroReveal>
 
