@@ -1,6 +1,7 @@
 import React from "react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/Button";
+import { AnimatedContainer } from "@/components/AnimatedContainer";
 
 interface ProcessStep {
   number: string;
@@ -153,58 +154,65 @@ export const Process: React.FC = () => {
 
           {/* Step cards */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            {steps.map((step) => (
-              <article
+            {steps.map((step, index) => (
+              <AnimatedContainer
                 key={step.number}
-                className="group flex flex-col gap-4 bg-surface border border-ink-900/10 rounded-card p-6 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-primary motion-safe:hover:scale-[1.03]"
+                className="h-full"
+                delay={index * 0.1}
+                initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
+                whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
               >
-                {/* Icon badge */}
-                <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-200">
-                  {step.icon}
-                </div>
+                <article
+                  className="group h-full flex flex-col gap-4 bg-surface border border-ink-900/10 rounded-card p-6 shadow-sm transition-all duration-200 hover:shadow-lg hover:border-primary motion-safe:hover:scale-[1.03]"
+                >
+                  {/* Icon badge */}
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-200">
+                    {step.icon}
+                  </div>
 
-                {/* Step number label (visible on mobile where the indicator row is hidden) */}
-                <span className="lg:hidden font-display font-bold text-xs uppercase tracking-wide text-primary">
-                  Βήμα {step.number}
-                </span>
+                  {/* Step number label (visible on mobile where the indicator row is hidden) */}
+                  <span className="lg:hidden font-display font-bold text-xs uppercase tracking-wide text-primary">
+                    Βήμα {step.number}
+                  </span>
 
-                {/* Title + description */}
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-display font-bold text-lg text-ink-900 leading-tight">
-                    {step.title}
-                  </h3>
-                  <p className="font-sans text-sm text-ink-600 leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
+                  {/* Title + description */}
+                  <div className="flex flex-col gap-2">
+                    <h3 className="font-display font-bold text-lg text-ink-900 leading-tight">
+                      {step.title}
+                    </h3>
+                    <p className="font-sans text-sm text-ink-600 leading-relaxed">
+                      {step.description}
+                    </p>
+                  </div>
 
-                {/* Benefits list */}
-                <ul className="flex flex-col gap-2 mt-auto pt-2">
-                  {step.bullets.map((bullet) => (
-                    <li
-                      key={bullet}
-                      className="flex items-start gap-2 font-sans text-sm text-ink-600"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="2.5"
-                        stroke="currentColor"
-                        className="w-4 h-4 text-primary mt-0.5 shrink-0"
-                        aria-hidden="true"
+                  {/* Benefits list */}
+                  <ul className="flex flex-col gap-2 mt-auto pt-2">
+                    {step.bullets.map((bullet) => (
+                      <li
+                        key={bullet}
+                        className="flex items-start gap-2 font-sans text-sm text-ink-600"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M4.5 12.75l6 6 9-13.5"
-                        />
-                      </svg>
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="2.5"
+                          stroke="currentColor"
+                          className="w-4 h-4 text-primary mt-0.5 shrink-0"
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5"
+                          />
+                        </svg>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </AnimatedContainer>
             ))}
           </div>
         </div>
