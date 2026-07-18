@@ -129,7 +129,6 @@ export function Tilt({
       window.removeEventListener("deviceorientation", orientationHandler);
       gyroActive.current = false;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // iOS permission flow: request on first touch (a valid user gesture). If
