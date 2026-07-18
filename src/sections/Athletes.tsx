@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useAnimate } from "motion/react";
 import { AthleteCard, Athlete } from "@/components/AthleteCard";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -17,22 +17,25 @@ const DURATION_DESKTOP = 275;
 const DURATION_MOBILE = 50;
 const MOBILE_QUERY = "(max-width: 768px)";
 
+const subscribeToViewport = (onChange: () => void) => {
+  const mql = window.matchMedia(MOBILE_QUERY);
+  mql.addEventListener("change", onChange);
+  return () => mql.removeEventListener("change", onChange);
+};
+const isMobileViewport = () => window.matchMedia(MOBILE_QUERY).matches;
+
 const AthleteMarqueeRow: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
   const [scope, animate] = useAnimate();
   const [isPaused, setIsPaused] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const isMobile = useSyncExternalStore(
+    subscribeToViewport,
+    isMobileViewport,
+    () => false
+  );
   const animationRef = useRef<ReturnType<typeof animate> | null>(null);
   // Loop progress (0..1) carried across re-creations so a viewport change
   // (e.g. device rotation) re-times the animation without a visual jump.
   const progressRef = useRef(0);
-
-  useEffect(() => {
-    const mql = window.matchMedia(MOBILE_QUERY);
-    setIsMobile(mql.matches);
-    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mql.addEventListener("change", onChange);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
 
   useEffect(() => {
     if (!scope.current) return;
