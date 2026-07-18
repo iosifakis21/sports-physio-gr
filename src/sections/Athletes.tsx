@@ -1,16 +1,76 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useAnimate } from "motion/react";
 import { AthleteCard, Athlete } from "@/components/AthleteCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import athletesData from "@/content/athletes.json";
 
-export const Athletes: React.FC = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+// Continuous marquee row — same mechanism as InsuranceMarquee: the row holds
+// two copies of the athlete list, translating by -50% moves exactly one full
+// copy before repeating, so the loop is seamless. Slower than the logo strip
+// because the cards are larger.
+const AthleteMarqueeRow: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
+  const [scope, animate] = useAnimate();
+  const [isPaused, setIsPaused] = useState(false);
+  const animationRef = useRef<ReturnType<typeof animate> | null>(null);
 
+  useEffect(() => {
+    if (!scope.current) return;
+
+    animationRef.current = animate(
+      scope.current,
+      { x: ["0%", "-50%"] },
+      {
+        duration: 55,
+        ease: "linear",
+        repeat: Infinity,
+      }
+    );
+
+    return () => {
+      if (animationRef.current) {
+        animationRef.current.stop();
+      }
+    };
+  }, [animate, scope]);
+
+  useEffect(() => {
+    if (animationRef.current) {
+      if (isPaused) {
+        animationRef.current.pause();
+      } else {
+        animationRef.current.play();
+      }
+    }
+  }, [isPaused]);
+
+  return (
+    <div
+      className="w-full overflow-hidden"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+      onTouchStart={() => setIsPaused(true)}
+      onTouchEnd={() => setIsPaused(false)}
+      onTouchCancel={() => setIsPaused(false)}
+    >
+      <div ref={scope} className="flex items-stretch gap-6 w-max pb-2">
+        {[...athletes, ...athletes].map((athlete, idx) => (
+          <AthleteCard
+            key={`${athlete.id}-${idx}`}
+            athlete={athlete}
+            decorative={idx >= athletes.length}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export const Athletes: React.FC = () => {
   // Read athletes from JSON
   const allAthletes: Athlete[] = (athletesData as { athletes: Athlete[] }).athletes;
 
@@ -33,50 +93,10 @@ export const Athletes: React.FC = () => {
     return null;
   }
 
-  // Handle scroll events to show/hide arrows
-  const checkScrollLimits = () => {
-    const el = scrollRef.current;
-    if (el) {
-      setCanScrollLeft(el.scrollLeft > 5);
-      setCanScrollRight(
-        el.scrollLeft < el.scrollWidth - el.clientWidth - 5
-      );
-    }
-  };
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) {
-      el.addEventListener("scroll", checkScrollLimits);
-      // Run initially
-      checkScrollLimits();
-      // Handle resize recalculations
-      window.addEventListener("resize", checkScrollLimits);
-    }
-    return () => {
-      if (el) el.removeEventListener("scroll", checkScrollLimits);
-      window.removeEventListener("resize", checkScrollLimits);
-    };
-  }, [activeAthletes]);
-
-  // Scroll function for desktop arrows
-  const scroll = (direction: "left" | "right") => {
-    const el = scrollRef.current;
-    if (el) {
-      const cardWidth = 320; // card width (320px) + gap
-      const gap = 24;
-      const scrollAmount = direction === "left" ? -(cardWidth + gap) : (cardWidth + gap);
-      el.scrollBy({
-        left: scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
   return (
     <section className="bg-ink-900 text-white py-[56px] md:py-[96px] overflow-hidden select-none relative scroll-mt-20">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-10 md:gap-16">
-        
+
         {/* Section Heading & Dev Preview Badge */}
         <AnimatedContainer
           className="flex flex-col items-center gap-4 text-center"
@@ -98,73 +118,15 @@ export const Athletes: React.FC = () => {
           )}
         </AnimatedContainer>
 
-        {/* Carousel Container with Absolute Arrows — single fade-in for the whole
-            wrapper. Individual AthleteCards are intentionally NOT wrapped in their
-            own scroll animation, since that would conflict with scroll-snap swipe/
-            drag and keyboard-focusable cards inside. */}
+        {/* Auto-scrolling marquee — pauses on hover, focus, and touch. Cards in
+            the first copy stay keyboard-focusable; focusing one pauses the row. */}
         <AnimatedContainer
-          className="relative w-full group/carousel"
+          className="relative w-full"
           delay={0.1}
           initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
           whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
         >
-          {/* Scroll Area */}
-          <div
-            ref={scrollRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-6 px-1 md:px-4 -mx-4 md:-mx-0 scrollbar-none"
-            style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-            }}
-          >
-            {activeAthletes.map((athlete) => (
-              <AthleteCard key={athlete.id} athlete={athlete} />
-            ))}
-          </div>
-
-          {/* Left Arrow Button (Desktop Only) */}
-          {canScrollLeft && (
-            <button
-              onClick={() => scroll("left")}
-              type="button"
-              className="absolute left-2 top-1/2 -translate-y-1/2 hidden md:flex w-12 h-12 rounded-full bg-slate-900/80 border border-white/10 text-white items-center justify-center shadow-lg hover:bg-slate-800 focus:outline focus:outline-2 focus:outline-primary select-none cursor-pointer z-25 transition-all duration-200"
-              aria-label="Προηγούμενοι αθλητές"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                stroke="currentColor"
-                className="w-5 h-5"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-              </svg>
-            </button>
-          )}
-
-          {/* Right Arrow Button (Desktop Only) */}
-          {canScrollRight && (
-            <button
-              onClick={() => scroll("right")}
-              type="button"
-              className="absolute right-2 top-1/2 -translate-y-1/2 hidden md:flex w-12 h-12 rounded-full bg-slate-900/80 border border-white/10 text-white items-center justify-center shadow-lg hover:bg-slate-800 focus:outline focus:outline-2 focus:outline-primary select-none cursor-pointer z-25 transition-all duration-200"
-              aria-label="Επόμενοι αθλητές"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2.5"
-                stroke="currentColor"
-                className="w-5 h-5"
-                aria-hidden="true"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
-            </button>
-          )}
+          <AthleteMarqueeRow athletes={activeAthletes} />
         </AnimatedContainer>
 
       </div>

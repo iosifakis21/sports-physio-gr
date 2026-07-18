@@ -14,16 +14,19 @@ export interface Athlete {
 
 interface AthleteCardProps {
   athlete: Athlete;
+  /** Marquee duplicate: hidden from AT and skipped in the tab order. */
+  decorative?: boolean;
 }
 
-export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete }) => {
+export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete, decorative = false }) => {
   return (
     <div
-      tabIndex={0}
-      className="flex-shrink-0 w-[280px] sm:w-[320px] bg-slate-900 border border-white/10 rounded-card overflow-hidden flex flex-col focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary select-none group cursor-pointer transition-all duration-200 hover:border-primary/40 snap-start"
-      aria-label={`Αθλητής: ${athlete.name}. ${athlete.sport}, ${athlete.accomplishment}`}
+      tabIndex={decorative ? -1 : 0}
+      aria-hidden={decorative || undefined}
+      className="flex-shrink-0 w-[280px] sm:w-[320px] bg-slate-900 border border-white/10 rounded-card overflow-hidden flex flex-col focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary select-none group cursor-pointer transition-all duration-200 hover:border-primary/40"
+      aria-label={decorative ? undefined : `Αθλητής: ${athlete.name}. ${athlete.sport}, ${athlete.accomplishment}`}
     >
-      {/* Photo Container with Blue Duotone Overlay */}
+      {/* Photo Container */}
       <div className="relative h-[220px] sm:h-[260px] w-full bg-slate-800 flex items-center justify-center overflow-hidden">
 
         {/* Fallback placeholder (shown only when no photo is set) */}
@@ -55,9 +58,7 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete }) => {
           />
         )}
 
-        {/* CSS Blue Duotone Overlay: Black/White + Blue blend layers */}
-        <div className="absolute inset-0 bg-blue-700/35 mix-blend-color group-hover:bg-blue-600/40 transition-colors duration-200" aria-hidden="true" />
-        <div className="absolute inset-0 bg-indigo-950/40 mix-blend-multiply" aria-hidden="true" />
+        {/* Bottom fade for text/badge legibility only — no color tint on the photo. */}
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent z-10" aria-hidden="true" />
 
         {/* Priority Badge */}
