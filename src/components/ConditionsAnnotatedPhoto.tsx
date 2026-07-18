@@ -20,28 +20,50 @@ interface ConditionDot {
 }
 
 type DotGeometry = {
-  /** Position as a percentage of the image container. */
-  x: number;
-  y: number;
-  /** Which way the connector line extends. */
+  /** Small anchor point sitting directly ON the body part (% of container). */
+  ax: number;
+  ay: number;
+  /** Large "+" button placed in the open space around the athlete (% of container). */
+  bx: number;
+  by: number;
+  /** Which way the desktop card opens relative to the stage. */
   side: "left" | "right";
   /** Desktop card's vertical anchor, as a percentage of the stage height. */
   cardTop: number;
 };
 
-// Photo-relative placement for each dot, tuned to the running-athlete photo.
-// Kept in the component (not the JSON) so condition-dots.json stays the exact
-// { id, label, photo, conditionGroupId } shape the data contract specifies.
-// All desktop cards open to the LEFT of the stage: in the section layout the
-// photo sits at the right edge of the page, so a right-opening card would
-// overflow the viewport.
+// Photo-relative placement for each marker pair, tuned to the running-athlete
+// photo. Kept in the component (not the JSON) so condition-dots.json stays the
+// exact { id, label, photo, conditionGroupId } shape the data contract
+// specifies. All desktop cards open to the LEFT of the stage: in the section
+// layout the photo sits at the right edge of the page, so a right-opening card
+// would overflow the viewport.
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { x: 42, y: 30, side: "left", cardTop: 20 },
-  shoulder: { x: 33, y: 32, side: "left", cardTop: 36 },
-  elbow: { x: 85, y: 39, side: "left", cardTop: 44 },
-  hip: { x: 49, y: 50, side: "left", cardTop: 54 },
-  knee: { x: 34, y: 56, side: "left", cardTop: 62 },
-  "foot-ankle": { x: 38, y: 72, side: "left", cardTop: 76 },
+  "head-neck": { ax: 40, ay: 26, bx: 68, by: 14, side: "left", cardTop: 16 },
+  shoulder: { ax: 32, ay: 32, bx: 12, by: 38, side: "left", cardTop: 36 },
+  elbow: { ax: 82, ay: 37.5, bx: 95, by: 30, side: "left", cardTop: 30 },
+  hip: { ax: 49, ay: 50, bx: 12, by: 52, side: "left", cardTop: 52 },
+  knee: { ax: 34, ay: 56, bx: 12, by: 63, side: "left", cardTop: 63 },
+  "foot-ankle": { ax: 38, ay: 72, bx: 12, by: 83, side: "left", cardTop: 80 },
+};
+
+// Intrinsic size of athletenobg.webp — the connector SVG uses it as its
+// viewBox so percentage coordinates map exactly onto the photo.
+const PHOTO_W = 1068;
+const PHOTO_H = 1472;
+
+// Dogleg connector: a short ~45° diagonal leaving the anchor, bending into a
+// horizontal run that ends at the "+" button. The bend sits on the button's
+// row, offset from the anchor by the diagonal's (aspect-corrected) x-travel.
+const doglegPath = (g: DotGeometry) => {
+  const ax = (g.ax / 100) * PHOTO_W;
+  const ay = (g.ay / 100) * PHOTO_H;
+  const bx = (g.bx / 100) * PHOTO_W;
+  const by = (g.by / 100) * PHOTO_H;
+  const dir = bx >= ax ? 1 : -1;
+  // 45° in image space: horizontal travel equals vertical travel.
+  const bendX = ax + dir * Math.abs(by - ay);
+  return `M ${ax} ${ay} L ${bendX} ${by} L ${bx} ${by}`;
 };
 
 const dots = dotsData as ConditionDot[];
@@ -135,7 +157,50 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           className="relative w-full h-auto select-none pointer-events-none"
         />
 
-        {/* Interactive dot markers */}
+        {/* Dogleg connector lines: anchor → 45° diagonal → horizontal → button.
+            One SVG over the photo; its viewBox matches the photo's intrinsic
+            size so percentage coordinates land exactly. Soft looping opacity
+            pulse keeps the technical lines feeling alive. */}
+        <svg
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full pointer-events-none"
+          viewBox={`0 0 ${PHOTO_W} ${PHOTO_H}`}
+          preserveAspectRatio="none"
+        >
+          {dots.map((dot) => {
+            const g = GEOMETRY[dot.id];
+            if (!g) return null;
+            return (
+              <motion.path
+                key={dot.id}
+                d={doglegPath(g)}
+                fill="none"
+                className="stroke-primary"
+                strokeWidth="1.5"
+                vectorEffect="non-scaling-stroke"
+                initial={{ opacity: 0.35 }}
+                animate={{ opacity: [0.35, 0.75, 0.35] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+            );
+          })}
+        </svg>
+
+        {/* Small anchor points sitting directly on the body part */}
+        {dots.map((dot) => {
+          const g = GEOMETRY[dot.id];
+          if (!g) return null;
+          return (
+            <span
+              key={dot.id}
+              aria-hidden="true"
+              className="absolute w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary ring-2 ring-white/80 pointer-events-none"
+              style={{ left: `${g.ax}%`, top: `${g.ay}%` }}
+            />
+          );
+        })}
+
+        {/* Interactive "+" buttons in the open space around the athlete */}
         {dots.map((dot) => {
           const g = GEOMETRY[dot.id];
           if (!g) return null;
@@ -144,20 +209,8 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
             <div
               key={dot.id}
               className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${g.x}%`, top: `${g.y}%` }}
+              style={{ left: `${g.bx}%`, top: `${g.by}%` }}
             >
-              {/* Connector line toward the card (desktop only). Soft looping
-                  opacity/glow pulse so the marker feels alive, offset from the
-                  dot's own ping. */}
-              <motion.span
-                aria-hidden="true"
-                className={`hidden lg:block absolute top-1/2 h-px w-14 bg-primary ${
-                  g.side === "right" ? "left-full origin-left" : "right-full origin-right"
-                }`}
-                initial={{ opacity: 0.35, scaleX: 0.85 }}
-                animate={{ opacity: [0.35, 0.8, 0.35], scaleX: [0.85, 1, 0.85] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              />
               <button
                 ref={(el) => {
                   dotRefs.current[dot.id] = el;
