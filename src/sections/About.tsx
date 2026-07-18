@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
+import { Tilt } from "@/components/Tilt";
 
 export const About: React.FC = () => {
   const credentials = [
@@ -30,8 +31,13 @@ export const About: React.FC = () => {
             initial={{ opacity: 0, translateX: -24 }}
             whileInView={{ opacity: 1, translateX: 0 }}
           >
-            <div className="w-full max-w-[340px] aspect-[4/5] bg-slate-100 rounded-card border border-ink-900/5 relative shadow-sm overflow-hidden select-none">
-
+            <Tilt
+              rotationFactor={9}
+              scaleFactor={1.02}
+              shadow
+              springOptions={{ stiffness: 150, damping: 20 }}
+              className="w-full max-w-[340px] aspect-[4/5] bg-slate-100 rounded-card border border-ink-900/5 relative overflow-hidden select-none"
+            >
               {/* Portrait photo */}
               <Image
                 src="/images/portrait1.webp"
@@ -41,11 +47,12 @@ export const About: React.FC = () => {
                 className="object-cover object-top"
               />
 
-              {/* Decorative design accent */}
+              {/* Decorative design accent — inside the Tilt so it stays
+                  anchored to the photo through the rotation. */}
               <div className="absolute bottom-4 right-4 bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-btn shadow z-10">
                 10+ Χρόνια Εμπειρίας
               </div>
-            </div>
+            </Tilt>
           </AnimatedContainer>
 
           {/* Right Column - Credentials and Bio text (8/12 width) */}
