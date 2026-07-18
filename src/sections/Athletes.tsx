@@ -11,30 +11,55 @@ import athletesData from "@/content/athletes.json";
 // two copies of the athlete list, translating by -50% moves exactly one full
 // copy before repeating, so the loop is seamless. Slower than the logo strip
 // because the cards are larger.
+// Loop durations per breakpoint: ambient on desktop/tablet, noticeably
+// faster on phones where far fewer cards are visible at once.
+const DURATION_DESKTOP = 275;
+const DURATION_MOBILE = 50;
+const MOBILE_QUERY = "(max-width: 768px)";
+
 const AthleteMarqueeRow: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
   const [scope, animate] = useAnimate();
   const [isPaused, setIsPaused] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const animationRef = useRef<ReturnType<typeof animate> | null>(null);
+  // Loop progress (0..1) carried across re-creations so a viewport change
+  // (e.g. device rotation) re-times the animation without a visual jump.
+  const progressRef = useRef(0);
+
+  useEffect(() => {
+    const mql = window.matchMedia(MOBILE_QUERY);
+    setIsMobile(mql.matches);
+    const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     if (!scope.current) return;
+    const duration = isMobile ? DURATION_MOBILE : DURATION_DESKTOP;
 
-    animationRef.current = animate(
+    const animation = animate(
       scope.current,
       { x: ["0%", "-50%"] },
       {
-        duration: 275,
+        duration,
         ease: "linear",
         repeat: Infinity,
       }
     );
+    // Resume from the same point in the loop the previous animation reached.
+    animation.time = progressRef.current * duration;
+    if (isPaused) animation.pause();
+    animationRef.current = animation;
 
     return () => {
-      if (animationRef.current) {
-        animationRef.current.stop();
-      }
+      progressRef.current = (animation.time % duration) / duration;
+      animation.stop();
     };
-  }, [animate, scope]);
+    // isPaused is intentionally omitted: pausing is handled by the effect
+    // below without re-creating the animation.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animate, scope, isMobile]);
 
   useEffect(() => {
     if (animationRef.current) {
