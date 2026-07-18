@@ -23,7 +23,7 @@ const AthleteMarqueeRow: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
       scope.current,
       { x: ["0%", "-50%"] },
       {
-        duration: 85,
+        duration: 275,
         ease: "linear",
         repeat: Infinity,
       }
