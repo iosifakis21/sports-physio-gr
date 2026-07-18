@@ -39,12 +39,14 @@ type DotGeometry = {
 // layout the photo sits at the right edge of the page, so a right-opening card
 // would overflow the viewport.
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { ax: 40, ay: 26, bx: 68, by: 14, side: "left", cardTop: 16 },
-  shoulder: { ax: 32, ay: 32, bx: 12, by: 38, side: "left", cardTop: 36 },
-  elbow: { ax: 82, ay: 37.5, bx: 95, by: 30, side: "left", cardTop: 30 },
-  hip: { ax: 49, ay: 50, bx: 12, by: 52, side: "left", cardTop: 52 },
-  knee: { ax: 34, ay: 56, bx: 12, by: 63, side: "left", cardTop: 63 },
-  "foot-ankle": { ax: 38, ay: 72, bx: 12, by: 83, side: "left", cardTop: 80 },
+  "head-neck": { ax: 38, ay: 26, bx: 68, by: 13, side: "left", cardTop: 15 },
+  shoulder: { ax: 31, ay: 30, bx: 10, by: 40, side: "left", cardTop: 38 },
+  elbow: { ax: 23, ay: 27, bx: 8, by: 16, side: "left", cardTop: 18 },
+  "hand-wrist": { ax: 88, ay: 41, bx: 96, by: 29, side: "left", cardTop: 30 },
+  hip: { ax: 48, ay: 50, bx: 10, by: 54, side: "left", cardTop: 52 },
+  knee: { ax: 34, ay: 55, bx: 10, by: 67, side: "left", cardTop: 65 },
+  leg: { ax: 81, ay: 86, bx: 96, by: 78, side: "left", cardTop: 74 },
+  "foot-ankle": { ax: 38, ay: 72, bx: 10, by: 88, side: "left", cardTop: 82 },
 };
 
 // Intrinsic size of athletenobg.webp — the connector SVG uses it as its
