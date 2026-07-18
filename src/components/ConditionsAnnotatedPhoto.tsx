@@ -36,12 +36,12 @@ type DotGeometry = {
 // photo sits at the right edge of the page, so a right-opening card would
 // overflow the viewport.
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { x: 42, y: 26, side: "left", cardTop: 20 },
-  shoulder: { x: 29, y: 31, side: "left", cardTop: 36 },
-  elbow: { x: 77, y: 37, side: "left", cardTop: 44 },
+  "head-neck": { x: 42, y: 30, side: "left", cardTop: 20 },
+  shoulder: { x: 33, y: 32, side: "left", cardTop: 36 },
+  elbow: { x: 85, y: 39, side: "left", cardTop: 44 },
   hip: { x: 49, y: 50, side: "left", cardTop: 54 },
-  knee: { x: 31, y: 56, side: "left", cardTop: 62 },
-  "foot-ankle": { x: 36, y: 73, side: "left", cardTop: 76 },
+  knee: { x: 34, y: 56, side: "left", cardTop: 62 },
+  "foot-ankle": { x: 38, y: 72, side: "left", cardTop: 76 },
 };
 
 const dots = dotsData as ConditionDot[];
@@ -146,12 +146,17 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
               className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${g.x}%`, top: `${g.y}%` }}
             >
-              {/* Connector line toward the card (desktop only). */}
-              <span
+              {/* Connector line toward the card (desktop only). Soft looping
+                  opacity/glow pulse so the marker feels alive, offset from the
+                  dot's own ping. */}
+              <motion.span
                 aria-hidden="true"
-                className={`hidden lg:block absolute top-1/2 h-px w-14 bg-primary/50 ${
-                  g.side === "right" ? "left-full" : "right-full"
+                className={`hidden lg:block absolute top-1/2 h-px w-14 bg-primary ${
+                  g.side === "right" ? "left-full origin-left" : "right-full origin-right"
                 }`}
+                initial={{ opacity: 0.35, scaleX: 0.85 }}
+                animate={{ opacity: [0.35, 0.8, 0.35], scaleX: [0.85, 1, 0.85] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
               />
               <button
                 ref={(el) => {
