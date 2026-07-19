@@ -21,7 +21,7 @@ const ArrowIcon: React.FC = () => (
     viewBox="0 0 24 24"
     strokeWidth="2"
     stroke="currentColor"
-    className="w-3.5 h-3.5 md:w-4 md:h-4"
+    className="w-3.5 h-3.5 md:w-4 md:h-4 lg:w-3.5 lg:h-3.5"
     aria-hidden="true"
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H8M17 7v9" />
@@ -33,7 +33,7 @@ const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({ servic
   const number = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="group relative aspect-[3/4] w-full overflow-hidden rounded-card bg-ink-900 select-none">
+    <div className="group relative aspect-[3/4] lg:aspect-[4/3.85] w-full overflow-hidden rounded-card bg-ink-900 select-none">
       {/* Full-bleed photo, with a solid ink-900 fallback if the file is missing */}
       {!imgError && (
         <Image
@@ -48,14 +48,14 @@ const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({ servic
 
       {/* Bottom gradient so title/description stay legible over the photo */}
       <div
-        className="absolute inset-x-0 bottom-0 h-2/3 md:h-1/2 bg-gradient-to-t from-ink-900 via-ink-900/60 to-transparent pointer-events-none"
+        className="absolute inset-x-0 bottom-0 h-2/3 md:h-1/2 lg:h-3/5 bg-gradient-to-t from-ink-900 via-ink-900/60 to-transparent pointer-events-none"
         aria-hidden="true"
       />
 
       {/* Large faint index number, top-left */}
       <span
         aria-hidden="true"
-        className="absolute top-3 left-3 md:top-5 md:left-5 font-display font-light text-3xl md:text-5xl text-white/30 leading-none"
+        className="absolute top-3 left-3 md:top-5 md:left-5 lg:top-4 lg:left-4 font-display font-light text-3xl md:text-5xl lg:text-4xl text-white/30 leading-none"
       >
         {number}
       </span>
@@ -63,17 +63,17 @@ const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({ servic
       {/* Decorative arrow button, top-right */}
       <span
         aria-hidden="true"
-        className="absolute top-3 right-3 md:top-5 md:right-5 flex items-center justify-center w-7 h-7 md:w-9 md:h-9 rounded-full bg-white/15 backdrop-blur-sm text-white transition-colors duration-200 md:group-hover:bg-white/25"
+        className="absolute top-3 right-3 md:top-5 md:right-5 lg:top-4 lg:right-4 flex items-center justify-center w-7 h-7 md:w-9 md:h-9 lg:w-7 lg:h-7 rounded-full bg-white/15 backdrop-blur-sm text-white transition-colors duration-200 md:group-hover:bg-white/25"
       >
         <ArrowIcon />
       </span>
 
       {/* Title + description, overlaid bottom */}
-      <div className="absolute inset-x-0 bottom-0 p-3 md:p-6 flex flex-col gap-1 md:gap-2">
-        <h3 className="font-display font-bold uppercase text-white text-sm leading-tight tracking-tight md:text-xl">
+      <div className="absolute inset-x-0 bottom-0 p-3 md:p-6 lg:p-4 flex flex-col gap-1 md:gap-2 lg:gap-1">
+        <h3 className="font-display font-bold uppercase text-white text-sm leading-tight tracking-tight md:text-xl lg:text-base">
           {service.title}
         </h3>
-        <p className="font-sans font-light text-white/80 text-[11px] leading-snug line-clamp-2 md:text-sm md:leading-relaxed md:line-clamp-3">
+        <p className="font-sans font-light text-white/80 text-[11px] leading-snug line-clamp-2 md:text-sm md:leading-relaxed md:line-clamp-3 lg:text-xs lg:leading-snug lg:line-clamp-2">
           {service.description}
         </p>
       </div>
