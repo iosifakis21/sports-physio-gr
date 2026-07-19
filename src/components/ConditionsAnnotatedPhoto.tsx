@@ -38,15 +38,22 @@ type DotGeometry = {
 // specifies. All desktop cards open to the LEFT of the stage: in the section
 // layout the photo sits at the right edge of the page, so a right-opening card
 // would overflow the viewport.
+// Positions follow an explicit full-perimeter spread (approved reference):
+// raised hand → top-left, head/neck → short hop up-right, shoulder → down-left,
+// trailing upper-arm → far right (horizontal), trailing hand → top-right,
+// hip → far left mid-height, knee → down-right, trailing foot/ankle →
+// bottom-right. "leg" (calf/shin content) takes the one remaining slot
+// (raised hand) since all 8 existing dots must keep their current
+// condition-group/photo mapping while only moving position.
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { ax: 38, ay: 26, bx: 68, by: 13, side: "left", cardTop: 15 },
-  shoulder: { ax: 31, ay: 30, bx: 10, by: 40, side: "left", cardTop: 38 },
-  elbow: { ax: 23, ay: 27, bx: 8, by: 16, side: "left", cardTop: 18 },
-  "hand-wrist": { ax: 88, ay: 41, bx: 96, by: 29, side: "left", cardTop: 30 },
-  hip: { ax: 48, ay: 50, bx: 10, by: 54, side: "left", cardTop: 52 },
-  knee: { ax: 34, ay: 55, bx: 10, by: 67, side: "left", cardTop: 65 },
-  leg: { ax: 81, ay: 86, bx: 96, by: 78, side: "left", cardTop: 74 },
-  "foot-ankle": { ax: 38, ay: 72, bx: 10, by: 88, side: "left", cardTop: 82 },
+  leg: { ax: 14, ay: 6, bx: 5, by: 4, side: "left", cardTop: 6 },
+  "head-neck": { ax: 38, ay: 26, bx: 50, by: 17, side: "left", cardTop: 17 },
+  shoulder: { ax: 31, ay: 30, bx: 14, by: 44, side: "left", cardTop: 44 },
+  elbow: { ax: 76, ay: 33, bx: 95, by: 33, side: "left", cardTop: 33 },
+  "hand-wrist": { ax: 89, ay: 44, bx: 95, by: 8, side: "left", cardTop: 10 },
+  hip: { ax: 48, ay: 50, bx: 5, by: 50, side: "left", cardTop: 50 },
+  knee: { ax: 34, ay: 55, bx: 60, by: 80, side: "left", cardTop: 78 },
+  "foot-ankle": { ax: 85, ay: 85, bx: 95, by: 90, side: "left", cardTop: 88 },
 };
 
 // Intrinsic size of athletenobg.webp — the connector SVG uses it as its
@@ -54,18 +61,22 @@ const GEOMETRY: Record<string, DotGeometry> = {
 const PHOTO_W = 1068;
 const PHOTO_H = 1472;
 
-// Dogleg connector: a short ~45° diagonal leaving the anchor, bending into a
-// horizontal run that ends at the "+" button. The bend sits on the button's
-// row, offset from the anchor by the diagonal's (aspect-corrected) x-travel.
+// Dogleg connector: a 45° diagonal leaving the anchor, bending into a
+// straight run that ends at the "+" button. The diagonal covers whichever of
+// the x/y distances is smaller, so the trailing segment is horizontal when
+// the button sits mostly beside the anchor, or vertical when it sits mostly
+// above/below it — either way the bend never overshoots the button.
 const doglegPath = (g: DotGeometry) => {
   const ax = (g.ax / 100) * PHOTO_W;
   const ay = (g.ay / 100) * PHOTO_H;
   const bx = (g.bx / 100) * PHOTO_W;
   const by = (g.by / 100) * PHOTO_H;
-  const dir = bx >= ax ? 1 : -1;
-  // 45° in image space: horizontal travel equals vertical travel.
-  const bendX = ax + dir * Math.abs(by - ay);
-  return `M ${ax} ${ay} L ${bendX} ${by} L ${bx} ${by}`;
+  const dirX = bx >= ax ? 1 : -1;
+  const dirY = by >= ay ? 1 : -1;
+  const diagLen = Math.min(Math.abs(bx - ax), Math.abs(by - ay));
+  const bendX = ax + dirX * diagLen;
+  const bendY = ay + dirY * diagLen;
+  return `M ${ax} ${ay} L ${bendX} ${bendY} L ${bx} ${by}`;
 };
 
 const dots = dotsData as ConditionDot[];
