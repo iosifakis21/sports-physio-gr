@@ -26,34 +26,34 @@ type DotGeometry = {
   /** Large "+" button placed in the open space around the athlete (% of container). */
   bx: number;
   by: number;
-  /** Which way the desktop card opens relative to the stage. */
-  side: "left" | "right";
-  /** Desktop card's vertical anchor, as a percentage of the stage height. */
-  cardTop: number;
+  /**
+   * Desktop card placement, as CSS length strings applied inside the stage.
+   * Exactly one of left/right and one of top/bottom per dot, hand-tuned so the
+   * card sits beside its "+" button without covering it and never escapes the
+   * section vertically.
+   */
+  card: { left?: string; right?: string; top?: string; bottom?: string };
 };
 
-// Photo-relative placement for each marker pair, tuned to the running-athlete
-// photo. Kept in the component (not the JSON) so condition-dots.json stays the
-// exact { id, label, photo, conditionGroupId } shape the data contract
-// specifies. All desktop cards open to the LEFT of the stage: in the section
-// layout the photo sits at the right edge of the page, so a right-opening card
-// would overflow the viewport.
-// Positions follow an explicit full-perimeter spread (approved reference):
-// raised hand → top-left, head/neck → short hop up-right, shoulder → down-left,
-// trailing upper-arm → far right (horizontal), trailing hand → top-right,
-// hip → far left mid-height, knee → down-right, trailing foot/ankle →
-// bottom-right. "leg" (calf/shin content) takes the one remaining slot
-// (raised hand) since all 8 existing dots must keep their current
-// condition-group/photo mapping while only moving position.
+// Photo-relative placement for each anchor→dot pair, tuned to the
+// running-athlete photo (athletenobg.webp). Kept in the component (not the
+// JSON) so condition-dots.json stays the exact { id, label, photo,
+// conditionGroupId } shape the data contract specifies.
+// Nine independent pairs matching the reference layout: temple, raised-arm
+// shoulder, raised-arm elbow/bicep, ribcage below the armpit, mid-forearm of
+// the trailing arm, trailing wrist, hip/waistband, front knee, trailing ankle.
+// Every line runs from its body anchor into open space — endpoints are placed
+// so no line crosses the figure and no two big dots touch.
 const GEOMETRY: Record<string, DotGeometry> = {
-  leg: { ax: 14, ay: 6, bx: 5, by: 4, side: "left", cardTop: 6 },
-  "head-neck": { ax: 38, ay: 26, bx: 50, by: 17, side: "left", cardTop: 17 },
-  shoulder: { ax: 31, ay: 30, bx: 14, by: 44, side: "left", cardTop: 44 },
-  elbow: { ax: 76, ay: 33, bx: 95, by: 33, side: "left", cardTop: 33 },
-  "hand-wrist": { ax: 89, ay: 44, bx: 95, by: 8, side: "left", cardTop: 10 },
-  hip: { ax: 48, ay: 50, bx: 5, by: 50, side: "left", cardTop: 50 },
-  knee: { ax: 34, ay: 55, bx: 60, by: 80, side: "left", cardTop: 78 },
-  "foot-ankle": { ax: 85, ay: 85, bx: 95, by: 90, side: "left", cardTop: 88 },
+  "head-neck": { ax: 33, ay: 15, bx: 43, by: 6, card: { right: "calc(57% + 26px)", top: "0%" } },
+  shoulder: { ax: 28, ay: 30, bx: 11, by: 36, card: { left: "calc(11% + 26px)", top: "5%" } },
+  elbow: { ax: 13, ay: 22, bx: 5, by: 44, card: { left: "calc(5% + 26px)", top: "10%" } },
+  "ribs-back": { ax: 29, ay: 38, bx: 21, by: 38, card: { left: "calc(21% + 26px)", top: "7%" } },
+  forearm: { ax: 80, ay: 37, bx: 90, by: 26, card: { right: "calc(10% + 26px)", top: "3%" } },
+  "hand-wrist": { ax: 86, ay: 38, bx: 96, by: 43, card: { right: "calc(4% + 26px)", top: "12%" } },
+  hip: { ax: 62, ay: 50, bx: 72, by: 50, card: { right: "calc(28% + 26px)", top: "15%" } },
+  knee: { ax: 33, ay: 58, bx: 47, by: 67, card: { right: "calc(53% + 26px)", bottom: "2%" } },
+  "foot-ankle": { ax: 81, ay: 83, bx: 79, by: 93, card: { right: "calc(21% + 26px)", bottom: "0%" } },
 };
 
 // Intrinsic size of athletenobg.webp — the connector SVG uses it as its
@@ -61,22 +61,14 @@ const GEOMETRY: Record<string, DotGeometry> = {
 const PHOTO_W = 1068;
 const PHOTO_H = 1472;
 
-// Dogleg connector: a 45° diagonal leaving the anchor, bending into a
-// straight run that ends at the "+" button. The diagonal covers whichever of
-// the x/y distances is smaller, so the trailing segment is horizontal when
-// the button sits mostly beside the anchor, or vertical when it sits mostly
-// above/below it — either way the bend never overshoots the button.
-const doglegPath = (g: DotGeometry) => {
+// Straight connector from the body anchor to the "+" button, matching the
+// reference layout's simple angled callout lines.
+const connectorPath = (g: DotGeometry) => {
   const ax = (g.ax / 100) * PHOTO_W;
   const ay = (g.ay / 100) * PHOTO_H;
   const bx = (g.bx / 100) * PHOTO_W;
   const by = (g.by / 100) * PHOTO_H;
-  const dirX = bx >= ax ? 1 : -1;
-  const dirY = by >= ay ? 1 : -1;
-  const diagLen = Math.min(Math.abs(bx - ax), Math.abs(by - ay));
-  const bendX = ax + dirX * diagLen;
-  const bendY = ay + dirY * diagLen;
-  return `M ${ax} ${ay} L ${bendX} ${bendY} L ${bx} ${by}`;
+  return `M ${ax} ${ay} L ${bx} ${by}`;
 };
 
 const dots = dotsData as ConditionDot[];
@@ -186,7 +178,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
             return (
               <motion.path
                 key={dot.id}
-                d={doglegPath(g)}
+                d={connectorPath(g)}
                 fill="none"
                 className="stroke-primary"
                 strokeWidth="1.5"
@@ -263,20 +255,34 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
         {/* Card + backdrop */}
         {openDot && openGroup && openGeom && (
           <>
+            {/* Backdrop dims the page but stays BELOW the fixed Header (z-50),
+                so the nav remains visible and usable while a card is open.
+                Scrolling is never locked. */}
             <div
-              className="fixed inset-0 z-[55] bg-ink-900/50 backdrop-blur-[1px]"
+              className="fixed inset-0 z-30 bg-ink-900/45"
               onClick={close}
               aria-hidden="true"
             />
+            {/* Card: centered modal on mobile; on desktop an absolutely
+                positioned floating panel inside the photo stage, placed next
+                to the dot that opened it. z-40 keeps it above the backdrop,
+                photo and dots but below the Header. Long content scrolls
+                inside the card. */}
             <div
               ref={cardRef}
               role="dialog"
               aria-modal="true"
               aria-labelledby={headingId}
-              style={{ "--card-top": `${openGeom.cardTop}%` } as React.CSSProperties}
-              className={`fixed inset-x-0 bottom-0 z-[60] mx-auto w-full max-h-[85vh] overflow-y-auto rounded-t-card bg-ink-900 text-white p-5 shadow-2xl
-                lg:absolute lg:inset-x-auto lg:bottom-auto lg:mx-0 lg:w-[300px] lg:max-h-[78vh] lg:rounded-card lg:top-[var(--card-top)] lg:-translate-y-1/2 xl:w-[340px]
-                ${openGeom.side === "right" ? "lg:left-full lg:ml-4 xl:ml-6" : "lg:right-full lg:mr-4 xl:mr-6"}`}
+              style={
+                {
+                  "--card-left": openGeom.card.left ?? "auto",
+                  "--card-right": openGeom.card.right ?? "auto",
+                  "--card-top": openGeom.card.top ?? "auto",
+                  "--card-bottom": openGeom.card.bottom ?? "auto",
+                } as React.CSSProperties
+              }
+              className="fixed z-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(92vw,380px)] max-h-[76vh] overflow-y-auto rounded-card bg-ink-900 text-white p-5 shadow-2xl
+                lg:absolute lg:translate-x-0 lg:translate-y-0 lg:left-[var(--card-left)] lg:right-[var(--card-right)] lg:top-[var(--card-top)] lg:bottom-[var(--card-bottom)] lg:w-[300px] xl:w-[340px] lg:max-h-[min(540px,80vh)]"
             >
               <div className="flex items-start justify-between gap-4 mb-4">
                 <h3
