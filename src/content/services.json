@@ -4,41 +4,41 @@
     "title": "Manual Therapy",
     "description": "Κινητοποίηση αρθρώσεων για άμεση ανακούφιση από τον πόνο και αποκατάσταση της κίνησης.",
     "iconName": "activity",
-    "photo": "/images/services/manual-therapy.jpg"
+    "photo": "/images/manualtherapy1.webp"
   },
   {
     "id": "sports-rehab",
     "title": "Αθλητική Αποκατάσταση",
     "description": "Εξειδικευμένο ασκησιολόγιο για ασφαλή και γρήγορη επιστροφή στις αθλητικές σας δραστηριότητες.",
     "iconName": "trophy",
-    "photo": "/images/services/sports-rehab.jpg"
+    "photo": "/images/athlitikiapokatastasi1.webp"
   },
   {
     "id": "post-op-rehab",
     "title": "Μετεγχειρητική Αποκατάσταση",
     "description": "Καθοδηγούμενη αποκατάσταση για την ανάκτηση της λειτουργικότητας μετά από χειρουργικές επεμβάσεις.",
     "iconName": "shield-check",
-    "photo": "/images/services/post-op-rehab.jpg"
+    "photo": "/images/metegxeiritiki.webp"
   },
   {
     "id": "dry-needling",
     "title": "Dry Needling",
     "description": "Ξηρά βελόνα για στοχευμένη απελευθέρωση μυϊκών σπασμών και σημείων πυροδότησης πόνου.",
     "iconName": "sparkles",
-    "photo": "/images/services/dry-needling.jpg"
+    "photo": "/images/dry-needling.webp"
   },
   {
     "id": "therapeutic-massage",
     "title": "Θεραπευτική Μάλαξη",
     "description": "Μυϊκή χαλάρωση και βελτίωση της κυκλοφορίας για ταχύτερη αποθεραπεία και μείωση της μυϊκής έντασης.",
     "iconName": "heart",
-    "photo": "/images/services/therapeutic-massage.jpg"
+    "photo": "/images/therapeftikimalaksi.webp"
   },
   {
     "id": "kinesiotaping",
     "title": "Kinesiotaping",
     "description": "ΥΥποστήριξη μυών και αρθρώσεων με ειδικές ελαστικές ταινίες — σταθερότητα χωρίς περιορισμό της κίνησης.",
     "iconName": "bookmark",
-    "photo": "/images/services/kinesiotaping.jpg"
+    "photo": "/images/kinesiotaping.webp"
   }
 ]
