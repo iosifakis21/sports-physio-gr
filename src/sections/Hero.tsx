@@ -8,7 +8,7 @@ import { TypewriterCycle } from "@/components/TypewriterCycle";
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative bg-slate-950 text-white overflow-hidden min-h-[500px] lg:min-h-[600px] flex items-center py-10 md:py-20 z-10">
+    <section className="relative bg-slate-950 text-white overflow-hidden min-h-[500px] lg:min-h-screen flex items-center py-10 md:py-20 z-10">
       {/* Background Photo & Overlay */}
       <Image
         src="/images/hero.webp"
