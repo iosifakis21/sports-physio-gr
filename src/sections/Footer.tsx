@@ -55,27 +55,7 @@ export const Footer: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {/* Column 1: Clinic Identity & Description */}
         <AnimatedContainer delay={0.1} className="flex flex-col gap-4">
-          <Image src="/images/logo-white.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={180} height={121} className="h-10 md:h-12 w-auto mb-3" />
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              className="w-8 h-8 text-primary"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
-            <span className="font-display font-extrabold text-lg md:text-xl tracking-tight text-white">
-              Sports-Physio<span className="text-primary">.gr</span>
-            </span>
-          </div>
+          <Image src="/images/logowhite.webp" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} className="h-12 md:h-14 w-auto mb-3" />
           <p className="font-sans text-sm text-slate-400 leading-relaxed">
             Επιστημονικά τεκμηριωμένη φυσικοθεραπεία για πόνους, τραυματισμούς και αθλητική αποκατάσταση. Δίπλα σας σε κάθε βήμα της αποθεραπείας σας.
           </p>
