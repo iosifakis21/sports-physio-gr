@@ -4,14 +4,14 @@
     "title": "Manual Therapy",
     "description": "Κινητοποίηση αρθρώσεων για άμεση ανακούφιση από τον πόνο και αποκατάσταση της κίνησης.",
     "iconName": "activity",
-    "photo": "/images/manualtherapy1.webp"
+    "photo": "/images/services/manualthrapy.webp"
   },
   {
     "id": "sports-rehab",
     "title": "Αθλητική Αποκατάσταση",
     "description": "Εξειδικευμένο ασκησιολόγιο για ασφαλή και γρήγορη επιστροφή στις αθλητικές σας δραστηριότητες.",
     "iconName": "trophy",
-    "photo": "/images/athlitikiapokatastasi1.webp"
+    "photo": "/images/services/athlitikiapokatastasi.webp"
   },
   {
     "id": "post-op-rehab",
@@ -32,7 +32,7 @@
     "title": "Θεραπευτική Μάλαξη",
     "description": "Μυϊκή χαλάρωση και βελτίωση της κυκλοφορίας για ταχύτερη αποθεραπεία και μείωση της μυϊκής έντασης.",
     "iconName": "heart",
-    "photo": "/images/therapeftikimalaksi.webp"
+    "photo": "/images/services/therapeftikimalaksi.webp"
   },
   {
     "id": "kinesiotaping",
