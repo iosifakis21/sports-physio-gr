@@ -44,8 +44,8 @@ export const Hero: React.FC = () => {
           {/* 4 Trust Checkmarks (Styled with cascading white text color) */}
           <HeroReveal delay={0.2}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3.5 text-slate-200 my-2 [&_span]:!text-slate-200">
-              <CheckItem text="10+ χρόνια εμπειρίας στην αθλητική φυσικοθεραπεία" />
-              <CheckItem text="Συμβεβλημένος με τον ΕΟΠΥΥ" />
+              <CheckItem text="20+ χρόνια κλινικής εμπειρίας και συνεχή εξειδίκευση" />
+              <CheckItem text="Επίσημος cutman παγκόσμιων πρωταθλητών πυγμαχίας & kickboxing" />
               <CheckItem text="Δεκτές όλες οι ιδιωτικές ασφαλιστικές" />
               <CheckItem text="Κράτηση σε λιγότερο από 1 λεπτό" />
             </div>
