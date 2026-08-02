@@ -76,7 +76,11 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
   // Reduced motion: a single, static, fully visible ending — no hidden
   // duplicate needed since this is the only rendered copy.
   if (reduced) {
-    return <span className={className}>{words[words.length - 1]}.</span>;
+    return (
+      <span className={`block whitespace-nowrap ${className}`}>
+        {words[words.length - 1]}.
+      </span>
+    );
   }
 
   const longestWord = words.reduce((a, b) => (b.length > a.length ? b : a), "");
@@ -93,7 +97,7 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
       {/* Decorative animated cycling word. Hidden from assistive tech so the
           sr-only text above is the only version ever announced. */}
       <span
-        className={`relative inline-block align-baseline whitespace-nowrap ${className}`}
+        className={`relative block whitespace-nowrap ${className}`}
         aria-hidden="true"
       >
         {/* Invisible ghost reserves the width of the longest word (+ period)
