@@ -7,7 +7,8 @@
       "nickname": "Ferocious",
       "sport": "Πυγμαχία (Lightweight)",
       "accomplishment": "Αδιαμφισβήτητος παγκόσμιος πρωταθλητής lightweight — ένωσε τους τίτλους WBA, IBF, WBO & WBC νικώντας τον Teofimo Lopez (2021)",
-      "photo": "/images/kambosos.webp",
+      "photo": "/images/kambososmain.webp",
+      "hoverPhoto": "/images/kambosos.webp",
       "priority": 1,
       "consent": true
     },
