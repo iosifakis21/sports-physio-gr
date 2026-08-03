@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
         <div className="w-full lg:max-w-[50%] flex flex-col gap-5 md:gap-7 text-left">
 
           <HeroReveal delay={0}>
-            <h1 className="text-[clamp(1rem,5.2vw,1.25rem)] sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold font-display leading-snug text-white tracking-tight">
+            <h1 className="text-[clamp(1rem,5.2vw,1.25rem)] sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold font-display leading-snug text-white tracking-tight min-h-[80px] sm:min-h-[80px] md:min-h-[90px] lg:min-h-[90px] flex flex-col justify-start">
               Εξειδικευμένη Φυσικοθεραπεία για{" "}
               <span className="md:whitespace-nowrap">
                 <TypewriterCycle
