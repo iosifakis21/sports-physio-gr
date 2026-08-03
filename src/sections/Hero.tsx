@@ -8,7 +8,7 @@ import { TypewriterCycle } from "@/components/TypewriterCycle";
 
 export const Hero: React.FC = () => {
   return (
-    <section className="relative bg-slate-950 text-white overflow-hidden min-h-[500px] lg:min-h-screen flex items-center py-10 md:py-20 z-10">
+    <section className="relative bg-slate-950 text-white overflow-hidden min-h-[400px] md:min-h-[500px] lg:min-h-screen flex items-center py-6 sm:py-8 md:py-20 z-10">
       {/* Background Photo & Overlay */}
       {/* Mobile / tablet photo, zoomed and cropped so the doctor's upper
           body/face reads clearly, positioned left-of-centre in frame. */}
@@ -52,12 +52,15 @@ export const Hero: React.FC = () => {
             <h1 className="text-[clamp(1rem,5.2vw,1.25rem)] sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold font-display leading-snug text-white tracking-tight">
               Εξειδικευμένη Φυσικοθεραπεία για{" "}
               {/* Sized a notch below the line above it so that even the longest
-                  phrase in the cycle stays on a single (second) line. */}
-              <TypewriterCycle
-                className="text-[clamp(0.8rem,4.35vw,1.05rem)] sm:text-2xl md:text-3xl lg:text-[1.75rem] xl:text-4xl"
-                words={["Εξάληψη Πόνου", "Τραυματισμούς", "Μυοσκελετική Αποκατάσταση", "Αθλητικές Κακώσεις", "Ασφαλή Επιστροφή στη Καθημερινότητα"]}
-                srText="Εξάληψη Πόνου, Τραυματισμούς, Μυοσκελετική Αποκατάσταση, Αθλητικές Κακώσεις και Ασφαλή Επιστροφή στη Καθημερινότητα"
-              />
+                  phrase in the cycle stays on a single (second) line on desktop. */}
+              <span className="md:whitespace-nowrap">
+                <TypewriterCycle
+                  className="text-[clamp(0.8rem,4.35vw,1.05rem)] sm:text-2xl md:text-3xl lg:text-[1.75rem] xl:text-4xl"
+                  words={["Εξάληψη Πόνου", "Τραυματισμούς", "Μυοσκελετική Αποκατάσταση", "Αθλητικές Κακώσεις", "Ασφαλή Επιστροφή στη Καθημερινότητα"]}
+                  srText="Εξάληψη Πόνου, Τραυματισμούς, Μυοσκελετική Αποκατάσταση, Αθλητικές Κακώσεις και Ασφαλή Επιστροφή στη Καθημερινότητα"
+                  allowWrap={true}
+                />
+              </span>
             </h1>
           </HeroReveal>
 
@@ -69,7 +72,7 @@ export const Hero: React.FC = () => {
 
           {/* 4 Trust Checkmarks (Styled with cascading white text color) */}
           <HeroReveal delay={0.2}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3.5 text-slate-200 my-2 [&_span]:!text-slate-200">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 md:gap-3.5 text-slate-200 my-2 [&_span]:!text-slate-200">
               <CheckItem text="20+ χρόνια κλινικής εμπειρίας και συνεχή εξειδίκευση" />
               <CheckItem text="Επίσημος cutman παγκόσμιων πρωταθλητών πυγμαχίας & kickboxing" />
               <CheckItem text="Δεκτές όλες οι ιδιωτικές ασφαλιστικές" />

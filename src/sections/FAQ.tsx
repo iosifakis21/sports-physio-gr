@@ -3,10 +3,63 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import faqData from "@/content/faq.json";
 
+type FAQBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "list"; items: string[] };
+
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: {
+    blocks: FAQBlock[];
+    plainText: string;
+  } | string;
 }
+
+const renderFAQContent = (answer: FAQItem["answer"]) => {
+  if (typeof answer === "string") {
+    return <p className="text-sm md:text-base text-ink-600 leading-relaxed">{answer}</p>;
+  }
+
+  return (
+    <>
+      {answer.blocks.map((block, blockIndex) => {
+        if (block.type === "paragraph") {
+          return (
+            <p key={blockIndex} className="text-sm md:text-base text-ink-600 leading-relaxed mb-3">
+              {block.text}
+            </p>
+          );
+        } else if (block.type === "list") {
+          return (
+            <ul key={blockIndex} className="list-disc list-inside mb-3 text-sm md:text-base text-ink-600 leading-relaxed space-y-1">
+              {block.items.map((item, itemIndex) => {
+                const colonIndex = item.indexOf(": ");
+                if (colonIndex > -1) {
+                  const boldPart = item.substring(0, colonIndex + 1);
+                  const restPart = item.substring(colonIndex + 1);
+                  return (
+                    <li key={itemIndex}>
+                      <strong>{boldPart}</strong>
+                      {restPart}
+                    </li>
+                  );
+                }
+                return <li key={itemIndex}>{item}</li>;
+              })}
+            </ul>
+          );
+        }
+      })}
+    </>
+  );
+};
+
+const getPlainTextAnswer = (answer: FAQItem["answer"]): string => {
+  if (typeof answer === "string") {
+    return answer;
+  }
+  return answer.plainText;
+};
 
 export const FAQ: React.FC = () => {
   const faqs: FAQItem[] = faqData as FAQItem[];
@@ -20,7 +73,7 @@ export const FAQ: React.FC = () => {
       "name": faq.question,
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": faq.answer,
+        "text": getPlainTextAnswer(faq.answer),
       },
     })),
   };
@@ -65,8 +118,8 @@ export const FAQ: React.FC = () => {
                   ▼
                 </span>
               </summary>
-              <div className="p-5 pt-0 font-sans text-sm md:text-base text-ink-600 leading-relaxed border-t border-ink-900/5">
-                {faq.answer}
+              <div className="p-5 pt-0 font-sans border-t border-ink-900/5">
+                {renderFAQContent(faq.answer)}
               </div>
             </details>
           ))}

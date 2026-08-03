@@ -15,6 +15,8 @@ interface TypewriterCycleProps {
    */
   srText: string;
   className?: string;
+  /** Allow text to wrap to multiple lines instead of staying on one line (default: false). */
+  allowWrap?: boolean;
 }
 
 const TYPE_MS = 90;
@@ -36,6 +38,7 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
   words,
   srText,
   className = "",
+  allowWrap = false,
 }) => {
   const reduced = usePrefersReducedMotion();
   const [mounted, setMounted] = useState(false);
@@ -76,8 +79,9 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
   // Reduced motion: a single, static, fully visible ending — no hidden
   // duplicate needed since this is the only rendered copy.
   if (reduced) {
+    const noWrapClass = allowWrap ? "" : "whitespace-nowrap";
     return (
-      <span className={`block whitespace-nowrap ${className}`}>
+      <span className={`block ${noWrapClass} ${className}`}>
         {words[words.length - 1]}.
       </span>
     );
@@ -88,6 +92,8 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
   const isFullyTyped = charCount === currentWord.length;
   const displayText = currentWord.slice(0, charCount) + (isFullyTyped ? "." : "");
 
+  const noWrapClass = allowWrap ? "" : "whitespace-nowrap";
+
   return (
     <>
       {/* The one real, complete sentence fragment — read by screen readers,
@@ -97,7 +103,7 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
       {/* Decorative animated cycling word. Hidden from assistive tech so the
           sr-only text above is the only version ever announced. */}
       <span
-        className={`relative block whitespace-nowrap ${className}`}
+        className={`relative block ${noWrapClass} ${className}`}
         aria-hidden="true"
       >
         {/* Invisible ghost reserves the width of the longest word (+ period)
