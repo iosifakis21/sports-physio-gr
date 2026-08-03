@@ -10,14 +10,15 @@ export const Hero: React.FC = () => {
   return (
     <section className="relative bg-slate-950 text-white overflow-hidden min-h-[500px] lg:min-h-screen flex items-center py-10 md:py-20 z-10">
       {/* Background Photo & Overlay */}
-      {/* Mobile / tablet photo (doctor sits upper-centre in this crop) */}
+      {/* Mobile / tablet photo, zoomed and cropped so the doctor's upper
+          body/face reads clearly, positioned left-of-centre in frame. */}
       <Image
         src="/images/heromobile.webp"
         alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-center z-0 lg:hidden"
+        className="object-cover object-[45%_22%] scale-125 z-0 lg:hidden"
         aria-hidden="true"
       />
       {/* Desktop photo (doctor sits on the right-hand side of this crop) */}
@@ -30,10 +31,10 @@ export const Hero: React.FC = () => {
         className="object-cover z-0 hidden lg:block"
         aria-hidden="true"
       />
-      {/* Mobile overlay: darkest at the bottom, where the copy/CTA sit, easing
-          off towards the top so the doctor stays visible in the upper frame. */}
+      {/* Mobile overlay: uniform dark tint across the whole image so the
+          copy/CTA stay legible regardless of what's behind them. */}
       <div
-        className="absolute inset-0 z-0 bg-gradient-to-t from-black/85 via-black/70 to-black/35 lg:hidden"
+        className="absolute inset-0 z-0 bg-black/60 lg:hidden"
         aria-hidden="true"
       />
       {/* Desktop overlay: darkest on the left behind the text, clearing to
@@ -45,7 +46,7 @@ export const Hero: React.FC = () => {
 
       <div className="max-w-[1280px] mx-auto w-full px-4 md:px-8 relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-12">
         {/* Left column - Text, Checklist, and CTA */}
-        <div className="w-full lg:max-w-[62%] flex flex-col gap-5 md:gap-7 text-left">
+        <div className="w-full lg:max-w-[50%] flex flex-col gap-5 md:gap-7 text-left">
 
           <HeroReveal delay={0}>
             <h1 className="text-[clamp(1rem,5.2vw,1.25rem)] sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold font-display leading-snug text-white tracking-tight">
