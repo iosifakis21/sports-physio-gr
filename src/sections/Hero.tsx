@@ -51,11 +51,9 @@ export const Hero: React.FC = () => {
           <HeroReveal delay={0}>
             <h1 className="text-[clamp(1rem,5.2vw,1.25rem)] sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl font-extrabold font-display leading-snug text-white tracking-tight">
               Εξειδικευμένη Φυσικοθεραπεία για{" "}
-              {/* Sized a notch below the line above it so that even the longest
-                  phrase in the cycle stays on a single (second) line on desktop. */}
               <span className="md:whitespace-nowrap">
                 <TypewriterCycle
-                  className="text-[clamp(0.8rem,4.35vw,1.05rem)] sm:text-2xl md:text-3xl lg:text-[1.75rem] xl:text-4xl"
+                  className="text-[clamp(1rem,5.2vw,1.25rem)] sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl"
                   words={["Εξάληψη Πόνου", "Τραυματισμούς", "Μυοσκελετική Αποκατάσταση", "Αθλητικές Κακώσεις", "Ασφαλή Επιστροφή στη Καθημερινότητα"]}
                   srText="Εξάληψη Πόνου, Τραυματισμούς, Μυοσκελετική Αποκατάσταση, Αθλητικές Κακώσεις και Ασφαλή Επιστροφή στη Καθημερινότητα"
                   allowWrap={true}
