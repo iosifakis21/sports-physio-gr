@@ -10,15 +10,16 @@ export const Hero: React.FC = () => {
   return (
     <section className="relative bg-slate-950 text-white overflow-hidden min-h-[400px] md:min-h-[500px] lg:min-h-screen flex items-center py-6 sm:py-8 md:py-20 z-10">
       {/* Background Photo & Overlay */}
-      {/* Mobile / tablet photo, zoomed and cropped so the doctor's upper
-          body/face reads clearly, positioned left-of-centre in frame. */}
+      {/* Mobile / tablet photo, zoomed in and shifted right so the doctor's
+          upper body/face sits in the lighter, right-hand side of the overlay
+          gradient (mirroring the desktop crop). */}
       <Image
         src="/images/heromobile.webp"
         alt=""
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[45%_22%] scale-125 z-0 lg:hidden"
+        className="object-cover object-[45%_22%] scale-[1.6] translate-x-[22%] z-0 lg:hidden"
         aria-hidden="true"
       />
       {/* Desktop photo (doctor sits on the right-hand side of this crop) */}
@@ -31,10 +32,10 @@ export const Hero: React.FC = () => {
         className="object-cover z-0 hidden lg:block"
         aria-hidden="true"
       />
-      {/* Mobile overlay: uniform dark tint across the whole image so the
-          copy/CTA stay legible regardless of what's behind them. */}
+      {/* Mobile overlay: horizontal gradient, darkest on the left behind the
+          copy/CTA and clearing towards the right (same logic as desktop). */}
       <div
-        className="absolute inset-0 z-0 bg-black/60 lg:hidden"
+        className="absolute inset-0 z-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10 lg:hidden"
         aria-hidden="true"
       />
       {/* Desktop overlay: darkest on the left behind the text, clearing to
@@ -70,7 +71,9 @@ export const Hero: React.FC = () => {
 
           {/* 4 Trust Checkmarks (Styled with cascading white text color) */}
           <HeroReveal delay={0.2}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 md:gap-3.5 text-slate-200 my-2 [&_span]:!text-slate-200">
+            {/* Mobile/tablet only: slightly smaller but bold check text.
+                At lg+ the arbitrary variants reset to the CheckItem defaults. */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 md:gap-3.5 text-slate-200 my-2 [&_span]:!text-slate-200 [&>div>span:last-child]:text-sm [&>div>span:last-child]:font-semibold lg:[&>div>span:last-child]:text-base lg:[&>div>span:last-child]:font-normal">
               <CheckItem text="20+ χρόνια κλινικής εμπειρίας και συνεχή εξειδίκευση" />
               <CheckItem text="Επίσημος cutman παγκόσμιων πρωταθλητών πυγμαχίας & kickboxing" />
               <CheckItem text="Δεκτές όλες οι ιδιωτικές ασφαλιστικές" />
