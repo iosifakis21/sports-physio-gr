@@ -34,6 +34,14 @@ const GAP_BEFORE_NEXT_MS = 300;
  * Respects prefers-reduced-motion: renders a single static, fully visible
  * ending (last word + period) with no hidden duplicate and no animation.
  */
+
+// Replace space before last word with non-breaking space (U+00A0) to prevent line breaks during mid-phrase typing
+const addNonBreakingSpaceBeforeLastWord = (text: string): string => {
+  const wordList = text.split(' ');
+  if (wordList.length <= 1) return text;
+  return wordList.slice(0, -1).join(' ') + '\u00a0' + wordList[wordList.length - 1];
+};
+
 export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
   words,
   srText,
@@ -82,15 +90,18 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
     const noWrapClass = allowWrap ? "" : "whitespace-nowrap";
     return (
       <span className={`block ${noWrapClass} ${className}`}>
-        {words[words.length - 1]}.
+        {addNonBreakingSpaceBeforeLastWord(words[words.length - 1])}.
       </span>
     );
   }
 
   const longestWord = words.reduce((a, b) => (b.length > a.length ? b : a), "");
+  const processedLongestWord = addNonBreakingSpaceBeforeLastWord(longestWord);
+
   const currentWord = words[wordIndex];
   const isFullyTyped = charCount === currentWord.length;
-  const displayText = currentWord.slice(0, charCount) + (isFullyTyped ? "." : "");
+  const displayTextRaw = currentWord.slice(0, charCount) + (isFullyTyped ? "." : "");
+  const displayText = addNonBreakingSpaceBeforeLastWord(displayTextRaw);
 
   const noWrapClass = allowWrap ? "" : "whitespace-nowrap";
 
@@ -109,7 +120,7 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
         {/* Invisible ghost reserves the width of the longest word (+ period)
             so the surrounding sentence never reflows as shorter/longer words
             type in and out. */}
-        <span className="invisible">{longestWord}.</span>
+        <span className="invisible">{processedLongestWord}.</span>
         <span className="absolute inset-0 left-0">
           {displayText}
           <span className="inline-block w-[2px] h-[0.85em] ml-0.5 -mb-[0.05em] bg-current animate-pulse align-middle" />
