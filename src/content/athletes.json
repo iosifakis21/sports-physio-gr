@@ -1,5 +1,5 @@
 {
-  "$schema_note": "Each entry: name (display), nickname (optional, shown in quotes), sport, accomplishment (one punchy line), photo (path in /public/images/), priority (lower = shown first), consent (MUST be true before the athlete appears on the live site).",
+  "$schema_note": "Each entry: name (display), nickname (optional, shown in quotes), sport, accomplishment (one punchy line), photo (path in /public/images/), hoverPhoto (optional: second photo crossfaded in on hover/tap), priority (lower = shown first), consent (MUST be true before the athlete appears on the live site).",
   "athletes": [
     {
       "id": "kambosos",
@@ -18,6 +18,7 @@
       "sport": "Kickboxing / Muay Thai",
       "accomplishment": "Πολλαπλός παγκόσμιος πρωταθλητής kickboxing — από τους κορυφαίους Έλληνες μαχητές όλων των εποχών",
       "photo": "/images/zambidis.webp",
+      "hoverPhoto": "/images/zambidisphoto.webp",
       "priority": 2,
       "consent": true
     },
@@ -68,6 +69,7 @@
       "sport": "Πυγμαχία (46 κιλά)",
       "accomplishment": "Παγκόσμια πρωταθλήτρια ερασιτεχνικής πυγμαχίας στα 46 κιλά",
       "photo": "/images/annamariathegun.webp",
+      "hoverPhoto": "/images/annamariaphoto.webp",
       "priority": 7,
       "consent": true
     },
@@ -78,6 +80,7 @@
       "sport": "Kickboxing (Heavyweight)",
       "accomplishment": "Νοκ άουτ 31 δευτερολέπτων στο ντεμπούτο του στο ONE Championship — από τα ταχύτερα KO στην ιστορία της διοργάνωσης",
       "photo": "/images/stoforidis.webp",
+      "hoverPhoto": "/images/stoforidisphoto.webp",
       "priority": 8,
       "consent": true
     },
@@ -88,6 +91,7 @@
       "sport": "Μπάσκετ (1v1 streetball / creator)",
       "accomplishment": "Δημιουργός του viral 1v1 league «ISO» — παγκόσμιο brand με πάνω από $1 εκατ. ετήσια έσοδα",
       "photo": "/images/mikekiatipis.webp",
+      "hoverPhoto": "/images/mkiatipisphoto.webp",
       "priority": 9,
       "consent": true
     },
@@ -98,6 +102,7 @@
       "sport": "Στίβος — Άλμα εις ύψος (Βουλγαρία)",
       "accomplishment": "8ος στους Ολυμπιακούς Αγώνες του Παρισιού 2024 — η καλύτερη ολυμπιακή επίδοση της Βουλγαρίας στο ύψος",
       "photo": "/images/ivanov.webp",
+      "hoverPhoto": "/images/ivanovphoto.webp",
       "priority": 10,
       "consent": true
     },

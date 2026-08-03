@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export interface Athlete {
@@ -8,6 +10,9 @@ export interface Athlete {
   sport: string;
   accomplishment: string;
   photo?: string;
+  /** Optional second photo, crossfaded in while the card is hovered (pointer)
+      or tapped (touch). Athletes without it keep a single static photo. */
+  hoverPhoto?: string;
   priority: number;
   consent: boolean;
 }
@@ -19,8 +24,44 @@ interface AthleteCardProps {
 }
 
 export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete, decorative = false }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [showHoverPhoto, setShowHoverPhoto] = useState(false);
+
+  // Consent gate: the alternate photo is subject to the same rule as the
+  // primary one — it never renders for an athlete without consent.
+  const hoverPhoto = athlete.consent === true ? athlete.hoverPhoto : undefined;
+
+  // Touch: a tap swaps the photo and it stays swapped until the user taps
+  // somewhere else (another card, or anywhere outside this one). Reverting on
+  // touchend would make the swap invisible on a phone, since the finger lifts
+  // almost immediately.
+  useEffect(() => {
+    if (!hoverPhoto || !showHoverPhoto) return;
+    const onTouchElsewhere = (event: TouchEvent) => {
+      const target = event.target;
+      if (target instanceof Node && cardRef.current?.contains(target)) return;
+      setShowHoverPhoto(false);
+    };
+    document.addEventListener("touchstart", onTouchElsewhere);
+    return () => document.removeEventListener("touchstart", onTouchElsewhere);
+  }, [hoverPhoto, showHoverPhoto]);
+
+  // Pointer handlers are only attached when there is something to swap to, so
+  // cards without a hoverPhoto behave exactly as before. They also don't stop
+  // propagation — the marquee row's own pause-on-hover/touch handlers still
+  // receive these events.
+  const swapHandlers = hoverPhoto
+    ? {
+        onMouseEnter: () => setShowHoverPhoto(true),
+        onMouseLeave: () => setShowHoverPhoto(false),
+        onTouchStart: () => setShowHoverPhoto(true),
+      }
+    : undefined;
+
   return (
     <div
+      ref={cardRef}
+      {...swapHandlers}
       tabIndex={decorative ? -1 : 0}
       aria-hidden={decorative || undefined}
       className="flex-shrink-0 w-[280px] sm:w-[320px] bg-slate-900 border border-white/10 rounded-card overflow-hidden flex flex-col focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary select-none group cursor-pointer transition-all duration-200 hover:border-primary/40"
@@ -54,7 +95,23 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({ athlete, decorative = 
             alt={athlete.name}
             fill
             sizes="(max-width: 640px) 280px, 320px"
-            className="object-cover object-top"
+            className={`object-cover object-top transition-opacity duration-300 ease-out ${
+              hoverPhoto && showHoverPhoto ? "opacity-0" : "opacity-100"
+            }`}
+          />
+        )}
+
+        {/* Alternate photo — crossfaded in on hover (pointer) or tap (touch). */}
+        {hoverPhoto && (
+          <Image
+            src={hoverPhoto}
+            alt=""
+            aria-hidden="true"
+            fill
+            sizes="(max-width: 640px) 280px, 320px"
+            className={`object-cover object-top transition-opacity duration-300 ease-out ${
+              showHoverPhoto ? "opacity-100" : "opacity-0"
+            }`}
           />
         )}
 
