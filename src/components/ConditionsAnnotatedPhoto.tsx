@@ -160,7 +160,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     role="dialog"
                     aria-modal="true"
                     aria-label={dot.label}
-                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(88vw,260px)] lg:w-[260px] rounded-card bg-ink-900 text-white p-3.5 shadow-2xl overflow-hidden pointer-events-auto border border-white/10 ${
+                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(85vw,220px)] lg:w-[220px] rounded-card bg-ink-900 text-white p-3 shadow-2xl overflow-hidden pointer-events-auto border border-white/10 ${
                       isRightSide ? "lg:right-0 lg:left-auto" : "lg:left-0 lg:right-auto"
                     } ${
                       isBottomSide
@@ -169,8 +169,8 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     }`}
                   >
                     {/* Header with Title and Close Button */}
-                    <div className="flex items-center justify-between gap-2 mb-2.5">
-                      <h3 className="font-display font-bold text-base text-white leading-tight">
+                    <div className="flex items-center justify-between gap-1.5 mb-2">
+                      <h3 className="font-display font-extrabold text-sm text-white leading-tight">
                         {dot.label}
                       </h3>
                       <button
@@ -180,7 +180,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                           setActiveGroupId(null);
                         }}
                         aria-label="Κλείσιμο"
-                        className="-mr-1 p-1 rounded-md text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                        className="-mr-1 p-0.5 rounded-md text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -188,7 +188,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="2"
-                          className="w-4 h-4"
+                          className="w-3.5 h-3.5"
                           aria-hidden="true"
                         >
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -197,7 +197,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     </div>
 
                     {/* Condition Group Image */}
-                    <div className="relative w-full aspect-video rounded-md overflow-hidden mb-2.5 bg-white/5">
+                    <div className="relative w-full aspect-video rounded-md overflow-hidden mb-2 bg-white/5">
                       <img
                         src={dot.photo}
                         alt={dot.label}
@@ -206,7 +206,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     </div>
 
                     {/* Symptom-based paragraph */}
-                    <p className="text-xs text-slate-200 leading-relaxed mb-3">
+                    <p className="text-xs font-bold text-slate-100 leading-snug mb-2.5">
                       {desc.description}
                     </p>
 
@@ -214,7 +214,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     <Button
                       href="#kleiste-rantevou"
                       variant="primary"
-                      className="w-full text-xs min-h-[36px] py-2 px-3"
+                      className="w-full text-xs font-bold min-h-[34px] py-1.5 px-2"
                       onClick={() => {
                         setActiveGroupId(null);
                         document.getElementById("kleiste-rantevou")?.scrollIntoView({ behavior: "smooth" });
