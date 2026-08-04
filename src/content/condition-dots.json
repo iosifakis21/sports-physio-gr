@@ -5,7 +5,7 @@
   { "id": "ribs-back", "label": "Μέση & Πλάτη", "photo": "/images/back.jpg", "conditionGroupId": "back-neck" },
   { "id": "hand-wrist", "label": "Καρπός & Χέρι", "photo": "/images/handwrist.webp", "conditionGroupId": "sports-injuries" },
   { "id": "muscle-strain", "label": "Μυϊκές Θλάσεις", "photo": "/images/leg.jpg", "conditionGroupId": "sports-injuries" },
-  { "id": "hip", "label": "Ισχίο", "photo": "/images/hip.jpg", "conditionGroupId": "hip-knee" },
+  { "id": "hip", "label": "Ισχίο", "photo": "/images/isxyo.jpg", "conditionGroupId": "hip-knee" },
   { "id": "knee", "label": "Γόνατο", "photo": "/images/knee.webp", "conditionGroupId": "hip-knee" },
-  { "id": "foot-ankle", "label": "Αστράγαλος & Άκρο Πόδι", "photo": "/images/footankle.webp", "conditionGroupId": "ankle-foot" }
+  { "id": "foot-ankle", "label": "Αστράγαλος & Άκρο Πόδι", "photo": "/images/Ankle-pain.jpg", "conditionGroupId": "ankle-foot" }
 ]
