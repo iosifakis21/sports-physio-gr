@@ -2,7 +2,6 @@
 
 import React, { useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import { motion } from "motion/react";
 import conditionsData from "@/content/conditions.json";
 import dotsData from "@/content/condition-dots.json";
 
@@ -152,7 +151,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
         />
 
         {/* Interactive "+" buttons, one on the end of each line in the photo */}
-        {dots.map((dot) => {
+        {dots.map((dot, i) => {
           const g = GEOMETRY[dot.id];
           if (!g) return null;
           const isOpen = openId === dot.id;
@@ -176,15 +175,18 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                 aria-expanded={isOpen}
                 className="relative flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white shadow-lg ring-2 ring-white/80 cursor-pointer transition-transform hover:scale-110 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               >
-                {/* Soft continuous pulse — driven by motion (JS/WAAPI) so it
-                    always plays regardless of the OS reduced-motion setting,
-                    consistent with the rest of the site. */}
-                <motion.span
+                {/* Soft continuous pulse. Nine of these loop forever, so the
+                    keyframes live in CSS (see --animate-dot-pulse) rather than
+                    in nine motion instances: same picture, no JS animation
+                    objects, and the OS reduced-motion rule in globals.css now
+                    reaches them like every other animation on the site.
+                    Starts are fanned out so the rings don't all step on the
+                    same frame. Transform and opacity only — animating anything
+                    else here would repaint the photo underneath. */}
+                <span
                   aria-hidden="true"
-                  className="absolute inset-0 rounded-full bg-primary/40"
-                  initial={{ scale: 1, opacity: 0.6 }}
-                  animate={{ scale: 2.1, opacity: 0 }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
+                  className="absolute inset-0 rounded-full bg-primary/40 animate-dot-pulse"
+                  style={{ animationDelay: `${i * 0.15}s`, willChange: "transform, opacity" }}
                 />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
