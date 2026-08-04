@@ -20,10 +20,7 @@ interface ConditionDot {
 }
 
 type DotGeometry = {
-  /** Small anchor point sitting directly ON the body part (% of container). */
-  ax: number;
-  ay: number;
-  /** Large "+" button placed in the open space around the athlete (% of container). */
+  /** "+" button, sitting on the free end of the line drawn in the photo (% of container). */
   bx: number;
   by: number;
   /**
@@ -35,40 +32,23 @@ type DotGeometry = {
   card: { left?: string; right?: string; top?: string; bottom?: string };
 };
 
-// Photo-relative placement for each anchor→dot pair, tuned to the
-// running-athlete photo (athletenobg.webp). Kept in the component (not the
-// JSON) so condition-dots.json stays the exact { id, label, photo,
-// conditionGroupId } shape the data contract specifies.
-// Nine independent pairs matching the reference layout: temple, raised-arm
-// shoulder, raised-arm elbow/bicep, ribcage below the armpit, mid-forearm of
-// the trailing arm, trailing wrist, hip/waistband, front knee, trailing ankle.
-// Every line runs from its body anchor into open space — endpoints are placed
-// so no line crosses the figure and no two big dots touch.
+// The connector lines are baked into the photo itself
+// (/images/athletenobg copy.png) — nothing is drawn in code. These are the
+// free (off-body) endpoints of those nine hand-drawn lines, measured from the
+// image's blue pixels and expressed as a percentage of its 1068×1472 box, so
+// each "+" button lands exactly where its line stops.
+// Kept in the component (not the JSON) so condition-dots.json stays the exact
+// { id, label, photo, conditionGroupId } shape the data contract specifies.
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { ax: 33, ay: 15, bx: 43, by: 6, card: { right: "calc(57% + 26px)", top: "0%" } },
-  shoulder: { ax: 28, ay: 30, bx: 11, by: 36, card: { left: "calc(11% + 26px)", top: "5%" } },
-  elbow: { ax: 13, ay: 22, bx: 5, by: 44, card: { left: "calc(5% + 26px)", top: "10%" } },
-  "ribs-back": { ax: 29, ay: 38, bx: 21, by: 38, card: { left: "calc(21% + 26px)", top: "7%" } },
-  forearm: { ax: 80, ay: 37, bx: 90, by: 26, card: { right: "calc(10% + 26px)", top: "3%" } },
-  "hand-wrist": { ax: 86, ay: 38, bx: 96, by: 43, card: { right: "calc(4% + 26px)", top: "12%" } },
-  hip: { ax: 62, ay: 50, bx: 72, by: 50, card: { right: "calc(28% + 26px)", top: "15%" } },
-  knee: { ax: 33, ay: 58, bx: 47, by: 67, card: { right: "calc(53% + 26px)", bottom: "2%" } },
-  "foot-ankle": { ax: 81, ay: 83, bx: 79, by: 93, card: { right: "calc(21% + 26px)", bottom: "0%" } },
-};
-
-// Intrinsic size of athletenobg.webp — the connector SVG uses it as its
-// viewBox so percentage coordinates map exactly onto the photo.
-const PHOTO_W = 1068;
-const PHOTO_H = 1472;
-
-// Straight connector from the body anchor to the "+" button, matching the
-// reference layout's simple angled callout lines.
-const connectorPath = (g: DotGeometry) => {
-  const ax = (g.ax / 100) * PHOTO_W;
-  const ay = (g.ay / 100) * PHOTO_H;
-  const bx = (g.bx / 100) * PHOTO_W;
-  const by = (g.by / 100) * PHOTO_H;
-  return `M ${ax} ${ay} L ${bx} ${by}`;
+  "head-neck": { bx: 51.8, by: 20.1, card: { right: "calc(48% + 26px)", top: "0%" } },
+  shoulder: { bx: 25.2, by: 20.9, card: { left: "calc(25% + 26px)", top: "2%" } },
+  elbow: { bx: 6.7, by: 29.9, card: { left: "calc(7% + 26px)", top: "8%" } },
+  "ribs-back": { bx: 66.6, by: 41.2, card: { right: "calc(33% + 26px)", top: "14%" } },
+  forearm: { bx: 92.1, by: 34.3, card: { right: "calc(8% + 26px)", top: "10%" } },
+  "hand-wrist": { bx: 75.8, by: 65.7, card: { right: "calc(24% + 26px)", bottom: "4%" } },
+  hip: { bx: 69.6, by: 51.9, card: { right: "calc(30% + 26px)", top: "20%" } },
+  knee: { bx: 17.3, by: 51.0, card: { left: "calc(17% + 26px)", bottom: "6%" } },
+  "foot-ankle": { bx: 88.7, by: 78.7, card: { right: "calc(11% + 26px)", bottom: "0%" } },
 };
 
 const dots = dotsData as ConditionDot[];
@@ -162,50 +142,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           className="relative w-full h-auto select-none pointer-events-none"
         />
 
-        {/* Dogleg connector lines: anchor → 45° diagonal → horizontal → button.
-            One SVG over the photo; its viewBox matches the photo's intrinsic
-            size so percentage coordinates land exactly. Soft looping opacity
-            pulse keeps the technical lines feeling alive. */}
-        <svg
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          viewBox={`0 0 ${PHOTO_W} ${PHOTO_H}`}
-          preserveAspectRatio="none"
-        >
-          {dots.map((dot) => {
-            const g = GEOMETRY[dot.id];
-            if (!g) return null;
-            return (
-              <motion.path
-                key={dot.id}
-                d={connectorPath(g)}
-                fill="none"
-                className="stroke-primary"
-                strokeWidth="1.5"
-                vectorEffect="non-scaling-stroke"
-                initial={{ opacity: 0.35 }}
-                animate={{ opacity: [0.35, 0.75, 0.35] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-              />
-            );
-          })}
-        </svg>
-
-        {/* Small anchor points sitting directly on the body part */}
-        {dots.map((dot) => {
-          const g = GEOMETRY[dot.id];
-          if (!g) return null;
-          return (
-            <span
-              key={dot.id}
-              aria-hidden="true"
-              className="absolute w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary ring-2 ring-white/80 pointer-events-none"
-              style={{ left: `${g.ax}%`, top: `${g.ay}%` }}
-            />
-          );
-        })}
-
-        {/* Interactive "+" buttons in the open space around the athlete */}
+        {/* Interactive "+" buttons, one on the end of each line in the photo */}
         {dots.map((dot) => {
           const g = GEOMETRY[dot.id];
           if (!g) return null;
@@ -224,7 +161,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                 onClick={() => setOpenId(dot.id)}
                 aria-label={`${dot.label} — δείτε σχετικές παθήσεις`}
                 aria-expanded={isOpen}
-                className="relative flex items-center justify-center w-9 h-9 rounded-full bg-primary text-white shadow-lg ring-2 ring-white/80 cursor-pointer transition-transform hover:scale-110 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                className="relative flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white shadow-lg ring-2 ring-white/80 cursor-pointer transition-transform hover:scale-110 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               >
                 {/* Soft continuous pulse — driven by motion (JS/WAAPI) so it
                     always plays regardless of the OS reduced-motion setting,
@@ -233,7 +170,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                   aria-hidden="true"
                   className="absolute inset-0 rounded-full bg-primary/40"
                   initial={{ scale: 1, opacity: 0.6 }}
-                  animate={{ scale: 2.4, opacity: 0 }}
+                  animate={{ scale: 2.1, opacity: 0 }}
                   transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
                 />
                 <svg
@@ -242,7 +179,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2.5"
-                  className="relative w-4 h-4"
+                  className="relative w-3.5 h-3.5"
                   aria-hidden="true"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
