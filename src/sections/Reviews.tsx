@@ -137,7 +137,9 @@ export const Reviews: React.FC = () => {
           initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
           whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
         >
-          <div className="relative h-[650px] overflow-hidden">
+          {/* Taller than a single card at either breakpoint, so even the longest
+              review is fully readable as it passes through the window. */}
+          <div className="relative h-[680px] md:h-[760px] overflow-hidden">
             {/* Elegant fading gradients at the top and bottom of the marquee */}
             <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-surface-alt to-transparent pointer-events-none z-10" />
             <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-surface-alt to-transparent pointer-events-none z-10" />
@@ -152,7 +154,7 @@ export const Reviews: React.FC = () => {
                   reviews={colReviews}
                   // Duration scales with card count so scroll speed stays consistent,
                   // with a small per-column offset for a natural staggered feel
-                  speed={colReviews.length * 8 + idx * 2}
+                  speed={colReviews.length * 10 + idx * 2}
                 />
               ))}
             </div>
