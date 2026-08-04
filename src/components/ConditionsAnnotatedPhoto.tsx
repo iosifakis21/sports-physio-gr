@@ -20,9 +20,12 @@ interface ConditionDot {
 }
 
 type DotGeometry = {
-  /** "+" button, sitting on the free end of the line drawn in the photo (% of container). */
+  /** Free (off-body) tip of the line drawn in the photo (% of container). */
   bx: number;
   by: number;
+  /** Unit vector of that line's last segment, pointing away from the body. */
+  dx: number;
+  dy: number;
   /**
    * Desktop card placement, as CSS length strings applied inside the stage.
    * Exactly one of left/right and one of top/bottom per dot, hand-tuned so the
@@ -33,23 +36,29 @@ type DotGeometry = {
 };
 
 // The connector lines are baked into the photo itself
-// (/images/athletenobg copy.png) — nothing is drawn in code. These are the
-// free (off-body) endpoints of those nine hand-drawn lines, measured from the
-// image's blue pixels and expressed as a percentage of its 1068×1472 box, so
-// each "+" button lands exactly where its line stops.
+// (/images/athletenobg copy.png) — nothing is drawn in code. bx/by are the
+// free (off-body) tips of those nine hand-drawn lines, measured from the
+// image's blue pixels and expressed as a percentage of its 1068×1472 box.
 // Kept in the component (not the JSON) so condition-dots.json stays the exact
 // { id, label, photo, conditionGroupId } shape the data contract specifies.
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { bx: 51.8, by: 20.1, card: { right: "calc(48% + 26px)", top: "0%" } },
-  shoulder: { bx: 25.2, by: 20.9, card: { left: "calc(25% + 26px)", top: "2%" } },
-  elbow: { bx: 6.7, by: 29.9, card: { left: "calc(7% + 26px)", top: "8%" } },
-  "ribs-back": { bx: 66.6, by: 41.2, card: { right: "calc(33% + 26px)", top: "14%" } },
-  forearm: { bx: 92.1, by: 34.3, card: { right: "calc(8% + 26px)", top: "10%" } },
-  "hand-wrist": { bx: 75.8, by: 65.7, card: { right: "calc(24% + 26px)", bottom: "4%" } },
-  hip: { bx: 69.6, by: 51.9, card: { right: "calc(30% + 26px)", top: "20%" } },
-  knee: { bx: 17.3, by: 51.0, card: { left: "calc(17% + 26px)", bottom: "6%" } },
-  "foot-ankle": { bx: 88.7, by: 78.7, card: { right: "calc(11% + 26px)", bottom: "0%" } },
+  "head-neck": { bx: 51.8, by: 20.1, dx: 1, dy: 0, card: { right: "calc(48% + 26px)", top: "0%" } },
+  shoulder: { bx: 25.4, by: 20.9, dx: -0.638, dy: -0.77, card: { left: "calc(25% + 26px)", top: "2%" } },
+  elbow: { bx: 6.6, by: 29.8, dx: 0, dy: 1, card: { left: "calc(7% + 26px)", top: "8%" } },
+  "ribs-back": { bx: 66.6, by: 41.2, dx: 1, dy: 0, card: { right: "calc(33% + 26px)", top: "14%" } },
+  forearm: { bx: 92.0, by: 34.3, dx: 0, dy: -1, card: { right: "calc(8% + 26px)", top: "10%" } },
+  "hand-wrist": { bx: 75.8, by: 65.8, dx: 1, dy: 0, card: { right: "calc(24% + 26px)", bottom: "4%" } },
+  hip: { bx: 69.5, by: 51.8, dx: 0.744, dy: 0.669, card: { right: "calc(30% + 26px)", top: "20%" } },
+  knee: { bx: 17.3, by: 51.1, dx: -1, dy: 0, card: { left: "calc(17% + 26px)", bottom: "6%" } },
+  "foot-ankle": { bx: 88.7, by: 78.7, dx: 0, dy: -1, card: { right: "calc(11% + 26px)", bottom: "0%" } },
 };
+
+// A button centred on its line's tip would swallow the last half of the line.
+// Instead each one is pushed one radius (14px) plus its 2px ring further along
+// the line, so the drawn line meets the button's edge and stays fully visible.
+// Kept in px — the button never scales, so a percentage offset would drift as
+// the stage narrows.
+const BUTTON_OFFSET = 16;
 
 const dots = dotsData as ConditionDot[];
 const groups = conditionsData as ConditionGroup[];
@@ -150,8 +159,12 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           return (
             <div
               key={dot.id}
-              className="absolute -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${g.bx}%`, top: `${g.by}%` }}
+              className="absolute"
+              style={{
+                left: `${g.bx}%`,
+                top: `${g.by}%`,
+                transform: `translate(calc(-50% + ${(g.dx * BUTTON_OFFSET).toFixed(1)}px), calc(-50% + ${(g.dy * BUTTON_OFFSET).toFixed(1)}px))`,
+              }}
             >
               <button
                 ref={(el) => {
