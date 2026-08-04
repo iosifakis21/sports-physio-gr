@@ -101,6 +101,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           if (!g) return null;
           const isActive = activeGroupId === dot.id;
           const desc = descriptions.find((d) => d.id === dot.id);
+          const isRightSide = g.bx > 50;
 
           return (
             <div
@@ -161,9 +162,9 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     aria-modal="true"
                     aria-label={dot.label}
                     className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white p-5 shadow-2xl overflow-hidden pointer-events-auto ${g.verticalClass} ${
-                      g.align === "left"
-                        ? "lg:left-[calc(100%+12px)] before:content-[''] before:absolute before:-left-4 before:top-0 before:bottom-0 before:w-4"
-                        : "lg:right-[calc(100%+12px)] before:content-[''] before:absolute before:-right-4 before:top-0 before:bottom-0 before:w-4"
+                      isRightSide
+                        ? "right-0 lg:right-[calc(100%+12px)] lg:left-auto before:content-[''] before:absolute before:-right-4 before:top-0 before:bottom-0 before:w-4"
+                        : "left-0 lg:left-[calc(100%+12px)] lg:right-auto before:content-[''] before:absolute before:-left-4 before:top-0 before:bottom-0 before:w-4"
                     }`}
                   >
                     {/* 1. Condition Group Image */}
@@ -175,8 +176,8 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                       />
                     </div>
 
-                    {/* 2. Area Title */}
-                    <div className="flex items-center justify-between gap-3 mb-2">
+                    {/* 2. Area Title & Close Button */}
+                    <div className="flex items-start justify-between gap-3 mb-2">
                       <h3 className="font-display font-bold text-lg md:text-xl text-white leading-tight">
                         {dot.label}
                       </h3>
@@ -187,7 +188,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                           setActiveGroupId(null);
                         }}
                         aria-label="Κλείσιμο"
-                        className="p-1 rounded text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                        className="flex-shrink-0 -mt-1 -mr-1 p-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
