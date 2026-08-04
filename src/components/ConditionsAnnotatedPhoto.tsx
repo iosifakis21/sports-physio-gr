@@ -45,8 +45,11 @@ const GEOMETRY: Record<string, DotGeometry> = {
   shoulder: { bx: 25.4, by: 20.9, dx: -0.638, dy: -0.77, card: { left: "calc(25% + 26px)", top: "2%" } },
   elbow: { bx: 6.6, by: 29.8, dx: 0, dy: 1, card: { left: "calc(7% + 26px)", top: "8%" } },
   "ribs-back": { bx: 66.6, by: 41.2, dx: 1, dy: 0, card: { right: "calc(33% + 26px)", top: "14%" } },
-  forearm: { bx: 92.0, by: 34.3, dx: 0, dy: -1, card: { right: "calc(8% + 26px)", top: "10%" } },
-  "hand-wrist": { bx: 75.8, by: 65.8, dx: 1, dy: 0, card: { right: "calc(24% + 26px)", bottom: "4%" } },
+  // The line tip at 92.0/34.3 lands on the extended right hand; the one at
+  // 75.8/65.8 lands on the trailing leg's hamstring. Coordinates unchanged —
+  // only the ids that own them were swapped back to match the body part.
+  "hand-wrist": { bx: 92.0, by: 34.3, dx: 0, dy: -1, card: { right: "calc(8% + 26px)", top: "10%" } },
+  "muscle-strain": { bx: 75.8, by: 65.8, dx: 1, dy: 0, card: { right: "calc(24% + 26px)", bottom: "4%" } },
   hip: { bx: 69.5, by: 51.8, dx: 0.744, dy: 0.669, card: { right: "calc(30% + 26px)", top: "20%" } },
   knee: { bx: 17.3, by: 51.1, dx: -1, dy: 0, card: { left: "calc(17% + 26px)", bottom: "6%" } },
   "foot-ankle": { bx: 88.7, by: 78.7, dx: 0, dy: -1, card: { right: "calc(11% + 26px)", bottom: "0%" } },
