@@ -1,5 +1,9 @@
 import React from "react";
 
+/** The practice's Google Maps listing, opened on the reviews tab. */
+export const GOOGLE_REVIEWS_URL =
+  "https://www.google.com/maps/place/SportsPhysio+Michalis+Sioulis+%CE%A6%CF%85%CF%83%CE%B9%CE%BA%CE%BF%CE%B8%CE%B5%CF%81%CE%B1%CF%80%CE%B5%CF%85%CF%84%CE%AE%CF%82+-+%CE%A7%CE%B5%CE%B9%CF%81%CE%BF%CE%B8%CE%B5%CF%81%CE%B1%CF%80%CE%B5%CF%85%CF%84%CE%AE%CF%82/@38.0635736,23.7635202,17z/data=!4m8!3m7!1s0x14a198a8a2813a6d:0xd9d5b39abdfa83ff!8m2!3d38.0635736!4d23.7660951!9m1!1b1!16s%2Fg%2F11g889688n";
+
 interface RatingBadgeProps {
   className?: string;
   href?: string;
@@ -7,7 +11,7 @@ interface RatingBadgeProps {
 
 export const RatingBadge: React.FC<RatingBadgeProps> = ({
   className = "",
-  href = "https://search.google.com/local/reviews?placeid=placeholder", // placeholder Google reviews link
+  href = GOOGLE_REVIEWS_URL,
 }) => {
   return (
     <a

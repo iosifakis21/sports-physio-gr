@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { SectionHeading } from "@/components/SectionHeading";
-import { RatingBadge } from "@/components/RatingBadge";
+import { RatingBadge, GOOGLE_REVIEWS_URL } from "@/components/RatingBadge";
 import { ReviewCard, Review } from "@/components/ReviewCard";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import { useAnimate } from "motion/react";
@@ -118,7 +118,7 @@ export const Reviews: React.FC = () => {
               Είστε ευχαριστημένοι από τις υπηρεσίες μας;
             </span>
             <a
-              href="https://search.google.com/local/writereview?placeid=placeholder"
+              href={GOOGLE_REVIEWS_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="font-sans text-sm font-bold text-primary hover:text-primary-hover underline focus:outline focus:outline-2 focus:outline-primary rounded p-0.5 transition-colors"
