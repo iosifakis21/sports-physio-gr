@@ -57,8 +57,18 @@ export const Button: React.FC<ButtonProps> = ({
     </>
   );
 
-  const baseStyles =
-    "inline-flex items-center justify-center font-sans font-medium rounded-btn text-base transition-all duration-200 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary min-h-[44px] px-6 py-3 cursor-pointer select-none";
+  // A font-weight passed via className can't reliably beat the default below:
+  // both are plain utilities of equal specificity, so the winner is decided by
+  // stylesheet order, not by class order on the element (font-bold loses to
+  // font-medium that way). Drop the default when the caller sets its own.
+  const hasWeightOverride =
+    /(?:^|\s)font-(?:thin|extralight|light|normal|medium|semibold|bold|extrabold|black)(?:\s|$)/.test(
+      className
+    );
+
+  const baseStyles = `inline-flex items-center justify-center font-sans ${
+    hasWeightOverride ? "" : "font-medium"
+  } rounded-btn text-base transition-all duration-200 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary min-h-[44px] px-6 py-3 cursor-pointer select-none`;
 
   const variantStyles =
     variant === "primary"
