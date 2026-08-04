@@ -23,20 +23,18 @@ type DotGeometry = {
   by: number;
   dx: number;
   dy: number;
-  align: "left" | "right";
-  verticalClass: string;
 };
 
 const GEOMETRY: Record<string, DotGeometry> = {
-  "head-neck": { bx: 51.8, by: 20.1, dx: 1, dy: 0, align: "right", verticalClass: "lg:top-0" },
-  shoulder: { bx: 25.4, by: 20.9, dx: -0.638, dy: -0.77, align: "left", verticalClass: "lg:top-0" },
-  elbow: { bx: 6.6, by: 29.8, dx: 0, dy: 1, align: "left", verticalClass: "lg:top-0" },
-  "ribs-back": { bx: 66.6, by: 41.2, dx: 1, dy: 0, align: "right", verticalClass: "lg:-top-8" },
-  "hand-wrist": { bx: 92.0, by: 34.3, dx: 0, dy: -1, align: "right", verticalClass: "lg:top-0" },
-  hip: { bx: 69.5, by: 51.8, dx: 0.744, dy: 0.669, align: "right", verticalClass: "lg:-top-16" },
-  knee: { bx: 17.3, by: 51.1, dx: -1, dy: 0, align: "left", verticalClass: "lg:-top-16" },
-  "muscle-strain": { bx: 75.8, by: 65.8, dx: 1, dy: 0, align: "right", verticalClass: "lg:bottom-0" },
-  "foot-ankle": { bx: 88.7, by: 78.7, dx: 0, dy: -1, align: "right", verticalClass: "lg:bottom-0" },
+  "head-neck": { bx: 51.8, by: 20.1, dx: 1, dy: 0 },
+  shoulder: { bx: 25.4, by: 20.9, dx: -0.638, dy: -0.77 },
+  elbow: { bx: 6.6, by: 29.8, dx: 0, dy: 1 },
+  "ribs-back": { bx: 66.6, by: 41.2, dx: 1, dy: 0 },
+  "hand-wrist": { bx: 92.0, by: 34.3, dx: 0, dy: -1 },
+  hip: { bx: 69.5, by: 51.8, dx: 0.744, dy: 0.669 },
+  knee: { bx: 17.3, by: 51.1, dx: -1, dy: 0 },
+  "muscle-strain": { bx: 75.8, by: 65.8, dx: 1, dy: 0 },
+  "foot-ankle": { bx: 88.7, by: 78.7, dx: 0, dy: -1 },
 };
 
 const BUTTON_OFFSET = 16;
@@ -102,6 +100,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           const isActive = activeGroupId === dot.id;
           const desc = descriptions.find((d) => d.id === dot.id);
           const isRightSide = g.bx > 50;
+          const isBottomSide = g.by > 60;
 
           return (
             <div
@@ -161,10 +160,12 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     role="dialog"
                     aria-modal="true"
                     aria-label={dot.label}
-                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white p-5 shadow-2xl overflow-hidden pointer-events-auto ${g.verticalClass} ${
-                      isRightSide
-                        ? "right-0 lg:right-[calc(100%+12px)] lg:left-auto before:content-[''] before:absolute before:-right-4 before:top-0 before:bottom-0 before:w-4"
-                        : "left-0 lg:left-[calc(100%+12px)] lg:right-auto before:content-[''] before:absolute before:-left-4 before:top-0 before:bottom-0 before:w-4"
+                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white p-5 shadow-2xl overflow-hidden pointer-events-auto ${
+                      isRightSide ? "lg:right-0 lg:left-auto" : "lg:left-0 lg:right-auto"
+                    } ${
+                      isBottomSide
+                        ? "lg:bottom-full lg:top-auto lg:pb-2 lg:mb-2 before:content-[''] before:absolute before:inset-x-0 before:-bottom-4 before:h-4"
+                        : "lg:top-full lg:bottom-auto lg:pt-2 lg:mt-2 before:content-[''] before:absolute before:inset-x-0 before:-top-4 before:h-4"
                     }`}
                   >
                     {/* 1. Condition Group Image */}
