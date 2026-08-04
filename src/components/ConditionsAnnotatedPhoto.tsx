@@ -105,7 +105,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           return (
             <div
               key={dot.id}
-              className="absolute z-20"
+              className={`absolute ${isActive ? "z-50" : "z-10"}`}
               style={{
                 left: `calc(${g.bx}% + ${(g.dx * BUTTON_OFFSET).toFixed(1)}px - 14px)`,
                 top: `calc(${g.by}% + ${(g.dy * BUTTON_OFFSET).toFixed(1)}px - 14px)`,
@@ -160,7 +160,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     role="dialog"
                     aria-modal="true"
                     aria-label={dot.label}
-                    className={`fixed lg:absolute z-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white p-5 shadow-2xl overflow-hidden pointer-events-auto ${g.verticalClass} ${
+                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white p-5 shadow-2xl overflow-hidden pointer-events-auto ${g.verticalClass} ${
                       g.align === "left"
                         ? "lg:left-[calc(100%+12px)] before:content-[''] before:absolute before:-left-4 before:top-0 before:bottom-0 before:w-4"
                         : "lg:right-[calc(100%+12px)] before:content-[''] before:absolute before:-right-4 before:top-0 before:bottom-0 before:w-4"
