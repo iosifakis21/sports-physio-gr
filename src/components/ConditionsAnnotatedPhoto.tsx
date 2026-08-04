@@ -100,7 +100,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           const isActive = activeGroupId === dot.id;
           const desc = descriptions.find((d) => d.id === dot.id);
           const isRightSide = g.bx > 50;
-          const isBottomSide = g.by > 60;
+          const isBottomSide = g.by >= 50;
 
           return (
             <div
@@ -160,7 +160,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     role="dialog"
                     aria-modal="true"
                     aria-label={dot.label}
-                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white p-5 shadow-2xl overflow-hidden pointer-events-auto ${
+                    className={`fixed lg:absolute z-50 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:translate-x-0 lg:translate-y-0 w-[min(90vw,340px)] lg:w-[300px] xl:w-[320px] rounded-card bg-ink-900 text-white shadow-2xl overflow-hidden pointer-events-auto ${
                       isRightSide ? "lg:right-0 lg:left-auto" : "lg:left-0 lg:right-auto"
                     } ${
                       isBottomSide
@@ -168,62 +168,58 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                         : "lg:top-full lg:bottom-auto lg:pt-2 lg:mt-2 before:content-[''] before:absolute before:inset-x-0 before:-top-4 before:h-4"
                     }`}
                   >
-                    {/* 1. Condition Group Image */}
-                    <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4 bg-white/5">
-                      <img
-                        src={dot.photo}
-                        alt={dot.label}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-
-                    {/* 2. Area Title & Close Button */}
-                    <div className="flex items-start justify-between gap-3 mb-2">
-                      <h3 className="font-display font-bold text-lg md:text-xl text-white leading-tight">
-                        {dot.label}
-                      </h3>
+                    <div className="bg-ink-900 rounded-card overflow-hidden relative border border-white/10 shadow-xl p-0">
+                      {/* 1. Close Button (circular white X floating top-right over photo) */}
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveGroupId(null);
                         }}
+                        className="absolute top-3 right-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white text-gray-900 shadow-sm hover:bg-gray-100 transition-colors cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                         aria-label="Κλείσιμο"
-                        className="flex-shrink-0 -mt-1 -mr-1 p-1.5 rounded-md text-white/70 hover:text-white hover:bg-white/10 transition-colors cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
                       >
                         <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
+                          className="w-4 h-4"
                           fill="none"
                           stroke="currentColor"
-                          strokeWidth="2"
-                          className="w-5 h-5"
+                          viewBox="0 0 24 24"
                           aria-hidden="true"
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                       </button>
+
+                      {/* 2. Image */}
+                      <div className="relative w-full h-40 overflow-hidden bg-white/5">
+                        <img
+                          src={dot.photo}
+                          alt={dot.label}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* 3. Text Content & CTA */}
+                      <div className="p-4">
+                        <h3 className="font-display font-bold text-lg md:text-xl text-white leading-tight mb-2">
+                          {dot.label}
+                        </h3>
+                        <p className="text-sm md:text-base text-slate-200 leading-relaxed mb-4">
+                          {desc.description}
+                        </p>
+                        <Button
+                          href="#kleiste-rantevou"
+                          variant="primary"
+                          className="w-full"
+                          onClick={() => {
+                            setActiveGroupId(null);
+                            document.getElementById("kleiste-rantevou")?.scrollIntoView({ behavior: "smooth" });
+                          }}
+                        >
+                          Κλείστε Ραντεβού
+                        </Button>
+                      </div>
                     </div>
-
-                    {/* 3. Symptom-based paragraph */}
-                    <p className="text-sm md:text-base text-slate-200 leading-relaxed mb-5">
-                      {desc.description}
-                    </p>
-
-                    {/* 4. REMOVE bulleted list — omitted */}
-
-                    {/* 5. "Κλείστε Ραντεβού" Button */}
-                    <Button
-                      href="#kleiste-rantevou"
-                      variant="primary"
-                      className="w-full"
-                      onClick={() => {
-                        setActiveGroupId(null);
-                        document.getElementById("kleiste-rantevou")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                    >
-                      Κλείστε Ραντεβού
-                    </Button>
                   </div>
                 </>
               )}
