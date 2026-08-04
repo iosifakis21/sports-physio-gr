@@ -61,27 +61,24 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
   const [openId, setOpenId] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const dotRefs = useRef<Record<string, HTMLButtonElement | null>>({});
-  const openTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const closeTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const activeHoverIdRef = useRef<string | null>(null);
   const headingId = useId();
 
   const openDot = openId ? dots.find((d) => d.id === openId) ?? null : null;
   const openDesc = openId ? descriptions.find((desc) => desc.id === openId) ?? null : null;
   const openGeom = openId ? GEOMETRY[openId] : undefined;
 
-  const clearTimers = () => {
-    if (openTimerRef.current) {
-      clearTimeout(openTimerRef.current);
-      openTimerRef.current = null;
-    }
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
+  const clearTimer = () => {
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current);
+      hoverTimerRef.current = null;
     }
   };
 
   const close = () => {
-    clearTimers();
+    clearTimer();
+    activeHoverIdRef.current = null;
     const toFocus = openId ? dotRefs.current[openId] : null;
     setOpenId(null);
     requestAnimationFrame(() => toFocus?.focus());
@@ -100,35 +97,24 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
     return window.matchMedia("(pointer: fine)").matches;
   };
 
-  // Hover handlers attached to BOTH trigger button AND card container
   const handleMouseEnter = (id?: string) => {
     if (!isFinePointer()) return;
-    // Clear any pending close timer when mouse enters button or card
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-
-    // If an explicit dot id is passed and it's not currently open, schedule open
-    if (id && openId !== id) {
-      if (openTimerRef.current) clearTimeout(openTimerRef.current);
-      openTimerRef.current = setTimeout(() => {
-        setOpenId(id);
+    clearTimer();
+    const targetId = id || activeHoverIdRef.current || openId;
+    if (targetId) {
+      activeHoverIdRef.current = targetId;
+      hoverTimerRef.current = setTimeout(() => {
+        setOpenId(targetId);
       }, 250);
     }
   };
 
   const handleMouseLeave = () => {
     if (!isFinePointer()) return;
-    // Clear any pending open timer if moving away before 250ms
-    if (openTimerRef.current) {
-      clearTimeout(openTimerRef.current);
-      openTimerRef.current = null;
-    }
-    // Schedule close with 250ms delay
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    closeTimerRef.current = setTimeout(() => {
+    clearTimer();
+    hoverTimerRef.current = setTimeout(() => {
       setOpenId(null);
+      activeHoverIdRef.current = null;
     }, 250);
   };
 
@@ -219,7 +205,8 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                 }}
                 type="button"
                 onClick={() => {
-                  clearTimers();
+                  clearTimer();
+                  activeHoverIdRef.current = dot.id;
                   setOpenId(dot.id);
                 }}
                 onMouseEnter={() => handleMouseEnter(dot.id)}
@@ -275,7 +262,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                 } as React.CSSProperties
               }
               className="fixed z-40 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(92vw,380px)] max-h-[76vh] overflow-y-auto rounded-card bg-ink-900 text-white p-5 shadow-2xl
-                lg:absolute lg:translate-x-0 lg:translate-y-0 lg:left-[var(--card-left)] lg:right-[var(--card-right)] lg:top-[var(--card-top)] lg:bottom-[var(--card-bottom)] lg:w-[300px] xl:w-[340px] lg:max-h-[min(540px,80vh)] flex flex-col justify-between"
+                lg:absolute lg:translate-x-0 lg:translate-y-0 lg:left-[var(--card-left)] lg:right-[var(--card-right)] lg:top-[var(--card-top)] lg:bottom-[var(--card-bottom)] lg:w-[300px] xl:w-[340px] lg:max-h-[min(540px,80vh)] flex flex-col justify-between pointer-events-auto"
             >
               <div>
                 <div className="flex items-start justify-between gap-4 mb-3">
