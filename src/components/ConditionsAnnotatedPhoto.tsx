@@ -154,7 +154,7 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
         </svg>
 
         <Image
-          src="/images/athletenobg.webp"
+          src="/images/athletenobg copy.png"
           alt="Αθλητής σε φάση τρεξίματος με επισημασμένες περιοχές πόνου"
           width={1068}
           height={1472}
