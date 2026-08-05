@@ -176,7 +176,9 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
             actually asks for it; the poster is the photo already on screen, so
             the swap to video is seamless while the first frames buffer.
             loop is off on purpose: these are short highlight clips, so they
-            play once and hand the card back to the static photo. */}
+            play once and hand the card back to the static photo.
+            object-position shifted down (center 35%) to keep faces visible
+            instead of cropping them out at the top. */}
         {hoverVideo && (
           <video
             ref={videoRef}
@@ -193,7 +195,7 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
               // would cancel that other card immediately.
               if (playingId === athlete.id) onPlayingChange?.(null);
             }}
-            className={`absolute inset-0 w-full h-full object-cover object-top z-10 transition-opacity duration-200 ${
+            className={`absolute inset-0 w-full h-full object-cover [object-position:center_35%] z-10 transition-opacity duration-200 ${
               isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           />
@@ -237,8 +239,11 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
         )}
       </div>
 
-      {/* Athlete Information */}
-      <div className="p-5 flex flex-col gap-2 flex-grow">
+      {/* Athlete Information — fixed height across all cards ensures visual
+          alignment. min-h ensures cards with short accomplishments don't render
+          shorter than those with longer text. line-clamp-3 caps accomplishment
+          at 3 lines, preventing text overflow from bloating the card. */}
+      <div className="p-5 flex flex-col gap-2 flex-grow min-h-[100px] sm:min-h-[120px]">
         <h3 className="font-display font-bold text-base md:text-lg text-white leading-tight flex flex-wrap items-center gap-1.5">
           {athlete.name}
           {athlete.nickname && (
@@ -252,7 +257,7 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
           {athlete.sport}
         </span>
 
-        <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed mt-1 flex-grow">
+        <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed mt-1 flex-grow line-clamp-3">
           {athlete.accomplishment}
         </p>
       </div>
