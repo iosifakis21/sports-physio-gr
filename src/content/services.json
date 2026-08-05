@@ -4,41 +4,47 @@
     "title": "Manual Therapy",
     "description": "Κινητοποίηση αρθρώσεων για άμεση ανακούφιση από τον πόνο και αποκατάσταση της κίνησης.",
     "iconName": "activity",
-    "photo": "/images/services/manualthrapy.webp"
+    "photo": "/images/services/manualthrapy.webp",
+    "slug": "manual-therapy"
   },
   {
     "id": "sports-rehab",
     "title": "Αθλητική Αποκατάσταση",
     "description": "Εξειδικευμένο ασκησιολόγιο για ασφαλή και γρήγορη επιστροφή στις αθλητικές σας δραστηριότητες.",
     "iconName": "trophy",
-    "photo": "/images/services/athlitikiapokatastasi.webp"
+    "photo": "/images/services/athlitikiapokatastasi.webp",
+    "slug": "athlitiki-apokatastasi"
   },
   {
     "id": "post-op-rehab",
     "title": "Μετεγχειρητική Αποκατάσταση",
     "description": "Καθοδηγούμενη αποκατάσταση για την ανάκτηση της λειτουργικότητας μετά από χειρουργικές επεμβάσεις.",
     "iconName": "shield-check",
-    "photo": "/images/metegxeiritiki.webp"
+    "photo": "/images/metegxeiritiki.webp",
+    "slug": "metegxeiritiki-apokatastasi"
   },
   {
     "id": "dry-needling",
     "title": "Dry Needling",
     "description": "Ξηρά βελόνα για στοχευμένη απελευθέρωση μυϊκών σπασμών και σημείων πυροδότησης πόνου.",
     "iconName": "sparkles",
-    "photo": "/images/dry-needling.webp"
+    "photo": "/images/dry-needling.webp",
+    "slug": "dry-needling"
   },
   {
     "id": "therapeutic-massage",
     "title": "Θεραπευτική Μάλαξη",
     "description": "Μυϊκή χαλάρωση και βελτίωση της κυκλοφορίας για ταχύτερη αποθεραπεία και μείωση της μυϊκής έντασης.",
     "iconName": "heart",
-    "photo": "/images/services/therapeftikimalaksi.webp"
+    "photo": "/images/services/therapeftikimalaksi.webp",
+    "slug": "therapeftiki-malaxi"
   },
   {
     "id": "kinesiotaping",
     "title": "Kinesiotaping",
     "description": "ΥΥποστήριξη μυών και αρθρώσεων με ειδικές ελαστικές ταινίες — σταθερότητα χωρίς περιορισμό της κίνησης.",
     "iconName": "bookmark",
-    "photo": "/images/kinesiotaping.webp"
+    "photo": "/images/kinesiotaping.webp",
+    "slug": "kinesiotaping"
   }
 ]

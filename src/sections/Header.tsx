@@ -2,23 +2,33 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/Button";
 
 interface NavLinkItem {
   label: string;
-  href: string;
+  /** Id of the homepage section this link scrolls to. */
+  anchor: string;
 }
 
 const navLinks: NavLinkItem[] = [
-  { label: "Υπηρεσίες", href: "#ypiresies" },
-  { label: "Φυσικοθεραπεία", href: "#fysikotherapeia" },
-  { label: "Διαδικασία", href: "#diadikasia" },
-  { label: "Γνωρίστε με", href: "#gnoriste-me" },
-  { label: "Αξιολογήσεις", href: "#axiologiseis" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Υπηρεσίες", anchor: "ypiresies" },
+  { label: "Φυσικοθεραπεία", anchor: "fysikotherapeia" },
+  { label: "Διαδικασία", anchor: "diadikasia" },
+  { label: "Γνωρίστε με", anchor: "gnoriste-me" },
+  { label: "Αξιολογήσεις", anchor: "axiologiseis" },
+  { label: "FAQ", anchor: "faq" },
 ];
 
 export const Header: React.FC = () => {
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+
+  // Every nav target lives on the homepage. On the homepage a bare hash scrolls
+  // in place; anywhere else (e.g. a /ypiresies/... page) the link has to route
+  // back to "/" first, so it needs the leading slash.
+  const anchorHref = (anchor: string) => (isHomePage ? `#${anchor}` : `/#${anchor}`);
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -101,7 +111,7 @@ export const Header: React.FC = () => {
       >
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           {/* Logo Mark */}
-          <a href="#" className="flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
+          <a href={isHomePage ? "#" : "/"} className="flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
             <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
           </a>
 
@@ -109,8 +119,8 @@ export const Header: React.FC = () => {
           <nav className="hidden lg:flex items-center gap-6" aria-label="Κύριο Μενού Πλοήγησης">
             {navLinks.map((link) => (
               <a
-                key={link.href}
-                href={link.href}
+                key={link.anchor}
+                href={anchorHref(link.anchor)}
                 className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
               >
                 {link.label}
@@ -122,7 +132,7 @@ export const Header: React.FC = () => {
           <div className="flex items-center gap-3">
             {/* Header Primary CTA (Desktop and Tablet) */}
             <Button
-              href="#kleiste-rantevou"
+              href={anchorHref("kleiste-rantevou")}
               variant="primary"
               label="Κλείστε Ραντεβού"
               className="!hidden sm:!inline-flex"
@@ -235,8 +245,8 @@ export const Header: React.FC = () => {
           <nav className="flex flex-col gap-4" aria-label="Σύνδεσμοι κινητού">
             {navLinks.map((link) => (
               <a
-                key={link.href}
-                href={link.href}
+                key={link.anchor}
+                href={anchorHref(link.anchor)}
                 onClick={() => setIsMenuOpen(false)}
                 className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
               >
@@ -249,7 +259,7 @@ export const Header: React.FC = () => {
         {/* Drawer Footer / CTA */}
         <div className="flex flex-col gap-4 mt-8">
           <Button
-            href="#booking"
+            href={anchorHref("kleiste-rantevou")}
             variant="primary"
             label="Κλείστε Ραντεβού"
             onClick={() => setIsMenuOpen(false)}

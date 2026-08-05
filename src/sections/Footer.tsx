@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 
@@ -135,30 +136,30 @@ export const Footer: React.FC = () => {
             Χρήσιμοι Σύνδεσμοι
           </h3>
           <nav className="font-sans text-sm text-slate-400 flex flex-col gap-2" aria-label="Σύνδεσμοι υποσέλιδου">
-            <a
-              href="#ypiresies"
+            <Link
+              href="/#ypiresies"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Υπηρεσίες
-            </a>
-            <a
-              href="#fysikotherapeia"
+            </Link>
+            <Link
+              href="/#fysikotherapeia"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Φυσικοθεραπεία
-            </a>
-            <a
-              href="#gnoriste-me"
+            </Link>
+            <Link
+              href="/#gnoriste-me"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Γνωρίστε με
-            </a>
-            <a
+            </Link>
+            <Link
               href="/politiki-aporritou"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5 mt-2"
             >
               Πολιτική Απορρήτου
-            </a>
+            </Link>
           </nav>
         </AnimatedContainer>
       </div>

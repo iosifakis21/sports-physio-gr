@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import servicesData from "@/content/services.json";
@@ -12,6 +13,8 @@ interface ServiceItem {
   description: string;
   iconName: string;
   photo: string;
+  /** Slug of the service's own page — see src/content/service-pages/ */
+  slug: string;
 }
 
 const ArrowIcon: React.FC = () => (
@@ -33,7 +36,11 @@ const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({ servic
   const number = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="group relative aspect-[3/4] lg:aspect-[4/3.85] w-full overflow-hidden rounded-card bg-ink-900 select-none">
+    <Link
+      href={`/ypiresies/${service.slug}`}
+      aria-label={`${service.title} — μάθετε περισσότερα`}
+      className="group relative block aspect-[3/4] lg:aspect-[4/3.85] w-full overflow-hidden rounded-card bg-ink-900 select-none focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+    >
       {/* Full-bleed photo, with a solid ink-900 fallback if the file is missing */}
       {!imgError && (
         <Image
@@ -76,8 +83,13 @@ const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({ servic
         <p className="font-sans font-light text-white/80 text-[11px] leading-snug line-clamp-2 md:text-sm md:leading-relaxed md:line-clamp-3 lg:text-xs lg:leading-snug lg:line-clamp-2">
           {service.description}
         </p>
+        {/* Affordance making it obvious the whole card is a link */}
+        <span className="mt-1 inline-flex items-center gap-1 font-sans font-semibold text-white text-[11px] md:text-sm lg:text-xs underline underline-offset-4 decoration-white/40 md:group-hover:decoration-white transition-colors">
+          Μάθετε περισσότερα
+          <span aria-hidden="true">→</span>
+        </span>
       </div>
-    </div>
+    </Link>
   );
 };
 
