@@ -1,5 +1,5 @@
 {
-  "$schema_note": "Each entry: name (display), nickname (optional, shown in quotes), sport, accomplishment (one punchy line), photo (path in /public/images/), hoverPhoto (optional: second photo crossfaded in on hover/tap), priority (lower = shown first), consent (MUST be true before the athlete appears on the live site).",
+  "$schema_note": "Each entry: name (display), nickname (optional, shown in quotes), sport, accomplishment (one punchy line), photo (path in /public/images/), hoverPhoto (optional: second photo crossfaded in on hover/tap), hoverVideo (optional: clip played inline with sound after an explicit click/tap — an athlete has hoverPhoto OR hoverVideo, never both), priority (lower = shown first), consent (MUST be true before the athlete appears on the live site).",
   "athletes": [
     {
       "id": "kambosos",
@@ -30,6 +30,7 @@
       "sport": "Πυγμαχία (Super Lightweight)",
       "accomplishment": "2x παγκόσμια πρωταθλήτρια WBO super lightweight — η πρώτη παγκόσμια πρωταθλήτρια πυγμαχίας με έδρα την Ελλάδα",
       "photo": "/images/linardatou.webp",
+      "hoverVideo": "https://zndltavpvowndrvvpepf.supabase.co/storage/v1/object/public/Sports%20Physio%20Sioulis/linardatouvideo.mp4",
       "priority": 3,
       "consent": true
     },
@@ -40,6 +41,7 @@
       "sport": "MMA (ex-UFC)",
       "accomplishment": "Ο πρώτος μαχητής με έδρα την Ελλάδα που αγωνίστηκε στο UFC — πρωταθλητής EFL Light Heavyweight",
       "photo": "/images/michailidis.webp",
+      "hoverVideo": "https://zndltavpvowndrvvpepf.supabase.co/storage/v1/object/public/Sports%20Physio%20Sioulis/michailidisvideo.mp4",
       "priority": 4,
       "consent": true
     },
@@ -50,6 +52,7 @@
       "sport": "Πάλη (Freestyle) / MMA",
       "accomplishment": "Χρυσό μετάλλιο στο Παγκόσμιο Πρωτάθλημα U23 2021 (65 κιλά) — Ολυμπιονίκης συμμετοχής, Τόκιο 2020",
       "photo": "/images/pilidis.webp",
+      "hoverVideo": "https://zndltavpvowndrvvpepf.supabase.co/storage/v1/object/public/Sports%20Physio%20Sioulis/pilidisvideo.mp4",
       "priority": 5,
       "consent": true
     },
@@ -60,6 +63,7 @@
       "sport": "Πυγμαχία (ερασιτεχνική, middleweight)",
       "accomplishment": "Πρωταθλητής Ευρώπης ερασιτεχνικής πυγμαχίας",
       "photo": "/images/tsamalidis.webp",
+      "hoverVideo": "https://zndltavpvowndrvvpepf.supabase.co/storage/v1/object/public/Sports%20Physio%20Sioulis/tsamalidisvideo.mp4",
       "priority": 6,
       "consent": true
     },
@@ -114,6 +118,7 @@
       "sport": "Πυγμαχία (Welterweight)",
       "accomplishment": "Αήττητος επαγγελματίας welterweight — διεκδίκησε τον διεθνή τίτλο WBF welterweight",
       "photo": "/images/tsochataridis.webp",
+      "hoverVideo": "https://zndltavpvowndrvvpepf.supabase.co/storage/v1/object/public/Sports%20Physio%20Sioulis/tsochataridisvideo.mp4",
       "priority": 11,
       "consent": true
     },
