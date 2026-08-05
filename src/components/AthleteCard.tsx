@@ -152,9 +152,9 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
             alt={athlete.name}
             fill
             sizes="(max-width: 640px) 280px, 320px"
-            className={`object-cover object-top transition-opacity duration-300 ease-out ${
-              hoverPhoto && showHoverPhoto ? "opacity-0" : "opacity-100"
-            }`}
+            className={`object-cover transition-opacity duration-300 ease-out ${
+              athlete.id === "pilidis" ? "[object-position:center_15%]" : "object-top"
+            } ${hoverPhoto && showHoverPhoto ? "opacity-0" : "opacity-100"}`}
           />
         )}
 
@@ -166,9 +166,9 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
             aria-hidden="true"
             fill
             sizes="(max-width: 640px) 280px, 320px"
-            className={`object-cover object-top transition-opacity duration-300 ease-out ${
-              showHoverPhoto ? "opacity-100" : "opacity-0"
-            }`}
+            className={`object-cover transition-opacity duration-300 ease-out ${
+              athlete.id === "kiatipis" ? "[object-position:center_15%]" : "object-top"
+            } ${showHoverPhoto ? "opacity-100" : "opacity-0"}`}
           />
         )}
 
