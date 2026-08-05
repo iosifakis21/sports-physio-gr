@@ -1,15 +1,11 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AthleteCard, Athlete } from "@/components/AthleteCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import athletesData from "@/content/athletes.json";
 
-// Tolerance for the start/end checks: scrollLeft, clientWidth and scrollWidth
-// are fractional on zoomed or fractional-DPI displays, so an exact comparison
-// would leave the right arrow enabled forever at the end of the row.
-const EDGE_EPSILON = 2;
 // Matches the `gap-6` between cards; used to work out one card's scroll step.
 const CARD_GAP = 24;
 
@@ -33,19 +29,13 @@ const ChevronIcon: React.FC<{ direction: "left" | "right" }> = ({ direction }) =
 
 const ArrowButton: React.FC<{
   direction: "left" | "right";
-  disabled: boolean;
   onClick: () => void;
-}> = ({ direction, disabled, onClick }) => (
+}> = ({ direction, onClick }) => (
   <button
     type="button"
     onClick={onClick}
-    disabled={disabled}
     aria-label={direction === "left" ? "Προηγούμενοι αθλητές" : "Επόμενοι αθλητές"}
-    className={`pointer-events-auto flex items-center justify-center w-11 h-11 rounded-full border shadow-lg transition-all duration-200 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary ${
-      disabled
-        ? "bg-slate-900/60 border-white/10 text-white/25 cursor-not-allowed"
-        : "bg-slate-900/90 border-white/20 text-white cursor-pointer hover:bg-primary hover:border-primary hover:scale-105 active:scale-95"
-    }`}
+    className="pointer-events-auto flex items-center justify-center w-11 h-11 rounded-full border shadow-lg transition-all duration-200 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary bg-slate-900/90 border-white/20 text-white cursor-pointer hover:bg-primary hover:border-primary hover:scale-105 active:scale-95"
   >
     <ChevronIcon direction={direction} />
   </button>
@@ -53,39 +43,57 @@ const ArrowButton: React.FC<{
 
 const AthleteScroller: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
   const trackRef = useRef<HTMLDivElement>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   // Which athlete's clip is playing, if any. Lifted here so starting one card
   // stops whichever card was playing before.
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
 
-  const syncEdges = useCallback(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    setCanScrollLeft(el.scrollLeft > EDGE_EPSILON);
-    setCanScrollRight(el.scrollLeft < maxScroll - EDGE_EPSILON);
-  }, []);
+  // Handle mouse down/drag for desktop scrolling
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!trackRef.current) return;
+    isDraggingRef.current = true;
+    startXRef.current = e.pageX - trackRef.current.offsetLeft;
+    scrollLeftRef.current = trackRef.current.scrollLeft;
+  };
 
-  useEffect(() => {
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !trackRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - trackRef.current.offsetLeft;
+    const walk = startXRef.current - x;
+    trackRef.current.scrollLeft = scrollLeftRef.current + walk;
+  };
+
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+  };
+
+  const handleMouseLeave = () => {
+    isDraggingRef.current = false;
+  };
+
+  // Reset scroll position when it reaches the end of the first copy to create seamless loop
+  const handleScroll = () => {
+    if (!trackRef.current) return;
     const el = trackRef.current;
-    if (!el) return;
-    syncEdges();
-    // ResizeObserver covers both viewport changes and the card widths changing
-    // at the `sm` breakpoint; the scroll listener covers wheel, swipe and the
-    // browser's own scroll-into-view when Tab reaches an off-screen card.
-    const observer = new ResizeObserver(syncEdges);
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [syncEdges, athletes.length]);
+    const singleSetWidth = el.scrollWidth / 3; // Three copies of the list
+    // If scrolled past the second copy, jump back to the first copy
+    if (el.scrollLeft >= singleSetWidth * 2) {
+      el.scrollLeft -= singleSetWidth;
+    } else if (el.scrollLeft < 0) {
+      el.scrollLeft += singleSetWidth;
+    }
+  };
 
   const scrollByCards = (direction: -1 | 1) => {
     const el = trackRef.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-athlete-card]");
     const step = (card?.offsetWidth ?? 300) + CARD_GAP;
-    // One card at a time on phones, two on wider viewports where a single
-    // card is a barely perceptible move.
+    // One card at a time on phones, two on wider viewports
     const cards = el.clientWidth >= 768 ? 2 : 1;
     const prefersReducedMotion =
       typeof window !== "undefined" &&
@@ -96,46 +104,43 @@ const AthleteScroller: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
     });
   };
 
-  const hasOverflow = canScrollLeft || canScrollRight;
-
   return (
     <div className="relative w-full">
       <div
-        ref={trackRef}
-        onScroll={syncEdges}
-        className="w-full overflow-x-auto overscroll-x-contain py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        ref={containerRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        className="cursor-grab active:cursor-grabbing"
       >
-        <div className="flex items-stretch gap-6 w-max">
-          {athletes.map((athlete) => (
-            <div key={athlete.id} data-athlete-card>
-              <AthleteCard
-                athlete={athlete}
-                playingId={playingId}
-                onPlayingChange={setPlayingId}
-              />
-            </div>
-          ))}
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          className="w-full overflow-x-auto overscroll-x-contain py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          <div className="flex items-stretch gap-6 w-max">
+            {/* Render athletes three times for seamless infinite loop */}
+            {[...Array(3)].map((_, copyIdx) =>
+              athletes.map((athlete) => (
+                <div key={`${athlete.id}-${copyIdx}`} data-athlete-card>
+                  <AthleteCard
+                    athlete={athlete}
+                    playingId={playingId}
+                    onPlayingChange={setPlayingId}
+                  />
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Arrow overlay, spanning only the photo band so the controls sit
-          centred on the imagery rather than on the card text. It is inert
-          except for the buttons themselves, so cards underneath stay
-          clickable — including the video play targets. */}
-      {hasOverflow && (
-        <div className="pointer-events-none absolute inset-x-0 top-2 h-[220px] sm:h-[260px] z-50 flex items-center justify-between">
-          <ArrowButton
-            direction="left"
-            disabled={!canScrollLeft}
-            onClick={() => scrollByCards(-1)}
-          />
-          <ArrowButton
-            direction="right"
-            disabled={!canScrollRight}
-            onClick={() => scrollByCards(1)}
-          />
-        </div>
-      )}
+      {/* Arrow buttons — always visible and never disabled since the loop is infinite */}
+      <div className="pointer-events-none absolute inset-x-0 top-2 h-[220px] sm:h-[260px] z-50 flex items-center justify-between">
+        <ArrowButton direction="left" onClick={() => scrollByCards(-1)} />
+        <ArrowButton direction="right" onClick={() => scrollByCards(1)} />
+      </div>
     </div>
   );
 };
