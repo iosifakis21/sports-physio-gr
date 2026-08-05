@@ -167,7 +167,7 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
             fill
             sizes="(max-width: 640px) 280px, 320px"
             className={`object-cover transition-opacity duration-300 ease-out ${
-              athlete.id === "kiatipis" ? "[object-position:center_15%]" : "object-top"
+              athlete.id === "kiatipis" ? "[object-position:center_5%]" : "object-top"
             } ${showHoverPhoto ? "opacity-100" : "opacity-0"}`}
           />
         )}
