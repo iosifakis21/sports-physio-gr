@@ -121,7 +121,7 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
       ref={cardRef}
       {...swapHandlers}
       tabIndex={0}
-      className="flex-shrink-0 w-[280px] sm:w-[320px] bg-slate-900 border border-white/10 rounded-card overflow-hidden flex flex-col focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary select-none group/card cursor-pointer transition-all duration-200 hover:border-primary/40"
+      className="flex-shrink-0 w-[280px] sm:w-[320px] h-[420px] sm:h-[520px] bg-slate-900 border border-white/10 rounded-card overflow-hidden flex flex-col focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary select-none group/card cursor-pointer transition-all duration-200 hover:border-primary/40"
       aria-label={`Αθλητής: ${athlete.name}. ${athlete.sport}, ${athlete.accomplishment}`}
     >
       {/* Photo Container */}
@@ -239,12 +239,13 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
         )}
       </div>
 
-      {/* Athlete Information — fixed height across all cards ensures visual
-          alignment. min-h ensures cards with short accomplishments don't render
-          shorter than those with longer text. line-clamp-3 caps accomplishment
-          at 3 lines, preventing text overflow from bloating the card. */}
-      <div className="p-5 flex flex-col gap-2 flex-grow min-h-[100px] sm:min-h-[120px]">
-        <h3 className="font-display font-bold text-base md:text-lg text-white leading-tight flex flex-wrap items-center gap-1.5">
+      {/* Athlete Information — the card has a fixed total height (h-[420px] mobile,
+          h-[520px] desktop), image is fixed height (220/260px), and this text
+          container fills the remaining space with flex-grow. All cards now have
+          identical height, and shorter accomplishment text leaves empty space
+          rather than shrinking the card. line-clamp-4 truncates longer text. */}
+      <div className="p-5 flex flex-col gap-2 flex-grow overflow-hidden">
+        <h3 className="font-display font-bold text-base md:text-lg text-white leading-tight flex flex-wrap items-center gap-1.5 flex-shrink-0">
           {athlete.name}
           {athlete.nickname && (
             <span className="text-primary text-xs sm:text-sm font-normal">
@@ -253,11 +254,11 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
           )}
         </h3>
 
-        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-sans">
+        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider font-sans flex-shrink-0">
           {athlete.sport}
         </span>
 
-        <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed mt-1 flex-grow line-clamp-3">
+        <p className="font-sans text-xs sm:text-sm text-slate-300 leading-relaxed mt-1 flex-grow line-clamp-4">
           {athlete.accomplishment}
         </p>
       </div>
