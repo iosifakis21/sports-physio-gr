@@ -401,10 +401,10 @@ export const Booking: React.FC = () => {
         <div className="text-center font-sans text-sm md:text-base text-slate-200 mt-2">
           ή καλέστε μας άμεσα στο{" "}
           <a
-            href="tel:+302101234567"
+            href="tel:+302128488984"
             className="text-white hover:text-slate-100 font-bold underline focus:outline focus:outline-2 focus:outline-white rounded px-1 py-0.5"
           >
-            +30 210 1234567
+            210 28 48 984
           </a>
         </div>
 

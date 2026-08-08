@@ -11,19 +11,20 @@ export const Footer: React.FC = () => {
     "image": "https://sports-physio.gr/images/hero-bg.jpg", // placeholder, updated in later phases
     "@id": "https://sports-physio.gr/#physiotherapy",
     "url": "https://sports-physio.gr",
-    "telephone": "+302101234567",
+    "telephone": "+302128488984",
+    "email": "msioulis@yahoo.gr",
     "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Λεωφόρος Κηφισίας 123",
-      "addressLocality": "Αθήνα",
-      "postalCode": "11524",
+      "streetAddress": "Ιερού Λόχου 3",
+      "addressLocality": "Μεταμόρφωση",
+      "postalCode": "14451",
       "addressCountry": "GR"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 37.9838, // approximate placeholder coordinates
-      "longitude": 23.7275
+      "latitude": 38.0626,
+      "longitude": 23.7486
     },
     "openingHoursSpecification": [
       {
@@ -73,12 +74,22 @@ export const Footer: React.FC = () => {
               <div>
                 <strong className="text-white block font-medium">Διεύθυνση:</strong>
                 <a
-                  href="https://maps.google.com/?q=Λεωφόρος+Κηφισίας+123,+Αθήνα+11524"
+                  href="https://maps.google.com/?q=Ιερού+Λόχου+3,+Μεταμόρφωση+14451,+Αθήνα"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
-                  Λεωφόρος Κηφισίας 123, Αθήνα, 115 24
+                  Ιερού Λόχου 3, Μεταμόρφωση
+                  <br />
+                  Τ.Κ. 14451, Αθήνα
+                </a>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=%CE%99%CE%B5%CF%81%CE%BF%CF%8D+%CE%9B%CF%8C%CF%87%CE%BF%CF%85+3,+%CE%9C%CE%B5%CF%84%CE%B1%CE%BC%CF%8C%CF%81%CF%86%CF%89%CF%83%CE%B7+14451"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mt-1 text-primary hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
+                >
+                  Οδηγίες →
                 </a>
               </div>
             </li>
@@ -87,10 +98,10 @@ export const Footer: React.FC = () => {
               <div>
                 <strong className="text-white block font-medium">Τηλέφωνο:</strong>
                 <a
-                  href="tel:+302101234567"
+                  href="tel:+302128488984"
                   className="hover:text-primary transition-colors text-base font-semibold focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
-                  +30 210 1234567
+                  210 28 48 984
                 </a>
               </div>
             </li>
@@ -99,10 +110,10 @@ export const Footer: React.FC = () => {
               <div>
                 <strong className="text-white block font-medium">Email:</strong>
                 <a
-                  href="mailto:info@sports-physio.gr"
+                  href="mailto:msioulis@yahoo.gr"
                   className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
-                  info@sports-physio.gr
+                  msioulis@yahoo.gr
                 </a>
               </div>
             </li>

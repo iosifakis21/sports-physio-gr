@@ -77,7 +77,7 @@ export const StickyMobileCTA: React.FC = () => {
 
       {/* Call button icon */}
       <a
-        href="tel:+302101234567"
+        href="tel:+302128488984"
         className="w-[44px] h-[44px] rounded-btn bg-surface border border-primary text-primary flex items-center justify-center flex-shrink-0 hover:bg-surface-alt transition-colors focus:outline focus:outline-2 focus:outline-primary select-none shadow-sm"
         aria-label="Τηλεφωνική κλήση με το φυσικοθεραπευτήριο"
       >

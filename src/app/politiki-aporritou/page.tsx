@@ -62,7 +62,7 @@ export default function PrivacyPolicy() {
             4. Τα δικαιώματά σας
           </h3>
           <p>
-            Σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (GDPR), έχετε το δικαίωμα πρόσβασης, διόρθωσης, διαγραφής ή περιορισμού της επεξεργασίας των δεδομένων σας ανά πάσα στιγμή. Για οποιοδήποτε αίτημα, μπορείτε να επικοινωνήσετε μαζί μας στο <a href="mailto:info@sports-physio.gr" className="text-primary hover:underline font-semibold">info@sports-physio.gr</a>.
+            Σύμφωνα με τον Γενικό Κανονισμό Προστασίας Δεδομένων (GDPR), έχετε το δικαίωμα πρόσβασης, διόρθωσης, διαγραφής ή περιορισμού της επεξεργασίας των δεδομένων σας ανά πάσα στιγμή. Για οποιοδήποτε αίτημα, μπορείτε να επικοινωνήσετε μαζί μας στο <a href="mailto:msioulis@yahoo.gr" className="text-primary hover:underline font-semibold">msioulis@yahoo.gr</a>.
           </p>
         </div>
 
