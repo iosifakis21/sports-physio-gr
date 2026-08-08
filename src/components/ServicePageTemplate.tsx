@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,6 +14,23 @@ interface ConditionGroup {
   areaTitle: string;
   items: string[];
 }
+
+/**
+ * Whether a service's hero photo has actually been supplied yet. Services
+ * awaiting their real photo point at a path under `public/images/services/`
+ * that does not exist, and next/image has no fallback of its own — it would
+ * render the browser's broken-image glyph in the middle of the hero. This runs
+ * at build time (the template is a server component and every service page is
+ * prerendered), so a page simply drops the image until the file is added, and
+ * picks it up automatically once it is.
+ */
+const heroPhotoExists = (photo: string): boolean => {
+  try {
+    return fs.existsSync(path.join(process.cwd(), "public", photo));
+  } catch {
+    return false;
+  }
+};
 
 const CalendarIcon: React.FC = () => (
   <svg
@@ -71,6 +90,7 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
     (relatedConditions ?? []).includes(group.id)
   );
   const hasFaq = Boolean(faq && faq.length > 0);
+  const hasHeroPhoto = heroPhotoExists(hero.photo);
 
   const faqSchema = hasFaq
     ? {
@@ -145,15 +165,17 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
           </div>
 
           {/* Photo column — full-width above the copy on mobile, beside it on desktop */}
-          <div className="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-card overflow-hidden ring-1 ring-white/10 shadow-2xl order-first lg:order-last">
-            <Image
-              src={hero.photo}
-              alt={hero.title}
-              fill
-              priority
-              sizes="(max-width: 1023px) 100vw, 50vw"
-              className="object-cover"
-            />
+          <div className="relative w-full aspect-[16/10] lg:aspect-[4/3] rounded-card overflow-hidden ring-1 ring-white/10 shadow-2xl order-first lg:order-last bg-gradient-to-br from-white/10 via-white/5 to-transparent">
+            {hasHeroPhoto && (
+              <Image
+                src={hero.photo}
+                alt={hero.title}
+                fill
+                priority
+                sizes="(max-width: 1023px) 100vw, 50vw"
+                className="object-cover"
+              />
+            )}
           </div>
         </div>
       </section>
