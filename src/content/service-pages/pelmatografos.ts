@@ -1,32 +1,34 @@
 import type { ServicePageContent } from "./types";
 
 /**
- * ΣΕΛΙΔΑ: /ypiresies/metegxeiritiki-apokatastasi
+ * ΣΕΛΙΔΑ: /ypiresies/pelmatografos
  *
  * Αντικαταστήστε κάθε «[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ]» με το δικό σας κείμενο.
  * Μπορείτε να προσθέσετε/αφαιρέσετε όσα μπλοκ θέλετε στο `body`.
  */
-export const metegxeiritikiApokatastasiPage: ServicePageContent = {
-  slug: "metegxeiritiki-apokatastasi",
-  serviceId: "post-op-rehab",
+export const pelmatografosPage: ServicePageContent = {
+  slug: "pelmatografos",
+  serviceId: "pelmatografos",
 
   meta: {
-    title: "Μετεγχειρητική Αποκατάσταση",
+    title: "Πελματογράφος",
     description:
-      "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Σύντομη περιγραφή της μετεγχειρητικής αποκατάστασης για τις μηχανές αναζήτησης (140–160 χαρακτήρες).",
+      "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Σύντομη περιγραφή της υπηρεσίας Πελματογράφος για τις μηχανές αναζήτησης (140–160 χαρακτήρες).",
   },
 
   hero: {
-    title: "Μετεγχειρητική Αποκατάσταση",
+    title: "Πελματογράφος",
     intro:
       "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Μία ή δύο προτάσεις που εξηγούν τι είναι η υπηρεσία και σε ποιον απευθύνεται.",
-    photo: "/images/metegxeiritiki.webp",
+    // Η φωτογραφία της υπηρεσίας δεν έχει δοθεί ακόμη· ανεβάστε αρχείο σε αυτή
+    // ακριβώς τη διαδρομή μέσα στο `public/` και θα εμφανιστεί αυτόματα.
+    photo: "/images/services/pelmatografos.jpg",
   },
 
   body: [
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Εισαγωγική παράγραφος: γιατί είναι κρίσιμη η αποκατάσταση μετά από χειρουργείο.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Εισαγωγική παράγραφος: τι είναι η μέθοδος και πώς λειτουργεί.",
     },
     {
       type: "heading",
@@ -34,7 +36,7 @@ export const metegxeiritikiApokatastasiPage: ServicePageContent = {
     },
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Αναλυτική περιγραφή του πρωτοκόλλου και της συνεργασίας με τον χειρουργό.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Αναλυτική περιγραφή της προσέγγισης και των τεχνικών.",
     },
     {
       type: "heading",
@@ -50,12 +52,12 @@ export const metegxeiritikiApokatastasiPage: ServicePageContent = {
     },
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Καταληκτική παράγραφος: χρονοδιάγραμμα και τι να περιμένει ο ασθενής.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Καταληκτική παράγραφος: πώς εξελίσσεται μια συνεδρία και τι να περιμένει ο ασθενής.",
     },
   ],
 
   // Προαιρετικό — ids από το conditions.json. Διαγράψτε τη γραμμή αν δεν θέλετε την ενότητα.
-  relatedConditions: ["post-op", "hip-knee"],
+  relatedConditions: ["ankle-foot", "hip-knee"],
 
   // Προαιρετικό — διαγράψτε τη λίστα αν δεν θέλετε ενότητα ερωτήσεων.
   faq: [

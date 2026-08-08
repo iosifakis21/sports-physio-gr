@@ -1,32 +1,34 @@
 import type { ServicePageContent } from "./types";
 
 /**
- * ΣΕΛΙΔΑ: /ypiresies/athlitiki-apokatastasi
+ * ΣΕΛΙΔΑ: /ypiresies/medical-training-therapy
  *
  * Αντικαταστήστε κάθε «[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ]» με το δικό σας κείμενο.
  * Μπορείτε να προσθέσετε/αφαιρέσετε όσα μπλοκ θέλετε στο `body`.
  */
-export const athlitikiApokatastasiPage: ServicePageContent = {
-  slug: "athlitiki-apokatastasi",
-  serviceId: "sports-rehab",
+export const medicalTrainingTherapyPage: ServicePageContent = {
+  slug: "medical-training-therapy",
+  serviceId: "medical-training-therapy",
 
   meta: {
-    title: "Αθλητική Αποκατάσταση",
+    title: "Medical Training Therapy",
     description:
-      "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Σύντομη περιγραφή της αθλητικής αποκατάστασης για τις μηχανές αναζήτησης (140–160 χαρακτήρες).",
+      "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Σύντομη περιγραφή της υπηρεσίας Medical Training Therapy για τις μηχανές αναζήτησης (140–160 χαρακτήρες).",
   },
 
   hero: {
-    title: "Αθλητική Αποκατάσταση",
+    title: "Medical Training Therapy",
     intro:
       "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Μία ή δύο προτάσεις που εξηγούν τι είναι η υπηρεσία και σε ποιον απευθύνεται.",
-    photo: "/images/services/athlitikiapokatastasi.webp",
+    // Η φωτογραφία της υπηρεσίας δεν έχει δοθεί ακόμη· ανεβάστε αρχείο σε αυτή
+    // ακριβώς τη διαδρομή μέσα στο `public/` και θα εμφανιστεί αυτόματα.
+    photo: "/images/services/medical-training-therapy.jpg",
   },
 
   body: [
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Εισαγωγική παράγραφος: τι περιλαμβάνει η αθλητική αποκατάσταση.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Εισαγωγική παράγραφος: τι είναι η μέθοδος και πώς λειτουργεί.",
     },
     {
       type: "heading",
@@ -34,7 +36,7 @@ export const athlitikiApokatastasiPage: ServicePageContent = {
     },
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Αναλυτική περιγραφή των σταδίων αποκατάστασης.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Αναλυτική περιγραφή της προσέγγισης και των τεχνικών.",
     },
     {
       type: "heading",
@@ -50,12 +52,12 @@ export const athlitikiApokatastasiPage: ServicePageContent = {
     },
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Καταληκτική παράγραφος: κριτήρια ασφαλούς επιστροφής στην αγωνιστική δράση.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Καταληκτική παράγραφος: πώς εξελίσσεται μια συνεδρία και τι να περιμένει ο ασθενής.",
     },
   ],
 
   // Προαιρετικό — ids από το conditions.json. Διαγράψτε τη γραμμή αν δεν θέλετε την ενότητα.
-  relatedConditions: ["sports-injuries", "hip-knee"],
+  relatedConditions: ["sports-injuries", "post-op"],
 
   // Προαιρετικό — διαγράψτε τη λίστα αν δεν θέλετε ενότητα ερωτήσεων.
   faq: [

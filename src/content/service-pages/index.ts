@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import type { ServicePageContent } from "./types";
 import { manualTherapyPage } from "./manual-therapy";
-import { athlitikiApokatastasiPage } from "./athlitiki-apokatastasi";
-import { metegxeiritikiApokatastasiPage } from "./metegxeiritiki-apokatastasi";
+import { medicalTrainingTherapyPage } from "./medical-training-therapy";
+import { kroustikosYperichosPage } from "./kroustikos-yperichos";
+import { pelmatografosPage } from "./pelmatografos";
 import { dryNeedlingPage } from "./dry-needling";
-import { therapeftikiMalaxiPage } from "./therapeftiki-malaxi";
 import { kinesiotapingPage } from "./kinesiotaping";
 
 export const SITE_URL = "https://sports-physio.gr";
@@ -13,10 +13,10 @@ const SITE_NAME_SUFFIX = "Sports-Physio.gr — Μιχάλης Σιούλης";
 /** Όλες οι σελίδες υπηρεσιών, με τη σειρά που εμφανίζονται στην αρχική. */
 export const servicePages: ServicePageContent[] = [
   manualTherapyPage,
-  athlitikiApokatastasiPage,
-  metegxeiritikiApokatastasiPage,
+  medicalTrainingTherapyPage,
+  kroustikosYperichosPage,
+  pelmatografosPage,
   dryNeedlingPage,
-  therapeftikiMalaxiPage,
   kinesiotapingPage,
 ];
 

@@ -2,47 +2,47 @@
   {
     "id": "manual-therapy",
     "title": "Manual Therapy",
-    "description": "Κινητοποίηση αρθρώσεων για άμεση ανακούφιση από τον πόνο και αποκατάσταση της κίνησης.",
+    "description": "Χειρωνακτικές τεχνικές φυσικοθεραπείας για άμεση ανακούφιση από τον πόνο και αποκατάσταση της φυσιολογικής κίνησης.",
     "iconName": "activity",
     "photo": "/images/services/manualthrapy.webp",
     "slug": "manual-therapy"
   },
   {
-    "id": "sports-rehab",
-    "title": "Αθλητική Αποκατάσταση",
-    "description": "Εξειδικευμένο ασκησιολόγιο για ασφαλή και γρήγορη επιστροφή στις αθλητικές σας δραστηριότητες.",
+    "id": "medical-training-therapy",
+    "title": "Medical Training Therapy",
+    "description": "Ενεργητική αποκατάσταση μέσω εξειδικευμένων θεραπευτικών ασκήσεων, για βελτίωση δύναμης, αντοχής και σταθερότητας.",
     "iconName": "trophy",
-    "photo": "/images/services/athlitikiapokatastasi.webp",
-    "slug": "athlitiki-apokatastasi"
+    "photo": "/images/services/medical-training-therapy.jpg",
+    "slug": "medical-training-therapy"
   },
   {
-    "id": "post-op-rehab",
-    "title": "Μετεγχειρητική Αποκατάσταση",
-    "description": "Καθοδηγούμενη αποκατάσταση για την ανάκτηση της λειτουργικότητας μετά από χειρουργικές επεμβάσεις.",
-    "iconName": "shield-check",
-    "photo": "/images/metegxeiritiki.webp",
-    "slug": "metegxeiritiki-apokatastasi"
+    "id": "kroustikos-yperichos",
+    "title": "Κρουστικός Υπέρηχος (PiezoWave2)",
+    "description": "Εξωσωματικά κρουστικά κύματα για άμεση ανακούφιση από χρόνιο πόνο σε μύες, τένοντες και οστά.",
+    "iconName": "zap",
+    "photo": "/images/services/kroustikos-yperichos.jpg",
+    "slug": "kroustikos-yperichos"
+  },
+  {
+    "id": "pelmatografos",
+    "title": "Πελματογράφος",
+    "description": "Ακριβής ψηφιακή ανάλυση βάδισης και κατανομής βάρους για εξατομικευμένα ορθωτικά πέλματα.",
+    "iconName": "footprints",
+    "photo": "/images/services/pelmatografos.jpg",
+    "slug": "pelmatografos"
   },
   {
     "id": "dry-needling",
     "title": "Dry Needling",
-    "description": "Ξηρά βελόνα για στοχευμένη απελευθέρωση μυϊκών σπασμών και σημείων πυροδότησης πόνου.",
+    "description": "Στοχευμένη απελευθέρωση μυϊκών σπασμών και σημείων πυροδότησης πόνου (trigger points).",
     "iconName": "sparkles",
     "photo": "/images/dry-needling.webp",
     "slug": "dry-needling"
   },
   {
-    "id": "therapeutic-massage",
-    "title": "Θεραπευτική Μάλαξη",
-    "description": "Μυϊκή χαλάρωση και βελτίωση της κυκλοφορίας για ταχύτερη αποθεραπεία και μείωση της μυϊκής έντασης.",
-    "iconName": "heart",
-    "photo": "/images/services/therapeftikimalaksi.webp",
-    "slug": "therapeftiki-malaxi"
-  },
-  {
     "id": "kinesiotaping",
     "title": "Kinesiotaping",
-    "description": "ΥΥποστήριξη μυών και αρθρώσεων με ειδικές ελαστικές ταινίες — σταθερότητα χωρίς περιορισμό της κίνησης.",
+    "description": "Υποστήριξη μυών και αρθρώσεων με ειδικές ελαστικές ταινίες — σταθερότητα χωρίς περιορισμό της κίνησης.",
     "iconName": "bookmark",
     "photo": "/images/kinesiotaping.webp",
     "slug": "kinesiotaping"

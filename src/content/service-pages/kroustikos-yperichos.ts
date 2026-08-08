@@ -1,32 +1,34 @@
 import type { ServicePageContent } from "./types";
 
 /**
- * ΣΕΛΙΔΑ: /ypiresies/therapeftiki-malaxi
+ * ΣΕΛΙΔΑ: /ypiresies/kroustikos-yperichos
  *
  * Αντικαταστήστε κάθε «[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ]» με το δικό σας κείμενο.
  * Μπορείτε να προσθέσετε/αφαιρέσετε όσα μπλοκ θέλετε στο `body`.
  */
-export const therapeftikiMalaxiPage: ServicePageContent = {
-  slug: "therapeftiki-malaxi",
-  serviceId: "therapeutic-massage",
+export const kroustikosYperichosPage: ServicePageContent = {
+  slug: "kroustikos-yperichos",
+  serviceId: "kroustikos-yperichos",
 
   meta: {
-    title: "Θεραπευτική Μάλαξη",
+    title: "Κρουστικός Υπέρηχος (PiezoWave2)",
     description:
-      "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Σύντομη περιγραφή της θεραπευτικής μάλαξης για τις μηχανές αναζήτησης (140–160 χαρακτήρες).",
+      "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Σύντομη περιγραφή της υπηρεσίας Κρουστικός Υπέρηχος (PiezoWave2) για τις μηχανές αναζήτησης (140–160 χαρακτήρες).",
   },
 
   hero: {
-    title: "Θεραπευτική Μάλαξη",
+    title: "Κρουστικός Υπέρηχος (PiezoWave2)",
     intro:
       "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Μία ή δύο προτάσεις που εξηγούν τι είναι η υπηρεσία και σε ποιον απευθύνεται.",
-    photo: "/images/services/therapeftikimalaksi.webp",
+    // Η φωτογραφία της υπηρεσίας δεν έχει δοθεί ακόμη· ανεβάστε αρχείο σε αυτή
+    // ακριβώς τη διαδρομή μέσα στο `public/` και θα εμφανιστεί αυτόματα.
+    photo: "/images/services/kroustikos-yperichos.jpg",
   },
 
   body: [
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Εισαγωγική παράγραφος: τι είναι η θεραπευτική μάλαξη και σε τι διαφέρει από τη χαλαρωτική.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Εισαγωγική παράγραφος: τι είναι η μέθοδος και πώς λειτουργεί.",
     },
     {
       type: "heading",
@@ -34,7 +36,7 @@ export const therapeftikiMalaxiPage: ServicePageContent = {
     },
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Αναλυτική περιγραφή των τεχνικών μάλαξης που εφαρμόζονται.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Αναλυτική περιγραφή της προσέγγισης και των τεχνικών.",
     },
     {
       type: "heading",
@@ -50,12 +52,12 @@ export const therapeftikiMalaxiPage: ServicePageContent = {
     },
     {
       type: "paragraph",
-      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Καταληκτική παράγραφος: διάρκεια συνεδρίας και συχνότητα.",
+      text: "[ΠΕΡΙΕΧΟΜΕΝΟ ΠΡΟΣ ΣΥΜΠΛΗΡΩΣΗ] — Καταληκτική παράγραφος: πώς εξελίσσεται μια συνεδρία και τι να περιμένει ο ασθενής.",
     },
   ],
 
   // Προαιρετικό — ids από το conditions.json. Διαγράψτε τη γραμμή αν δεν θέλετε την ενότητα.
-  relatedConditions: ["back-neck", "sports-injuries"],
+  relatedConditions: ["shoulder", "ankle-foot"],
 
   // Προαιρετικό — διαγράψτε τη λίστα αν δεν θέλετε ενότητα ερωτήσεων.
   faq: [
