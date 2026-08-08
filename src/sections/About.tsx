@@ -3,12 +3,14 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import { Tilt } from "@/components/Tilt";
+import { CredentialsStrip } from "@/components/CredentialsStrip";
 
 export const About: React.FC = () => {
   const credentials = [
-    "Πτυχιούχος Φυσικοθεραπευτής",
-    "Άδεια ασκήσεως επαγγέλματος",
-    "Μετεκπαιδεύσεις",
+    "Πτυχίο Φυσικοθεραπείας (2003)",
+    "MIDTERM-OMT (2008)",
+    "Εξειδικευμένος Βελονιστής ΕΦΕΑ (2012)",
+    "Medical Training Therapist (2015)",
   ];
 
   return (
@@ -63,10 +65,10 @@ export const About: React.FC = () => {
           >
             <div>
               <h3 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 leading-tight">
-                Μιχάλης Σιούλης
+                Μιχάλης Σιούλης, ΜΤ, PT, MTT
               </h3>
               <p className="font-sans font-medium text-primary text-sm sm:text-base mt-1.5 uppercase tracking-wider">
-                Φυσικοθεραπευτής & Αθλητικός Θεραπευτής
+                Αθλητικός Χειροθεραπευτής – Φυσικοθεραπευτής – Medical Training Therapist
               </p>
             </div>
 
@@ -82,16 +84,22 @@ export const About: React.FC = () => {
               ))}
             </div>
 
-            {/* First-person Biography Philosophy Text */}
-            <p className="font-sans text-base md:text-lg text-ink-600 leading-relaxed max-w-3xl">
-              «Πιστεύω στην επιστημονικά τεκμηριωμένη φυσικοθεραπεία (evidence-based practice) που εστιάζει στον εντοπισμό και την αντιμετώπιση της πραγματικής αιτίας του προβλήματος, και όχι απλά στην προσωρινή ανακούφιση του συμπτώματος. Μέσα από την εξατομικευμένη προσέγγιση και τη συνεργασία, σχεδιάζουμε μαζί το κατάλληλο πλάνο θεραπείας και αποκατάστασης που θα σας επιτρέψει να επιστρέψετε με ασφάλεια και σιγουριά στις καθημερινές ή αθλητικές σας δραστηριότητες.»
-            </p>
-
-            {/* Affiliations / Trust highlights */}
-            <div className="flex items-center gap-3 border-t border-ink-900/10 pt-4 w-full text-sm font-sans text-ink-600">
-              <span className="text-emerald-500 font-bold" aria-hidden="true">✔</span>
-              <span>Επίσημο Μέλος του Πανελληνίου Συλλόγου Φυσικοθεραπευτών (Π.Σ.Φ.)</span>
+            {/* Biography — career & education, sports specialisation, and the
+                philosophy paragraph that closes in the site's "we" voice. */}
+            <div className="flex flex-col gap-4 max-w-3xl font-sans text-base md:text-lg text-ink-600 leading-relaxed">
+              <p>
+                Απόφοιτος του Τμήματος Φυσικοθεραπείας του Α.Τ.Ε.Ι Θεσσαλονίκης (2003, βαθμός πτυχίου 8,2), ενεργό μέλος του Πανελλήνιου Συλλόγου Φυσικοθεραπευτών Ελλάδος. Απέκτησε τον τίτλο MIDTERM-OMT το 2008 από τον Πανελλήνιο Σύλλογο Χειροθεραπευτών Ελλάδος, όπου είναι τακτικό μέλος. Το 2012 πιστοποιήθηκε ως εξειδικευμένος βελονιστής στον μυοσκελετικό πόνο από την Ελληνική Εταιρεία Αλγολογίας (ΕΦΕΑ), και το 2015 απέκτησε τον τίτλο Medical Training Therapist από το International Academy of Medical Education – Sports Traumatology. Είναι μέλος της παγκόσμιας ομοσπονδίας KinesioTaping.
+              </p>
+              <p>
+                Η ενασχόλησή του από μικρή ηλικία με τον αθλητισμό και η αγάπη του για τα μαχητικά αθλήματα τον οδήγησαν στην εξειδίκευση στους αθλητικούς τραυματισμούς. Από το 2017 εκπροσωπεί την Ελλάδα ως ενεργό μέλος της ICA (παγκόσμιας ομοσπονδίας Cutmen), είναι Φυσικοθεραπευτής &amp; Cutman της Εθνικής ομάδας Μουάι Τάι από το 2019, και σήμερα κατέχει τη θέση του Αντιπροέδρου της παγκόσμιας ομοσπονδίας World Cutman Association (WCA). Αποτέλεσμα αυτής της εξειδίκευσης είναι η συνεργασία του με κορυφαίους παγκόσμιους πρωταθλητές, όπως ο Μιχάλης Ζαμπίδης και ο Μιχάλης Αρναούτης.
+              </p>
+              <p>
+                Πιστεύουμε στην επιστημονικά τεκμηριωμένη φυσικοθεραπεία (evidence-based practice) που εστιάζει στην πραγματική αιτία του προβλήματος και όχι στην προσωρινή ανακούφιση του συμπτώματος. Παρακολουθούμε και εξελίσσουμε συνεχώς τις γνώσεις μας στη φυσικοθεραπεία, τη χειροθεραπεία και τις νέες μεθόδους αποκατάστασης, με στόχο το καλύτερο δυνατό αποτέλεσμα για τους ασθενείς και τους αθλητές του κέντρου μας. Έχουμε επιλέξει συνεργάτες και βοηθούς φυσικοθεραπείας που πρώτα απ&apos; όλα διακρίνονται για τον χαρακτήρα τους, συνθέτοντας μαζί μια ομάδα που εξυπηρετεί πλήθος ασθενών και αθλητών με άριστα αποτελέσματα.
+              </p>
             </div>
+
+            {/* Interactive credentials / organisations strip */}
+            <CredentialsStrip />
           </AnimatedContainer>
 
         </div>
