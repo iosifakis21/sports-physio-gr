@@ -29,15 +29,27 @@ export const Footer: React.FC = () => {
     "openingHoursSpecification": [
       {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "dayOfWeek": ["Monday", "Wednesday", "Thursday"],
         "opens": "09:00",
-        "closes": "21:00"
+        "closes": "13:00"
       },
       {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Saturday",
+        "dayOfWeek": ["Monday", "Wednesday", "Thursday"],
+        "opens": "16:00",
+        "closes": "20:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Tuesday",
         "opens": "09:00",
-        "closes": "14:00"
+        "closes": "20:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Friday",
+        "opens": "09:00",
+        "closes": "13:00"
       }
     ],
     "sameAs": [
@@ -126,17 +138,33 @@ export const Footer: React.FC = () => {
             Ωράριο Λειτουργίας
           </h3>
           <ul className="font-sans text-sm text-slate-400 flex flex-col gap-2">
-            <li className="flex justify-between py-1 border-b border-white/5">
-              <span>Δευτέρα - Παρασκευή:</span>
-              <span className="text-white font-medium">09:00 - 21:00</span>
+            <li className="flex justify-between gap-4 py-1 border-b border-white/5">
+              <span>Δευτέρα:</span>
+              <span className="text-white font-medium text-right">09:00 - 13:00<br />16:00 - 20:00</span>
             </li>
-            <li className="flex justify-between py-1 border-b border-white/5">
+            <li className="flex justify-between gap-4 py-1 border-b border-white/5">
+              <span>Τρίτη:</span>
+              <span className="text-white font-medium text-right">09:00 - 20:00</span>
+            </li>
+            <li className="flex justify-between gap-4 py-1 border-b border-white/5">
+              <span>Τετάρτη:</span>
+              <span className="text-white font-medium text-right">09:00 - 13:00<br />16:00 - 20:00</span>
+            </li>
+            <li className="flex justify-between gap-4 py-1 border-b border-white/5">
+              <span>Πέμπτη:</span>
+              <span className="text-white font-medium text-right">09:00 - 13:00<br />16:00 - 20:00</span>
+            </li>
+            <li className="flex justify-between gap-4 py-1 border-b border-white/5">
+              <span>Παρασκευή:</span>
+              <span className="text-white font-medium text-right">09:00 - 13:00</span>
+            </li>
+            <li className="flex justify-between gap-4 py-1 border-b border-white/5">
               <span>Σάββατο:</span>
-              <span className="text-white font-medium">09:00 - 14:00</span>
+              <span className="text-red-400 font-medium text-right">Κλειστά</span>
             </li>
-            <li className="flex justify-between py-1">
+            <li className="flex justify-between gap-4 py-1">
               <span>Κυριακή:</span>
-              <span className="text-red-400 font-medium">Κλειστά</span>
+              <span className="text-red-400 font-medium text-right">Κλειστά</span>
             </li>
           </ul>
         </AnimatedContainer>

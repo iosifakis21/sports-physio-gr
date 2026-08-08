@@ -257,7 +257,6 @@ export const Booking: React.FC = () => {
                       <option value="wednesday">Τετάρτη</option>
                       <option value="thursday">Πέμπτη</option>
                       <option value="friday">Παρασκευή</option>
-                      <option value="saturday">Σάββατο</option>
                     </select>
                     {errors.preferredDay && <p className="text-red-500 text-xs font-semibold">{errors.preferredDay}</p>}
                   </div>
@@ -275,10 +274,8 @@ export const Booking: React.FC = () => {
                       className="w-full bg-surface-alt border border-ink-900/10 rounded-btn p-3 text-sm focus:outline focus:outline-2 focus:outline-primary"
                     >
                       <option value="">Επιλέξτε ώρα...</option>
-                      <option value="09:00 - 12:00">Πρωί (09:00 - 12:00)</option>
-                      <option value="12:00 - 15:00">Μεσημέρι (12:00 - 15:00)</option>
-                      <option value="15:00 - 18:00">Απόγευμα (15:00 - 18:00)</option>
-                      <option value="18:00 - 21:00">Βράδυ (18:00 - 21:00)</option>
+                      <option value="09:00 - 13:00">Πρωί (09:00 - 13:00)</option>
+                      <option value="16:00 - 20:00">Απόγευμα (16:00 - 20:00)</option>
                     </select>
                     {errors.preferredTime && <p className="text-red-500 text-xs font-semibold">{errors.preferredTime}</p>}
                   </div>
