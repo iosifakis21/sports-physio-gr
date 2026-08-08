@@ -39,8 +39,10 @@ export const About: React.FC = () => {
           subcopy="Μάθετε περισσότερα για την πορεία, τη φιλοσοφία και την επιστημονική κατάρτιση του Μιχάλη Σιούλη."
         />
 
-        {/* 2-column Layout */}
-        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center">
+        {/* 2-column Layout. Top-aligned on desktop rather than centred: the bio
+            accordion changes the text column's height every time a panel opens,
+            and centring made the photo slide down to re-centre against it. */}
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center lg:items-start">
 
           {/* Left Column - Portrait (5/12 width) */}
           <AnimatedContainer
@@ -53,7 +55,10 @@ export const About: React.FC = () => {
               scaleFactor={1.02}
               shadow
               springOptions={{ stiffness: 150, damping: 20 }}
-              className="w-full max-w-[340px] lg:max-w-[440px] aspect-[4/5] bg-slate-100 rounded-card border border-ink-900/5 relative overflow-hidden select-none"
+              /* Taller crop on desktop so the portrait finishes roughly level
+                 with the collapsed bio column instead of leaving a short
+                 stack next to it. */
+              className="w-full max-w-[340px] lg:max-w-[440px] aspect-[4/5] lg:aspect-[2/3] bg-slate-100 rounded-card border border-ink-900/5 relative overflow-hidden select-none"
             >
               {/* Portrait photo */}
               <Image
@@ -68,7 +73,7 @@ export const About: React.FC = () => {
                   anchored to the photo through the rotation. The inset grows
                   with the photo so the badge keeps the same optical margin. */}
               <div className="absolute bottom-4 right-4 lg:bottom-5 lg:right-5 bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-btn shadow z-10">
-                10+ Χρόνια Εμπειρίας
+                20+ Χρόνια Εμπειρίας
               </div>
             </Tilt>
           </AnimatedContainer>
