@@ -18,7 +18,7 @@
   {
     "id": "kroustikos-yperichos",
     "title": "Κρουστικός Υπέρηχος (PiezoWave2)",
-    "description": "Εξωσωματικά κρουστικά κύματα για άμεση ανακούφιση από χρόνιο πόνο σε μύες, τένοντες και οστά.",
+    "description": "Εστιασμένη θεραπεία κρουστικών κυμάτων για επίμονα προβλήματα τενόντων, μυών και μαλακών μορίων.",
     "iconName": "zap",
     "photo": "/images/services/kroustikos-yperichos.jpg",
     "slug": "kroustikos-yperichos"
@@ -26,7 +26,7 @@
   {
     "id": "pelmatografos",
     "title": "Πελματογράφος",
-    "description": "Ακριβής ψηφιακή ανάλυση βάδισης και κατανομής βάρους για εξατομικευμένα ορθωτικά πέλματα.",
+    "description": "Ακριβής ψηφιακή ανάλυση βάδισης με 5.088 αισθητήρες, για εντοπισμό ανισορροπιών που επηρεάζουν την κίνηση.",
     "iconName": "footprints",
     "photo": "/images/services/pelmatografos.jpg",
     "slug": "pelmatografos"
@@ -42,7 +42,7 @@
   {
     "id": "kinesiotaping",
     "title": "Kinesiotaping",
-    "description": "Υποστήριξη μυών και αρθρώσεων με ειδικές ελαστικές ταινίες — σταθερότητα χωρίς περιορισμό της κίνησης.",
+    "description": "Ελαστική επιδεσμική ταινία που υποστηρίζει μύες και αρθρώσεις χωρίς να περιορίζει την κίνηση.",
     "iconName": "bookmark",
     "photo": "/images/kinesiotaping.webp",
     "slug": "kinesiotaping"
