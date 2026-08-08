@@ -16,10 +16,10 @@ interface Credential {
       its own whitespace lands visibly smaller than its neighbours at identical
       box sizes. This nudges the mark itself — not the box — to match. */
   scale?: number;
-  /** ica.jpeg is the one source shipped as a light seal burned onto an opaque
-      black square; the other five are dark artwork on white or on transparency.
-      Inverting it makes its polarity match the rest so all six sit on the same
-      light card. See the note on card backgrounds below. */
+  /** Set on the sources shipped as light artwork burned onto an opaque dark
+      background, where there is no alpha to knock out. Inverting them matches
+      the polarity of the sources that are dark artwork on white, so all six sit
+      on the same light card. See the note on card backgrounds below. */
   invert?: boolean;
 }
 
@@ -40,9 +40,10 @@ const CREDENTIALS: Credential[] = [
   },
   {
     id: "efea",
-    logo: "/images/credentials/efea.png",
+    logo: "/images/credentials/efea_black_bg.png",
     organisation: "Ελληνική Εταιρεία Αλγολογίας (ΕΦΕΑ)",
     detail: "Εξειδικευμένος Βελονιστής, 2012",
+    invert: true,
   },
   {
     id: "kta",
@@ -79,14 +80,14 @@ const CREDENTIALS: Credential[] = [
  * unrelated brand palettes at rest would fight the section's calm light
  * background, and the desaturated-to-colour lift doubles as the affordance.
  *
- * Cards are uniformly light on purpose. Five of the six sources are dark
- * artwork on white or on transparency; only ica.jpeg is a light seal burned
- * onto an opaque black square, and being a JPEG it has no alpha to knock out.
- * Darkening every card to match it would leave four white rectangles floating
- * on dark, and no blend mode fixes that in both directions at once (multiply
- * loses the dark artwork, screen keeps the white). So the odd source is
- * inverted to the majority polarity instead, which is a legitimate monochrome
- * variant of a seal that carries no colour of its own.
+ * Cards are uniformly light on purpose. The sources arrive in both polarities —
+ * some are dark artwork on white or on transparency, others are light artwork
+ * burned onto an opaque black background with no alpha to knock out. Darkening
+ * every card would leave the white-backed sources as bright rectangles floating
+ * on dark, and no blend mode fixes both directions at once (multiply loses the
+ * dark artwork, screen keeps the white). So the dark-backed sources are
+ * inverted to the majority polarity instead — legitimate monochrome variants of
+ * marks that carry no colour of their own.
  *
  * Every logo is fitted to one shared square box with object-contain, so the
  * space allocated per logo is identical; `scale` then corrects the two sources
@@ -152,7 +153,10 @@ export const CredentialsStrip: React.FC = () => {
                   sizes="(max-width: 640px) 33vw, 140px"
                   style={cred.scale ? { transform: `scale(${cred.scale})` } : undefined}
                   className={`object-contain transition-all duration-300 ease-out ${
-                    cred.invert ? "invert" : ""
+                    /* hue-rotate pairs with invert to flip lightness only:
+                       inverting alone would show the ΕΦΕΑ tree as cyan once the
+                       reveal restores colour, instead of its actual red. */
+                    cred.invert ? "invert hue-rotate-180" : ""
                   } ${isActive ? "grayscale-0 opacity-100" : "grayscale opacity-85"}`}
                 />
               </div>
