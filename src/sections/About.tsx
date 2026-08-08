@@ -13,6 +13,21 @@ export const About: React.FC = () => {
     "Medical Training Therapist (2015)",
   ];
 
+  const bioSections = [
+    {
+      title: "Εκπαίδευση & Πιστοποιήσεις",
+      body: "Απόφοιτος Φυσικοθεραπείας (Α.Τ.Ε.Ι Θεσσαλονίκης, 2003) με εξειδίκευση στη χειροθεραπεία (MIDTERM-OMT), τον βελονισμό μυοσκελετικού πόνου και το Medical Training Therapy. Μέλος του Πανελλήνιου Συλλόγου Φυσικοθεραπευτών και της παγκόσμιας ομοσπονδίας KinesioTaping.",
+    },
+    {
+      title: "Αθλητική Πορεία",
+      body: "Η αγάπη του για τα μαχητικά αθλήματα τον οδήγησε στους αθλητικούς τραυματισμούς. Εκπροσωπεί την Ελλάδα στην ICA από το 2017, είναι Cutman της Εθνικής Μουάι Τάι και σήμερα Αντιπρόεδρος της World Cutman Association — συνεργαζόμενος με κορυφαίους πρωταθλητές όπως ο Μιχάλης Ζαμπίδης και ο Μιχάλης Αρναούτης.",
+    },
+    {
+      title: "Η Φιλοσοφία μας",
+      body: "Πιστεύουμε στην επιστημονικά τεκμηριωμένη φυσικοθεραπεία που εντοπίζει την πραγματική αιτία του προβλήματος, όχι μόνο το σύμπτωμα. Η ομάδα μας συνδυάζει τεχνογνωσία και χαρακτήρα για άριστα αποτελέσματα σε κάθε ασθενή και αθλητή.",
+    },
+  ];
+
   return (
     <section id="gnoriste-me" className="py-[56px] md:py-[96px] bg-surface select-none scroll-mt-20">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-10 md:gap-16">
@@ -86,38 +101,39 @@ export const About: React.FC = () => {
             </div>
 
             {/* Biography — career & education, sports specialisation, and the
-                philosophy paragraph that closes in the site's "we" voice. Each
-                block carries a label so the three read as scannable sections
-                rather than one column of prose; the label picks up the section
-                eyebrow's treatment a step down in size, so it sits below the
-                name and title in the hierarchy rather than competing with them. */}
-            <div className="flex flex-col gap-7 max-w-3xl font-sans text-base md:text-lg text-ink-600 leading-relaxed">
-              <div className="flex flex-col gap-2">
-                <h4 className="font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-primary">
-                  Εκπαίδευση &amp; Πιστοποιήσεις
-                </h4>
-                <p>
-                  Απόφοιτος Φυσικοθεραπείας (Α.Τ.Ε.Ι Θεσσαλονίκης, 2003) με εξειδίκευση στη χειροθεραπεία (MIDTERM-OMT), τον βελονισμό μυοσκελετικού πόνου και το Medical Training Therapy. Μέλος του Πανελλήνιου Συλλόγου Φυσικοθεραπευτών και της παγκόσμιας ομοσπονδίας KinesioTaping.
-                </p>
-              </div>
+                philosophy section that closes in the site's "we" voice.
 
-              <div className="flex flex-col gap-2">
-                <h4 className="font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-primary">
-                  Αθλητική Πορεία
-                </h4>
-                <p>
-                  Η αγάπη του για τα μαχητικά αθλήματα τον οδήγησε στους αθλητικούς τραυματισμούς. Εκπροσωπεί την Ελλάδα στην ICA από το 2017, είναι Cutman της Εθνικής Μουάι Τάι και σήμερα Αντιπρόεδρος της World Cutman Association — συνεργαζόμενος με κορυφαίους πρωταθλητές όπως ο Μιχάλης Ζαμπίδης και ο Μιχάλης Αρναούτης.
-                </p>
-              </div>
+                Same accordion as the FAQ: native <details>/<summary> sharing a
+                `name`, which is what gives that section its one-open-at-a-time
+                behaviour, so this group behaves identically without any state
+                of its own. A separate group name keeps the two sections from
+                closing each other. Native semantics also carry the keyboard
+                support and expanded/collapsed state for free.
 
-              <div className="flex flex-col gap-2">
-                <h4 className="font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-primary">
-                  Η Φιλοσοφία μας
-                </h4>
-                <p>
-                  Πιστεύουμε στην επιστημονικά τεκμηριωμένη φυσικοθεραπεία που εντοπίζει την πραγματική αιτία του προβλήματος, όχι μόνο το σύμπτωμα. Η ομάδα μας συνδυάζει τεχνογνωσία και χαρακτήρα για άριστα αποτελέσματα σε κάθε ασθενή και αθλητή.
-                </p>
-              </div>
+                The trigger keeps the labels' established treatment — the
+                section eyebrow's style a step down in size — rather than the
+                FAQ's larger question text, since these sit under the name and
+                title here and shouldn't compete with them. */}
+            <div className="w-full max-w-3xl flex flex-col gap-4">
+              {bioSections.map((section) => (
+                <details
+                  key={section.title}
+                  name="about-accordion" // Enforces "one open at a time", as in the FAQ
+                  className="group bg-surface-alt border border-ink-900/5 rounded-card overflow-hidden transition-all duration-200 open:shadow-sm"
+                >
+                  <summary className="flex items-center justify-between p-4 sm:p-5 font-display font-bold text-xs sm:text-sm uppercase tracking-wider text-primary cursor-pointer list-none select-none hover:bg-ink-900/5 focus:outline focus:outline-2 focus:outline-primary transition-colors [&::-webkit-details-marker]:hidden">
+                    <span>{section.title}</span>
+                    <span className="text-primary group-open:rotate-180 transition-transform duration-200 flex-shrink-0 ml-4 font-mono font-normal">
+                      ▼
+                    </span>
+                  </summary>
+                  <div className="p-4 sm:p-5 pt-0 font-sans border-t border-ink-900/5">
+                    <p className="text-sm md:text-base text-ink-600 leading-relaxed pt-4">
+                      {section.body}
+                    </p>
+                  </div>
+                </details>
+              ))}
             </div>
 
             {/* Interactive credentials / organisations strip */}
