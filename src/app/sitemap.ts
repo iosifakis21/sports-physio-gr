@@ -1,8 +1,10 @@
 import { MetadataRoute } from "next";
 import { servicePages, servicePageHref } from "@/content/service-pages";
+import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://sports-physio.gr";
+  // Το sitemap απαιτεί απόλυτα URL — το `metadataBase` δεν ισχύει εδώ.
+  const baseUrl = SITE_URL;
 
   return [
     {
@@ -18,11 +20,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    {
-      url: `${baseUrl}/politiki-aporritou`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    },
+    // Η /politiki-aporritou δεν περιλαμβάνεται σκόπιμα: είναι `noindex`
+    // (βλ. `src/app/politiki-aporritou/page.tsx`), οπότε η καταχώρισή της εδώ
+    // θα έστελνε αντιφατικό σήμα στις μηχανές αναζήτησης.
   ];
 }

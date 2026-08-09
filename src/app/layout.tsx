@@ -3,6 +3,7 @@ import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/sections/Header";
 import { Footer } from "@/sections/Footer";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Load Inter font with greek subset for body copy
 const inter = Inter({
@@ -21,28 +22,25 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  // Βάση για όλα τα URL-based metadata: επιτρέπει σχετικές διαδρομές
+  // (canonical, openGraph.url, images) που αναλύονται σε απόλυτα URL.
+  metadataBase: new URL(SITE_URL),
   title: "Φυσικοθεραπεία | Sports-Physio.gr — Μιχάλης Σιούλης",
   description:
     "Επιστημονικά τεκμηριωμένη φυσικοθεραπεία από τον Μιχάλη Σιούλη. Συμβεβλημένος με ΕΟΠΥΥ. Βασισμένο σε 73 αξιολογήσεις 5 αστέρων στο Google. Κλείστε ραντεβού σε λιγότερο από 1 λεπτό.",
   alternates: {
-    canonical: "https://sports-physio.gr",
+    canonical: "/",
   },
   openGraph: {
     title: "Φυσικοθεραπεία | Sports-Physio.gr — Μιχάλης Σιούλης",
     description:
       "Επιστημονικά τεκμηριωμένη φυσικοθεραπεία από τον Μιχάλη Σιούλη. Συμβεβλημένος με ΕΟΠΥΥ. Βασισμένο σε 73 αξιολογήσεις 5 αστέρων στο Google.",
-    url: "https://sports-physio.gr",
-    siteName: "Sports-Physio.gr",
+    url: "/",
+    siteName: SITE_NAME,
     locale: "el_GR",
     type: "website",
-    images: [
-      {
-        url: "https://sports-physio.gr/images/og-placeholder.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Φυσικοθεραπεία Sports-Physio.gr",
-      },
-    ],
+    // Η εικόνα OG παράγεται δυναμικά από το `src/app/opengraph-image.tsx`
+    // και προστίθεται αυτόματα από το Next.js — δεν δηλώνεται εδώ.
   },
 };
 

@@ -1,5 +1,21 @@
 import React from "react";
+import type { Metadata } from "next";
 import { SectionHeading } from "@/components/SectionHeading";
+
+export const metadata: Metadata = {
+  title: "Πολιτική Απορρήτου | Sports-Physio.gr",
+  description:
+    "Πώς το Sports-Physio.gr συλλέγει, επεξεργάζεται και προστατεύει τα προσωπικά σας δεδομένα κατά τη χρήση του ιστότοπου και της φόρμας κρατήσεων.",
+  alternates: {
+    canonical: "/politiki-aporritou",
+  },
+  // Νομική/βοηθητική σελίδα: δεν χρειάζεται να εμφανίζεται στα αποτελέσματα
+  // αναζήτησης, αλλά οι εσωτερικοί της σύνδεσμοι πρέπει να ακολουθούνται.
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default function PrivacyPolicy() {
   return (
