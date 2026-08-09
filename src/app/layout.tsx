@@ -21,6 +21,10 @@ const manrope = Manrope({
   display: "swap",
 });
 
+// Bump when the icon artwork in /public changes, to force browsers past their
+// cached copy. See the `icons` block below.
+const ICON_VERSION = 2;
+
 /**
  * ⚠️ TODO — ΑΛΛΑΓΗ ΣΕ ΠΡΑΓΜΑΤΙΚΟ DOMAIN ⚠️
  *
@@ -48,14 +52,25 @@ export const metadata: Metadata = {
   },
   // Icons live in /public rather than as app/ file conventions, so the whole
   // generated set (browser, iOS home screen, Android/PWA) stays in one place.
+  //
+  // The ?v= suffix is a cache buster: browsers cache favicons aggressively and
+  // keep serving a stale one after the file changes. Bump it when the artwork
+  // changes. It does not affect which file is served — /public ignores the
+  // query string.
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: `/favicon.ico?v=${ICON_VERSION}`, sizes: "any", type: "image/x-icon" },
+      { url: `/favicon-32x32.png?v=${ICON_VERSION}`, sizes: "32x32", type: "image/png" },
+      { url: `/favicon-16x16.png?v=${ICON_VERSION}`, sizes: "16x16", type: "image/png" },
     ],
-    shortcut: "/favicon.ico",
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: `/favicon.ico?v=${ICON_VERSION}`,
+    apple: [
+      {
+        url: `/apple-touch-icon.png?v=${ICON_VERSION}`,
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
   },
   manifest: "/site.webmanifest",
   openGraph: {
