@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/Button";
 import { CheckItem } from "@/components/CheckItem";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
+import { JsonLd } from "@/components/JsonLd";
+import { buildServiceGraph } from "@/lib/schema";
 import conditionsData from "@/content/conditions.json";
 import type { ServicePageContent } from "@/content/service-pages/types";
 
@@ -92,26 +94,12 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
   const hasFaq = Boolean(faq && faq.length > 0);
   const hasHeroPhoto = heroPhotoExists(hero.photo);
 
-  const faqSchema = hasFaq
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: faq!.map((item) => ({
-          "@type": "Question",
-          name: item.question,
-          acceptedAnswer: { "@type": "Answer", text: item.answer },
-        })),
-      }
-    : null;
-
   return (
     <article className="flex flex-col w-full">
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
+      {/* Ένα και μοναδικό `@graph` για όλη τη σελίδα: επιχείρηση, ιστότοπος,
+          θεραπευτής, οι έξι υπηρεσίες, η διαδρομή πλοήγησης και το FAQ της
+          σελίδας (αν υπάρχει). Βλ. `src/lib/schema.ts`. */}
+      <JsonLd data={buildServiceGraph(content)} />
 
       {/* ---------- Page header: title, intro, photo ---------- */}
       <section className="relative bg-ink-900 text-white overflow-hidden">

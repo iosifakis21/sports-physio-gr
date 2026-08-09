@@ -2,88 +2,14 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
-import { SITE_URL } from "@/lib/site";
-
-/**
- * Τα επίσημα προφίλ της επιχείρησης. Χρησιμοποιούνται και στο `sameAs` του
- * JSON-LD (για να αναγνωρίσει η Google την οντότητα) και στα ορατά εικονίδια
- * του υποσέλιδου, ώστε να μένουν πάντα συγχρονισμένα.
- */
-const SOCIAL_LINKS = {
-  facebook: "https://www.facebook.com/sportsphysiomsioulis/",
-  instagram: "https://www.instagram.com/physio_sioulis_cutman/",
-} as const;
-
-/** Το Google Business Profile — το ισχυρότερο `sameAs` για τοπικό SEO. */
-const GOOGLE_BUSINESS_PROFILE_URL =
-  "https://www.google.com/maps/place/SportsPhysio+Michalis+Sioulis+%CE%A6%CF%85%CF%83%CE%B9%CE%BA%CE%BF%CE%B8%CE%B5%CF%81%CE%B1%CF%80%CE%B5%CF%85%CF%84%CE%AE%CF%82+-+%CE%A7%CE%B5%CE%B9%CF%81%CE%BF%CE%B8%CE%B5%CF%81%CE%B1%CF%80%CE%B5%CF%85%CF%84%CE%AE%CF%82/@38.0635736,23.7635202,17z/data=!3m1!4b1!4m6!3m5!1s0x14a198a8a2813a6d:0xd9d5b39abdfa83ff!8m2!3d38.0635736!4d23.7660951!16s%2Fg%2F11g889688n";
+// Τα ορατά εικονίδια παρακάτω και το `sameAs` του JSON-LD διαβάζουν την ίδια
+// σταθερά, ώστε να μην μπορούν ποτέ να αποκλίνουν. Το δομημένο σχήμα του
+// υποσέλιδου έχει μεταφερθεί στον ενιαίο γράφο του `src/lib/schema.ts`.
+import { SOCIAL_LINKS } from "@/lib/schema";
 
 export const Footer: React.FC = () => {
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "Physiotherapy",
-    "name": "Μιχάλης Σιούλης - Sports-Physio.gr",
-    // Πραγματική φωτογραφία του θεραπευτή/χώρου — προτιμότερη από το λογότυπο
-    // για το πεδίο `image` μιας τοπικής επιχείρησης (Google Business listing).
-    "image": `${SITE_URL}/images/hero.webp`,
-    "@id": `${SITE_URL}/#physiotherapy`,
-    "url": SITE_URL,
-    "telephone": "+302128488984",
-    "email": "msioulis@yahoo.gr",
-    "priceRange": "$$",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Ιερού Λόχου 3",
-      "addressLocality": "Μεταμόρφωση",
-      "postalCode": "14451",
-      "addressCountry": "GR"
-    },
-    "geo": {
-      "@type": "GeoCoordinates",
-      "latitude": 38.0626,
-      "longitude": 23.7486
-    },
-    "openingHoursSpecification": [
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Wednesday", "Thursday"],
-        "opens": "09:00",
-        "closes": "13:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": ["Monday", "Wednesday", "Thursday"],
-        "opens": "16:00",
-        "closes": "20:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Tuesday",
-        "opens": "09:00",
-        "closes": "20:00"
-      },
-      {
-        "@type": "OpeningHoursSpecification",
-        "dayOfWeek": "Friday",
-        "opens": "09:00",
-        "closes": "13:00"
-      }
-    ],
-    "sameAs": [
-      SOCIAL_LINKS.facebook,
-      SOCIAL_LINKS.instagram,
-      GOOGLE_BUSINESS_PROFILE_URL
-    ]
-  };
-
   return (
     <footer className="bg-ink-900 text-white/90 border-t border-white/5 py-12 md:py-16">
-      {/* Inject JSON-LD Schema for Local SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-      />
-
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {/* Column 1: Clinic Identity & Description */}
         <AnimatedContainer delay={0.1} className="flex flex-col gap-4">

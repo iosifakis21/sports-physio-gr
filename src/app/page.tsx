@@ -9,10 +9,17 @@ import { Reviews } from "@/sections/Reviews";
 import { FAQ } from "@/sections/FAQ";
 import { Booking } from "@/sections/Booking";
 import { StickyMobileCTA } from "@/components/StickyMobileCTA";
+import { JsonLd } from "@/components/JsonLd";
+import { buildHomeGraph } from "@/lib/schema";
 
 export default function Home() {
   return (
     <div className="flex flex-col w-full relative">
+      {/* Ένα και μοναδικό `@graph` για όλη τη σελίδα: επιχείρηση (με
+          aggregateRating και κατάλογο υπηρεσιών), ιστότοπος, θεραπευτής, οι έξι
+          υπηρεσίες, οι 9 κριτικές και το FAQ. Βλ. `src/lib/schema.ts`. */}
+      <JsonLd data={buildHomeGraph()} />
+
       <Hero />
       <InsuranceMarquee />
       <Services />

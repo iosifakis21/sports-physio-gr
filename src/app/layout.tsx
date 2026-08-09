@@ -21,6 +21,21 @@ const manrope = Manrope({
   display: "swap",
 });
 
+/**
+ * ⚠️ TODO — ΑΛΛΑΓΗ ΣΕ ΠΡΑΓΜΑΤΙΚΟ DOMAIN ⚠️
+ *
+ * Το `metadataBase` παρακάτω κληρονομεί το `SITE_URL`, που αυτή τη στιγμή
+ * δείχνει στο προσωρινό https://sports-physio-gr.vercel.app — το
+ * sports-physio.gr δεν έχει συνδεθεί ακόμη στο Vercel.
+ *
+ * ΔΕΝ αλλάζει τίποτα εδώ: αλλάξτε μόνο το `SITE_URL` στο `src/lib/site.ts`,
+ * όπου υπάρχει και η πλήρης λίστα των αρχείων που επηρεάζονται.
+ *
+ * Σημείωση για τα δομημένα δεδομένα: ο γράφος JSON-LD ΔΕΝ εκπέμπεται από αυτό
+ * το layout, αλλά ανά σελίδα (`src/app/page.tsx`, `ServicePageTemplate`), ώστε
+ * κάθε σελίδα να έχει ακριβώς ΕΝΑ ενιαίο `@graph` με τις δικές της οντότητες.
+ * Βλ. `src/lib/schema.ts`.
+ */
 export const metadata: Metadata = {
   // Βάση για όλα τα URL-based metadata: επιτρέπει σχετικές διαδρομές
   // (canonical, openGraph.url, images) που αναλύονται σε απόλυτα URL.

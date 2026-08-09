@@ -54,38 +54,11 @@ const renderFAQContent = (answer: FAQItem["answer"]) => {
   );
 };
 
-const getPlainTextAnswer = (answer: FAQItem["answer"]): string => {
-  if (typeof answer === "string") {
-    return answer;
-  }
-  return answer.plainText;
-};
-
 export const FAQ: React.FC = () => {
   const faqs: FAQItem[] = faqData as FAQItem[];
 
-  // Construct structured data for FAQPage SEO schema
-  const schemaData = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map((faq) => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": getPlainTextAnswer(faq.answer),
-      },
-    })),
-  };
-
   return (
     <section id="faq" className="py-[56px] md:py-[96px] bg-surface select-none scroll-mt-20">
-      {/* Inject Structured Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-      />
-
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-10 md:gap-16 items-center">
         
         {/* Section Heading */}
