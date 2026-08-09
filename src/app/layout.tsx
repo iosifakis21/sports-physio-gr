@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/sections/Header";
@@ -46,6 +46,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  // Icons live in /public rather than as app/ file conventions, so the whole
+  // generated set (browser, iOS home screen, Android/PWA) stays in one place.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "Φυσικοθεραπεία | Sports-Physio.gr — Μιχάλης Σιούλης",
     description:
@@ -57,6 +69,12 @@ export const metadata: Metadata = {
     // Η εικόνα OG παράγεται δυναμικά από το `src/app/opengraph-image.tsx`
     // και προστίθεται αυτόματα από το Next.js — δεν δηλώνεται εδώ.
   },
+};
+
+// Matches theme_color in site.webmanifest so the Android address bar and the
+// installed PWA agree. themeColor is not valid in `metadata` since Next 14.
+export const viewport: Viewport = {
+  themeColor: "#1D4ED8",
 };
 
 export default function RootLayout({
