@@ -72,9 +72,10 @@ export const metadata: Metadata = {
 };
 
 // Matches theme_color in site.webmanifest so the Android address bar and the
-// installed PWA agree. themeColor is not valid in `metadata` since Next 14.
+// installed PWA agree. The value is the logo purple sampled from the icon set,
+// not --blue-700. themeColor is not valid in `metadata` since Next 14.
 export const viewport: Viewport = {
-  themeColor: "#1D4ED8",
+  themeColor: "#3400A4",
 };
 
 export default function RootLayout({
