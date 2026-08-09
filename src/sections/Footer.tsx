@@ -87,7 +87,14 @@ export const Footer: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {/* Column 1: Clinic Identity & Description */}
         <AnimatedContainer delay={0.1} className="flex flex-col gap-4">
-          <Image src="/images/logowhite.webp" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} className="h-12 md:h-14 w-auto mb-3" />
+          {/* Το logowhite.webp είναι λευκό λογότυπο «καμένο» πάνω σε συμπαγές
+              μαύρο, χωρίς κανάλι alpha — στο σκούρο υποσέλιδο εμφανιζόταν ως
+              μαύρο πλαίσιο. Το logo-white.png είναι η διορθωμένη εκδοχή με
+              πραγματική διαφάνεια. */}
+          {/* `self-start`: ο γονέας είναι `flex flex-col`, οπότε χωρίς αυτό το
+              `align-items: stretch` τεντώνει την εικόνα σε όλο το πλάτος της
+              στήλης και παραμορφώνει την αναλογία της. */}
+          <Image src="/images/logo-white.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={216} height={144} className="h-12 md:h-14 w-auto self-start mb-3" />
           <p className="font-sans text-sm text-slate-400 leading-relaxed">
             Επιστημονικά τεκμηριωμένη φυσικοθεραπεία για πόνους, τραυματισμούς και αθλητική αποκατάσταση. Δίπλα σας σε κάθε βήμα της αποθεραπείας σας.
           </p>
@@ -267,8 +274,10 @@ export const Footer: React.FC = () => {
         <div>
           &copy; {new Date().getFullYear()} Sports-Physio.gr. Με επιφύλαξη παντός δικαιώματος.
         </div>
+        {/* Τα στοιχεία ΑΦΜ/ΔΟΥ αφαιρέθηκαν: ήταν placeholder. Θα προστεθούν
+            ξανά όταν είναι διαθέσιμα τα πραγματικά. */}
         <div>
-          Μιχάλης Σιούλης • Φυσικοθεραπευτής • ΑΦΜ: 123456789 • ΔΟΥ: Αμαρουσίου
+          Μιχάλης Σιούλης • Φυσικοθεραπευτής
         </div>
       </div>
     </footer>
