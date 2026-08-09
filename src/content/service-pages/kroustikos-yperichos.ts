@@ -19,9 +19,7 @@ export const kroustikosYperichosPage: ServicePageContent = {
     title: "Κρουστικός Υπέρηχος (PiezoWave2)",
     intro:
       "Εστιασμένη θεραπεία κρουστικών κυμάτων για επίμονα προβλήματα τενόντων, μυών και μαλακών μορίων.",
-    // Η φωτογραφία της υπηρεσίας δεν έχει δοθεί ακόμη· ανεβάστε αρχείο σε αυτή
-    // ακριβώς τη διαδρομή μέσα στο `public/` και θα εμφανιστεί αυτόματα.
-    photo: "/images/services/kroustikos-yperichos.jpg",
+    photo: "/images/services/shockwave-therapy-leg.jpg",
   },
 
   body: [

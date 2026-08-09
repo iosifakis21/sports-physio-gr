@@ -19,9 +19,7 @@ export const pelmatografosPage: ServicePageContent = {
     title: "Πελματογράφος",
     intro:
       "Ακριβής ψηφιακή ανάλυση βάδισης με 5.088 αισθητήρες, για εντοπισμό ανισορροπιών που επηρεάζουν την κίνηση και την άνεσή σας.",
-    // Η φωτογραφία της υπηρεσίας δεν έχει δοθεί ακόμη· ανεβάστε αρχείο σε αυτή
-    // ακριβώς τη διαδρομή μέσα στο `public/` και θα εμφανιστεί αυτόματα.
-    photo: "/images/services/pelmatografos.jpg",
+    photo: "/images/services/pelmatografhma-01.jpg",
   },
 
   body: [

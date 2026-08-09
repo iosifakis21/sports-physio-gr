@@ -12,7 +12,7 @@
     "title": "Medical Training Therapy",
     "description": "Ενεργητική αποκατάσταση μέσω εξειδικευμένων θεραπευτικών ασκήσεων, για βελτίωση δύναμης, αντοχής και σταθερότητας.",
     "iconName": "trophy",
-    "photo": "/images/services/medical-training-therapy.jpg",
+    "photo": "/images/services/medicaltrainingtherapy.png",
     "slug": "medical-training-therapy"
   },
   {
@@ -20,7 +20,7 @@
     "title": "Κρουστικός Υπέρηχος (PiezoWave2)",
     "description": "Εστιασμένη θεραπεία κρουστικών κυμάτων για επίμονα προβλήματα τενόντων, μυών και μαλακών μορίων.",
     "iconName": "zap",
-    "photo": "/images/services/kroustikos-yperichos.jpg",
+    "photo": "/images/services/shockwave-therapy-leg.jpg",
     "slug": "kroustikos-yperichos"
   },
   {
@@ -28,7 +28,7 @@
     "title": "Πελματογράφος",
     "description": "Ακριβής ψηφιακή ανάλυση βάδισης με 5.088 αισθητήρες, για εντοπισμό ανισορροπιών που επηρεάζουν την κίνηση.",
     "iconName": "footprints",
-    "photo": "/images/services/pelmatografos.jpg",
+    "photo": "/images/services/pelmatografhma-01.jpg",
     "slug": "pelmatografos"
   },
   {
