@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import React, { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -88,6 +88,39 @@ export const ServicesMegaMenu: React.FC = () => {
     };
   }, [isOpen, close]);
 
+  // Το πάνελ κεντράρεται ως προς το viewport, όχι ως προς το «Υπηρεσίες».
+  // Παραμένει `absolute` (και όχι `fixed`) επίτηδες: το header αποκτά
+  // `backdrop-blur` μόλις ο χρήστης κυλήσει τη σελίδα, και το backdrop-filter
+  // κάνει το header containing block για fixed απογόνους — το πάνελ θα
+  // «κολλούσε» ξανά στο header. Αντ' αυτού μετράμε πόσο απέχει ο container
+  // από την αριστερή άκρη του viewport και τεντώνουμε μια λωρίδα πλάτους
+  // viewport, μέσα στην οποία το flex centering κάνει την υπόλοιπη δουλειά.
+  const [strip, setStrip] = useState<{ left: number; width: number } | null>(null);
+
+  useLayoutEffect(() => {
+    if (!isOpen) return;
+
+    const measure = () => {
+      const container = containerRef.current;
+      if (!container) return;
+      // `clientWidth` και όχι `100vw`: το vw μετράει και τη μπάρα κύλισης, που
+      // θα πρόσθετε οριζόντιο scroll σε όλη τη σελίδα.
+      setStrip({
+        left: -container.getBoundingClientRect().left,
+        width: document.documentElement.clientWidth,
+      });
+    };
+
+    measure();
+    window.addEventListener("resize", measure);
+    // Το header χαμηλώνει (80px → 72px) στο scroll, οπότε ξαναμετράμε.
+    window.addEventListener("scroll", measure, { passive: true });
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", measure);
+    };
+  }, [isOpen]);
+
   // Το focus που φεύγει τελείως από το menu (Tab μετά το τελευταίο στοιχείο)
   // το κλείνει, χωρίς να κλέβει το focus από το επόμενο link.
   const handleBlur = (event: React.FocusEvent<HTMLDivElement>) => {
@@ -135,9 +168,15 @@ export const ServicesMegaMenu: React.FC = () => {
             transition={{ duration: prefersReducedMotion ? 0 : 0.22, ease: "easeOut" }}
             // Το padding-top γεφυρώνει το κενό ανάμεσα στο header και το πάνελ,
             // ώστε η μετακίνηση του ποντικιού προς τα κάτω να μην το κλείνει.
-            className="absolute left-1/2 -translate-x-1/2 top-full pt-4 z-50"
+            // Η λωρίδα πιάνει όλο το πλάτος του viewport, οπότε η διαδρομή του
+            // ποντικιού από το «Υπηρεσίες» ως το κεντραρισμένο πάνελ μένει μέσα
+            // στον container και δεν πυροδοτεί mouse leave.
+            className="absolute top-full pt-4 z-50 flex justify-center px-4 sm:px-6"
+            style={strip ? { left: strip.left, width: strip.width } : { visibility: "hidden" }}
           >
-            <div className="w-[640px] max-w-[90vw] rounded-card bg-surface shadow-2xl border border-ink-900/10 p-5 flex flex-col gap-4">
+            {/* `max-w-full`: η λωρίδα έχει ήδη τα side paddings, οπότε σε στενές
+                οθόνες το πάνελ συρρικνώνεται αντί να βγει εκτός viewport. */}
+            <div className="w-[640px] max-w-full rounded-card bg-surface shadow-2xl border border-ink-900/10 p-5 flex flex-col gap-4">
             <div className="flex gap-5">
               {/* Λίστα υπηρεσιών, δύο στήλες */}
               <ul className="flex-1 grid grid-cols-2 gap-x-3 gap-y-1 content-start">
