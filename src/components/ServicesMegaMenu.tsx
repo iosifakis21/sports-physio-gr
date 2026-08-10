@@ -48,6 +48,10 @@ export const ServicesMegaMenu: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  // Το Escape επιστρέφει το focus στο trigger, που βρίσκεται μέσα στο
+  // container: χωρίς αυτή τη σημαία το onFocus θα ξανάνοιγε αμέσως το πάνελ
+  // που μόλις έκλεισε ο χρήστης.
+  const suppressFocusOpen = useRef(false);
   const panelId = useId();
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -70,7 +74,9 @@ export const ServicesMegaMenu: React.FC = () => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         close();
+        suppressFocusOpen.current = true;
         triggerRef.current?.focus();
+        suppressFocusOpen.current = false;
       }
     };
 
@@ -99,7 +105,9 @@ export const ServicesMegaMenu: React.FC = () => {
       className="relative"
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={close}
-      onFocus={() => setIsOpen(true)}
+      onFocus={() => {
+        if (!suppressFocusOpen.current) setIsOpen(true);
+      }}
       onBlur={handleBlur}
     >
       <button
