@@ -28,7 +28,11 @@ import { SITE_NAME, SITE_URL } from "./site";
 import reviewsData from "@/content/reviews.json";
 import servicesData from "@/content/services.json";
 import faqData from "@/content/faq.json";
-import { servicePages, servicePageHref } from "@/content/service-pages";
+import {
+  servicePages,
+  servicePageHref,
+  SERVICES_HUB_PATH,
+} from "@/content/service-pages";
 import type { ServicePageContent } from "@/content/service-pages/types";
 
 /* -------------------------------------------------------------------------- */
@@ -46,6 +50,8 @@ export const SCHEMA_IDS = {
   /** Μία οντότητα Service ανά υπηρεσία, με βάση το slug της σελίδας της. */
   service: (slug: string) => `${SITE_URL}${servicePageHref(slug)}#service`,
   breadcrumb: (slug: string) => `${SITE_URL}${servicePageHref(slug)}#breadcrumb`,
+  /** Η διαδρομή πλοήγησης της σελίδας-κόμβου των υπηρεσιών. */
+  servicesHubBreadcrumb: `${SITE_URL}${SERVICES_HUB_PATH}#breadcrumb`,
   faq: (path: string) => `${SITE_URL}${path}#faq`,
   review: (id: string) => `${SITE_URL}/#${id}`,
 } as const;
@@ -326,13 +332,35 @@ function buildBreadcrumb(content: ServicePageContent) {
         "@type": "ListItem",
         position: 2,
         name: "Υπηρεσίες",
-        item: `${SITE_URL}/#ypiresies`,
+        item: `${SITE_URL}${SERVICES_HUB_PATH}`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: service?.title ?? content.meta.title,
         item: `${SITE_URL}${servicePageHref(content.slug)}`,
+      },
+    ],
+  };
+}
+
+/** Διαδρομή πλοήγησης της σελίδας-κόμβου: Αρχική → Υπηρεσίες. */
+function buildServicesHubBreadcrumb() {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": SCHEMA_IDS.servicesHubBreadcrumb,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Αρχική",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Υπηρεσίες",
+        item: `${SITE_URL}${SERVICES_HUB_PATH}`,
       },
     ],
   };
@@ -362,6 +390,11 @@ const graph = (entities: unknown[]): Graph => ({
 /** Ο γράφος της αρχικής σελίδας. */
 export function buildHomeGraph(): Graph {
   return graph([...baseEntities(), ...buildReviews(), buildHomeFaq()]);
+}
+
+/** Ο γράφος της σελίδας-κόμβου των υπηρεσιών (/ypiresies). */
+export function buildServicesHubGraph(): Graph {
+  return graph([...baseEntities(), buildServicesHubBreadcrumb()]);
 }
 
 /** Ο γράφος μιας σελίδας υπηρεσίας. */

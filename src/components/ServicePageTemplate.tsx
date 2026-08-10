@@ -125,7 +125,7 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
               </Link>
               <span aria-hidden="true">/</span>
               <Link
-                href="/#ypiresies"
+                href="/ypiresies"
                 className="hover:text-white transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
               >
                 Υπηρεσίες
