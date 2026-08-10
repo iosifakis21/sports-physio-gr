@@ -19,20 +19,38 @@ const MarqueeColumn: React.FC<MarqueeColumnProps> = ({ reviews, speed }) => {
   const animationRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!scope.current) return;
+    const el = scope.current;
+    if (!el) return;
 
-    // Start infinite scrolling animation using motion's animate function
-    animationRef.current = animate(
-      scope.current,
-      { y: ["0%", "-50%"] },
-      {
-        duration: speed,
-        ease: "linear",
-        repeat: Infinity,
-      }
+    // Start the infinite scrolling animation using motion's animate function.
+    // Both marquees sit well below the fold, and an infinite JS animation
+    // started at mount competes with the first paint of the Hero for the main
+    // thread. Hold it until the row is (nearly) on screen.
+    const start = () => {
+      animationRef.current = animate(
+        el,
+        { y: ["0%", "-50%"] },
+        {
+          duration: speed,
+          ease: "linear",
+          repeat: Infinity,
+        }
+      );
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          start();
+        }
+      },
+      { rootMargin: "200px" }
     );
+    observer.observe(el);
 
     return () => {
+      observer.disconnect();
       if (animationRef.current) {
         animationRef.current.stop();
       }

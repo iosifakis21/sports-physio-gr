@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import React from "react";
-import { motion } from "motion/react";
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -15,8 +14,6 @@ interface ButtonProps {
   icon?: React.ReactNode;
 }
 
-const MotionLink = motion.create(Link);
-
 export const Button: React.FC<ButtonProps> = ({
   children,
   label,
@@ -27,31 +24,19 @@ export const Button: React.FC<ButtonProps> = ({
   className = "",
   icon,
 }) => {
-  // Gentle periodic wiggle on the icon only: a brief rotation swing, then a
-  // pause, then it repeats — never a constant motion. Runs independently of
-  // the button's own whileHover/whileTap scale below, so both compose
-  // without conflict.
-  const iconWiggleProps = {
-    animate: { rotate: [0, -8, 8, -8, 0] },
-    transition: {
-      duration: 0.6,
-      repeat: Infinity,
-      repeatDelay: 3,
-      ease: "easeInOut" as const,
-    },
-  };
-
   const content = (
     <>
       {icon && (
-        <motion.span
-          className="mr-2 inline-flex items-center select-none"
-          style={{ transformOrigin: "50% 50%" }}
+        // Gentle periodic wiggle on the icon only: a brief rotation swing,
+        // then a pause, then it repeats — never constant motion. Driven by a
+        // CSS keyframe (see --animate-icon-wiggle) so the CTA, which sits in
+        // the header and the Hero, ships no animation JS.
+        <span
+          className="mr-2 inline-flex items-center select-none origin-center animate-icon-wiggle"
           aria-hidden="true"
-          {...iconWiggleProps}
         >
           {icon}
-        </motion.span>
+        </span>
       )}
       <span>{children || label}</span>
     </>
@@ -68,7 +53,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   const baseStyles = `inline-flex items-center justify-center font-sans ${
     hasWeightOverride ? "" : "font-medium"
-  } rounded-btn text-base transition-all duration-200 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary min-h-[44px] px-6 py-3 cursor-pointer select-none`;
+  } rounded-btn text-base transition-all duration-200 hover:scale-[1.03] active:scale-[0.98] focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary min-h-[44px] px-6 py-3 cursor-pointer select-none`;
 
   const variantStyles =
     variant === "primary"
@@ -88,34 +73,24 @@ export const Button: React.FC<ButtonProps> = ({
     console.warn(`WARNING: Primary CTA label "${textCheck}" violates branding rules. It must strictly be "Κλείστε Ραντεβού".`);
   }
 
-  // Spring-based scale on hover/tap, layered on top of the existing CSS hover
-  // lift + shadow. Motion animates `scale` via the `transform` property; the
-  // Tailwind hover lift uses the independent `translate` property, so the two
-  // compose without conflict (no double lift).
-  const motionProps = {
-    whileHover: { scale: 1.03 },
-    whileTap: { scale: 0.98 },
-    transition: { type: "spring" as const, stiffness: 400, damping: 17 },
-  };
-
   if (href) {
     if (href.startsWith("#")) {
       return (
-        <motion.a href={href} className={combinedStyles} onClick={onClick} {...motionProps}>
+        <a href={href} className={combinedStyles} onClick={onClick}>
           {content}
-        </motion.a>
+        </a>
       );
     }
     return (
-      <MotionLink href={href} className={combinedStyles} onClick={onClick} {...motionProps}>
+      <Link href={href} className={combinedStyles} onClick={onClick}>
         {content}
-      </MotionLink>
+      </Link>
     );
   }
 
   return (
-    <motion.button type={type} className={combinedStyles} onClick={onClick} {...motionProps}>
+    <button type={type} className={combinedStyles} onClick={onClick}>
       {content}
-    </motion.button>
+    </button>
   );
 };

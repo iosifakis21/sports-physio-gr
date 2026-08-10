@@ -112,7 +112,7 @@ export const Header: React.FC = () => {
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           {/* Logo Mark */}
           <a href={isHomePage ? "#" : "/"} className="flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
-            <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
+            <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority sizes="(min-width: 768px) 112px, 96px" className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
           </a>
 
           {/* Desktop Navigation */}
@@ -210,7 +210,13 @@ export const Header: React.FC = () => {
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-label="Μενού πλοήγησης κινητού"
+        // While the drawer is closed it is hidden from assistive tech AND made
+        // genuinely unreachable: `inert` removes its links from the tab order
+        // and from the accessibility tree, so aria-hidden no longer sits on a
+        // subtree that still contains focusable elements (an invalid, and for
+        // screen reader users confusing, combination).
         aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
       >
         <div className="flex flex-col gap-8">
           {/* Drawer Header */}

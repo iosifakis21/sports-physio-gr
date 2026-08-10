@@ -15,15 +15,15 @@ interface Insurer {
 // letterboxing. Keyed by logo path; JSON stays { name, logo } as specified.
 const LOGO_DIMENSIONS: Record<string, { width: number; height: number }> = {
   "/images/NN_Group-logo.webp": { width: 298, height: 169 },
-  "/images/MetLife-logo.webp": { width: 512, height: 112 },
+  "/images/MetLife-logo.webp": { width: 400, height: 88 },
   "/images/interlife-logo.webp": { width: 400, height: 267 },
-  "/images/Interamerican-logo.webp": { width: 928, height: 118 },
-  "/images/groupama-logo.webp": { width: 800, height: 214 },
-  "/images/Generali_group-logo.webp": { width: 1095, height: 900 },
+  "/images/Interamerican-logo.webp": { width: 400, height: 51 },
+  "/images/groupama-logo.webp": { width: 400, height: 107 },
+  "/images/Generali_group-logo.webp": { width: 400, height: 329 },
   "/images/eurolife_logo.webp": { width: 676, height: 218 },
   "/images/ethniki-asfalistiki-logo.webp": { width: 321, height: 157 },
-  "/images/ERGO-logo.webp": { width: 1000, height: 449 },
-  "/images/Allianz-logo.webp": { width: 1666, height: 413 },
+  "/images/ERGO-logo.webp": { width: 400, height: 180 },
+  "/images/Allianz-logo.webp": { width: 400, height: 99 },
 };
 
 const LogoImage: React.FC<{ insurer: Insurer; decorative?: boolean }> = ({
@@ -50,21 +50,39 @@ const MarqueeRow: React.FC<{ insurers: Insurer[] }> = ({ insurers }) => {
   const animationRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!scope.current) return;
+    const el = scope.current;
+    if (!el) return;
 
     // Seamless loop: the row holds two copies of the list, translating by -50%
     // moves exactly one full copy before repeating.
-    animationRef.current = animate(
-      scope.current,
-      { x: ["0%", "-50%"] },
-      {
-        duration: 35,
-        ease: "linear",
-        repeat: Infinity,
-      }
+    // Both marquees sit well below the fold, and an infinite JS animation
+    // started at mount competes with the first paint of the Hero for the main
+    // thread. Hold it until the row is (nearly) on screen.
+    const start = () => {
+      animationRef.current = animate(
+        el,
+        { x: ["0%", "-50%"] },
+        {
+          duration: 35,
+          ease: "linear",
+          repeat: Infinity,
+        }
+      );
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          observer.disconnect();
+          start();
+        }
+      },
+      { rootMargin: "200px" }
     );
+    observer.observe(el);
 
     return () => {
+      observer.disconnect();
       if (animationRef.current) {
         animationRef.current.stop();
       }

@@ -1,8 +1,11 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
-import { Tilt } from "@/components/Tilt";
+// Tilt is the last motion/react consumer on the homepage and lives below the
+// fold, so it loads as its own chunk after hydration.
+const Tilt = dynamic(() => import("@/components/Tilt").then((m) => m.Tilt));
 import { CredentialsStrip } from "@/components/CredentialsStrip";
 
 export const About: React.FC = () => {

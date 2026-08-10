@@ -16,6 +16,9 @@ export interface Athlete {
   /** Optional clip played inline, with sound, after an explicit click/tap.
       Mutually exclusive with hoverPhoto: an athlete has one or the other. */
   hoverVideo?: string;
+  /** Optional WebVTT captions file for `hoverVideo`. Falls back to a cue-less
+      placeholder track so the clip is never shipped without a captions track. */
+  captions?: string;
   priority: number;
   consent: boolean;
 }
@@ -198,7 +201,21 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
             className={`absolute inset-0 w-full h-full object-cover [object-position:center_35%] z-10 transition-opacity duration-200 ${
               isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
-          />
+          >
+            {/* Captions track. `captions` in athletes.json points at a real
+                .vtt when one has been authored for the clip; until then the
+                placeholder is a cue-less WebVTT file, which satisfies the
+                <track kind="captions"> requirement without inventing dialogue
+                that may or may not be in the clip. Any clip with speech needs
+                a real transcript here. */}
+            <track
+              kind="captions"
+              src={athlete.captions ?? "/captions/placeholder-el.vtt"}
+              srcLang="el"
+              label="Ελληνικά"
+              default
+            />
+          </video>
         )}
 
         {/* Bottom fade for text/badge legibility only — no color tint on the photo. */}

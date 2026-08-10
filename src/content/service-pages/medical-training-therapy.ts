@@ -19,7 +19,7 @@ export const medicalTrainingTherapyPage: ServicePageContent = {
     title: "Medical Training Therapy",
     intro:
       "Ενεργητική αποκατάσταση μέσω εξειδικευμένων θεραπευτικών ασκήσεων, για βελτίωση δύναμης, αντοχής και σταθερότητας.",
-    photo: "/images/services/medicaltrainingtherapy.png",
+    photo: "/images/services/medicaltrainingtherapy.webp",
   },
 
   body: [

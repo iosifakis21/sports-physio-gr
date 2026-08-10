@@ -18,6 +18,11 @@ export const Hero: React.FC = () => {
         alt=""
         fill
         priority
+        // This is the LCP element on phones, which is what the field data is
+        // measured on: the explicit hint puts it ahead of the rest of the
+        // page's images in the browser's queue.
+        fetchPriority="high"
+        quality={65}
         sizes="100vw"
         className="object-cover object-[45%_22%] scale-[1.6] translate-x-[22%] z-0 lg:hidden"
         aria-hidden="true"
@@ -28,6 +33,7 @@ export const Hero: React.FC = () => {
         alt=""
         fill
         priority
+        quality={65}
         sizes="100vw"
         className="object-cover z-0 hidden lg:block"
         aria-hidden="true"
