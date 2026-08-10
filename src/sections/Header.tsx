@@ -4,6 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/Button";
+import { ServicesMegaMenu } from "@/components/ServicesMegaMenu";
+import { serviceMenuItems } from "@/content/service-menu";
+import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface NavLinkItem {
   label: string;
@@ -11,8 +16,9 @@ interface NavLinkItem {
   anchor: string;
 }
 
+// Οι «Υπηρεσίες» δεν είναι απλός σύνδεσμος: στο desktop ανοίγουν mega menu
+// (βλ. ServicesMegaMenu) και στο κινητό ακορντεόν με τις 6 σελίδες υπηρεσιών.
 const navLinks: NavLinkItem[] = [
-  { label: "Υπηρεσίες", anchor: "ypiresies" },
   { label: "Φυσικοθεραπεία", anchor: "fysikotherapeia" },
   { label: "Διαδικασία", anchor: "diadikasia" },
   { label: "Γνωρίστε με", anchor: "gnoriste-me" },
@@ -31,6 +37,8 @@ export const Header: React.FC = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -100,6 +108,11 @@ export const Header: React.FC = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false);
+    setIsServicesOpen(false);
+  };
+
   return (
     <>
       <header
@@ -117,6 +130,7 @@ export const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6" aria-label="Κύριο Μενού Πλοήγησης">
+            <ServicesMegaMenu />
             {navLinks.map((link) => (
               <a
                 key={link.anchor}
@@ -249,11 +263,66 @@ export const Header: React.FC = () => {
 
           {/* Drawer Links */}
           <nav className="flex flex-col gap-4" aria-label="Σύνδεσμοι κινητού">
+            {/* Ακορντεόν «Υπηρεσίες» με τις 6 σελίδες υπηρεσιών */}
+            <div className="border-b border-ink-900/5">
+              <button
+                type="button"
+                onClick={() => setIsServicesOpen((open) => !open)}
+                aria-expanded={isServicesOpen}
+                aria-controls="mobile-services-submenu"
+                className={`w-full flex items-center justify-between gap-2 font-sans font-semibold text-lg p-2 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded cursor-pointer ${
+                  isServicesOpen ? "text-primary" : "text-ink-900 hover:text-primary"
+                }`}
+              >
+                Υπηρεσίες
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  className="w-5 h-5 shrink-0"
+                  aria-hidden="true"
+                >
+                  {isServicesOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
+                  )}
+                </svg>
+              </button>
+
+              <AnimatePresence initial={false}>
+                {isServicesOpen && (
+                  <motion.ul
+                    id="mobile-services-submenu"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: "easeOut" }}
+                    className="overflow-hidden ml-2 border-l border-ink-900/10"
+                  >
+                    {serviceMenuItems.map((item) => (
+                      <li key={item.slug}>
+                        <Link
+                          href={item.href}
+                          onClick={closeMobileMenu}
+                          className="block font-sans text-base text-ink-600 hover:text-primary py-2 pl-4 pr-2 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+                        >
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+
             {navLinks.map((link) => (
               <a
                 key={link.anchor}
                 href={anchorHref(link.anchor)}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={closeMobileMenu}
                 className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
               >
                 {link.label}
@@ -268,7 +337,7 @@ export const Header: React.FC = () => {
             href={anchorHref("kleiste-rantevou")}
             variant="primary"
             label="Κλείστε Ραντεβού"
-            onClick={() => setIsMenuOpen(false)}
+            onClick={closeMobileMenu}
             className="w-full"
             icon={
               <svg
