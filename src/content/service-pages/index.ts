@@ -20,8 +20,11 @@ export const servicePages: ServicePageContent[] = [
   kinesiotapingPage,
 ];
 
+/** Η σελίδα-κόμβος με όλες τις υπηρεσίες (βλ. `src/app/ypiresies/page.tsx`). */
+export const SERVICES_HUB_PATH = "/ypiresies";
+
 /** Το URL μιας σελίδας υπηρεσίας, π.χ. "/ypiresies/manual-therapy". */
-export const servicePageHref = (slug: string) => `/ypiresies/${slug}`;
+export const servicePageHref = (slug: string) => `${SERVICES_HUB_PATH}/${slug}`;
 
 /**
  * Χτίζει τα SEO metadata μιας σελίδας υπηρεσίας, με τη λογική τίτλου/canonical
@@ -46,12 +49,10 @@ export function buildServiceMetadata(content: ServicePageContent): Metadata {
       siteName: SITE_NAME,
       locale: "el_GR",
       type: "article",
-      images: [
-        {
-          url: content.hero.photo,
-          alt: content.hero.title,
-        },
-      ],
+      // Καμία ρητή `images` εδώ: κάθε σελίδα υπηρεσίας έχει το δικό της
+      // `opengraph-image.tsx`, που παράγει PNG με το όνομα της υπηρεσίας. Οι
+      // παλιές .webp φωτογραφίες αφαιρέθηκαν επειδή ο scraper του Facebook δεν
+      // τις διαβάζει αξιόπιστα — και μια ρητή τιμή εδώ θα υπερίσχυε του αρχείου.
     },
   };
 }

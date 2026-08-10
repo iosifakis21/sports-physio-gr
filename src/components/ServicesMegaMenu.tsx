@@ -137,7 +137,8 @@ export const ServicesMegaMenu: React.FC = () => {
             // ώστε η μετακίνηση του ποντικιού προς τα κάτω να μην το κλείνει.
             className="absolute left-1/2 -translate-x-1/2 top-full pt-4 z-50"
           >
-            <div className="w-[640px] max-w-[90vw] rounded-card bg-surface shadow-2xl border border-ink-900/10 p-5 flex gap-5">
+            <div className="w-[640px] max-w-[90vw] rounded-card bg-surface shadow-2xl border border-ink-900/10 p-5 flex flex-col gap-4">
+            <div className="flex gap-5">
               {/* Λίστα υπηρεσιών, δύο στήλες */}
               <ul className="flex-1 grid grid-cols-2 gap-x-3 gap-y-1 content-start">
                 {serviceMenuItems.map((item, index) => (
@@ -200,6 +201,16 @@ export const ServicesMegaMenu: React.FC = () => {
                     <ArrowIcon />
                   </span>
                 </span>
+              </Link>
+              </div>
+
+              {/* Σύνδεσμος προς τη σελίδα-κόμβο με όλες τις υπηρεσίες */}
+              <Link
+                href="/ypiresies"
+                onClick={close}
+                className="self-start font-sans font-semibold text-sm text-primary-link hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
+              >
+                Δείτε όλες τις υπηρεσίες →
               </Link>
             </div>
           </motion.div>

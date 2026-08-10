@@ -1,5 +1,9 @@
 import { MetadataRoute } from "next";
-import { servicePages, servicePageHref } from "@/content/service-pages";
+import {
+  servicePages,
+  servicePageHref,
+  SERVICES_HUB_PATH,
+} from "@/content/service-pages";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -12,6 +16,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1.0,
+    },
+    // Η σελίδα-κόμβος με όλες τις υπηρεσίες
+    {
+      url: `${baseUrl}${SERVICES_HUB_PATH}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
     },
     // One entry per service page (/ypiresies/[slug])
     ...servicePages.map((page) => ({
