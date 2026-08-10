@@ -2,14 +2,24 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/Button";
+import { ServicesMegaMenu } from "@/components/ServicesMegaMenu";
+import { servicePages, servicePageHref } from "@/content/service-pages";
 
 interface NavLinkItem {
   label: string;
   /** Id of the homepage section this link scrolls to. */
   anchor: string;
 }
+
+/** The anchor whose nav item opens the services dropdown instead of only scrolling. */
+const SERVICES_ANCHOR = "ypiresies";
+
+/** Shared by every desktop nav item, including the services dropdown trigger. */
+const desktopLinkClass =
+  "font-sans font-medium text-ink-600 hover:text-primary-link text-sm transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1";
 
 const navLinks: NavLinkItem[] = [
   { label: "Υπηρεσίες", anchor: "ypiresies" },
@@ -31,6 +41,7 @@ export const Header: React.FC = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -58,14 +69,17 @@ export const Header: React.FC = () => {
       const menuEl = menuRef.current;
       if (!menuEl) return;
 
-      const focusableElements = Array.from(
-        menuEl.querySelectorAll<HTMLElement>(focusableElementsString)
-      );
-      const firstFocusableEl = focusableElements[0];
-      const lastFocusableEl = focusableElements[focusableElements.length - 1];
+      // Recomputed on every Tab rather than once on open: the services
+      // accordion adds and removes tabbable links while the drawer is open.
+      // The collapsed accordion keeps its links in the DOM but out of the tab
+      // order (tabindex="-1"), so they must not count as a stop either.
+      const getFocusableElements = () =>
+        Array.from(menuEl.querySelectorAll<HTMLElement>(focusableElementsString)).filter(
+          (el) => el.getAttribute("tabindex") !== "-1"
+        );
 
       // Automatically focus first item
-      firstFocusableEl?.focus();
+      getFocusableElements()[0]?.focus();
 
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
@@ -74,6 +88,10 @@ export const Header: React.FC = () => {
         }
 
         if (e.key === "Tab") {
+          const focusableElements = getFocusableElements();
+          const firstFocusableEl = focusableElements[0];
+          const lastFocusableEl = focusableElements[focusableElements.length - 1];
+
           if (e.shiftKey) {
             // Shift + Tab
             if (document.activeElement === firstFocusableEl) {
@@ -98,6 +116,11 @@ export const Header: React.FC = () => {
     }
   }, [isMenuOpen]);
 
+  // The accordion always starts collapsed the next time the drawer opens.
+  useEffect(() => {
+    if (!isMenuOpen) setIsServicesOpen(false);
+  }, [isMenuOpen]);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
@@ -117,15 +140,24 @@ export const Header: React.FC = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-6" aria-label="Κύριο Μενού Πλοήγησης">
-            {navLinks.map((link) => (
-              <a
-                key={link.anchor}
-                href={anchorHref(link.anchor)}
-                className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.anchor === SERVICES_ANCHOR ? (
+                <ServicesMegaMenu
+                  key={link.anchor}
+                  href={anchorHref(link.anchor)}
+                  label={link.label}
+                  triggerClassName={desktopLinkClass}
+                />
+              ) : (
+                <a
+                  key={link.anchor}
+                  href={anchorHref(link.anchor)}
+                  className={desktopLinkClass}
+                >
+                  {link.label}
+                </a>
+              )
+            )}
           </nav>
 
           {/* Right Header Actions */}
@@ -243,16 +275,69 @@ export const Header: React.FC = () => {
 
           {/* Drawer Links */}
           <nav className="flex flex-col gap-4" aria-label="Σύνδεσμοι κινητού">
-            {navLinks.map((link) => (
-              <a
-                key={link.anchor}
-                href={anchorHref(link.anchor)}
-                onClick={() => setIsMenuOpen(false)}
-                className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.anchor === SERVICES_ANCHOR ? (
+                <div key={link.anchor} className="border-b border-ink-900/5">
+                  <button
+                    type="button"
+                    onClick={() => setIsServicesOpen((open) => !open)}
+                    aria-expanded={isServicesOpen}
+                    aria-controls="mobile-services-submenu"
+                    className={`w-full flex items-center justify-between gap-2 font-sans font-semibold text-lg p-2 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded cursor-pointer ${
+                      isServicesOpen ? "text-primary" : "text-ink-900 hover:text-primary"
+                    }`}
+                  >
+                    {link.label}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      className="w-5 h-5 shrink-0"
+                      aria-hidden="true"
+                    >
+                      {/* "+" collapsed / "−" expanded */}
+                      <path strokeLinecap="round" d="M4 12h16" />
+                      {!isServicesOpen && <path strokeLinecap="round" d="M12 4v16" />}
+                    </svg>
+                  </button>
+
+                  <div
+                    id="mobile-services-submenu"
+                    className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+                      isServicesOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <ul className="flex flex-col pb-2">
+                        {servicePages.map((service) => (
+                          <li key={service.slug}>
+                            <Link
+                              href={servicePageHref(service.slug)}
+                              onClick={() => setIsMenuOpen(false)}
+                              tabIndex={isServicesOpen ? undefined : -1}
+                              className="block font-sans text-base text-ink-600 hover:text-primary py-2 pl-4 pr-2 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+                            >
+                              {service.hero.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={link.anchor}
+                  href={anchorHref(link.anchor)}
+                  onClick={() => setIsMenuOpen(false)}
+                  className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+                >
+                  {link.label}
+                </a>
+              )
+            )}
           </nav>
         </div>
 
