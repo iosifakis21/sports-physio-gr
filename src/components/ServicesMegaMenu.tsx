@@ -14,7 +14,7 @@ const ArrowIcon: React.FC = () => (
     viewBox="0 0 24 24"
     strokeWidth="2"
     stroke="currentColor"
-    className="w-3.5 h-3.5"
+    className="w-4 h-4"
     aria-hidden="true"
   >
     <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H8M17 7v9" />
@@ -175,11 +175,13 @@ export const ServicesMegaMenu: React.FC = () => {
             style={strip ? { left: strip.left, width: strip.width } : { visibility: "hidden" }}
           >
             {/* `max-w-full`: η λωρίδα έχει ήδη τα side paddings, οπότε σε στενές
-                οθόνες το πάνελ συρρικνώνεται αντί να βγει εκτός viewport. */}
-            <div className="w-[640px] max-w-full rounded-card bg-surface shadow-2xl border border-ink-900/10 p-5 flex flex-col gap-4">
-            <div className="flex gap-5">
+                οθόνες το πάνελ συρρικνώνεται αντί να βγει εκτός viewport.
+                Το `max-h` κρατά το πάνελ μέσα στο viewport ακόμη και σε χαμηλά
+                laptop ύψη — σε κανονικό desktop ύψος δεν ενεργοποιείται. */}
+            <div className="w-[860px] xl:w-[960px] max-w-full rounded-card bg-surface shadow-2xl border border-ink-900/10 p-7 xl:p-8 flex flex-col gap-6 max-h-[calc(100vh-7rem)] overflow-y-auto">
+            <div className="flex gap-7 xl:gap-9">
               {/* Λίστα υπηρεσιών, δύο στήλες */}
-              <ul className="flex-1 grid grid-cols-2 gap-x-3 gap-y-1 content-start">
+              <ul className="flex-1 grid grid-cols-2 gap-x-4 gap-y-2 content-start">
                 {serviceMenuItems.map((item, index) => (
                   <li key={item.slug}>
                     <Link
@@ -187,7 +189,7 @@ export const ServicesMegaMenu: React.FC = () => {
                       onClick={close}
                       onMouseEnter={() => setActiveIndex(index)}
                       onFocus={() => setActiveIndex(index)}
-                      className={`block rounded-md px-3 py-2 font-sans text-sm leading-snug transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary ${
+                      className={`block rounded-md px-4 py-3.5 font-sans text-base xl:text-lg leading-snug transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary ${
                         index === activeIndex
                           ? "bg-primary text-white font-semibold"
                           : "text-ink-900 hover:text-primary-link"
@@ -204,7 +206,7 @@ export const ServicesMegaMenu: React.FC = () => {
                 href={active.href}
                 onClick={close}
                 aria-label={`${active.title} — μάθετε περισσότερα`}
-                className="relative block w-[240px] shrink-0 aspect-[4/3] overflow-hidden rounded-card bg-ink-900 group focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                className="relative block w-[320px] xl:w-[368px] shrink-0 aspect-[4/3] overflow-hidden rounded-card bg-ink-900 group focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               >
                 <AnimatePresence initial={false}>
                   <motion.span
@@ -219,7 +221,7 @@ export const ServicesMegaMenu: React.FC = () => {
                       src={active.photo}
                       alt=""
                       fill
-                      sizes="240px"
+                      sizes="(min-width: 1280px) 368px, 320px"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     />
                   </motion.span>
@@ -229,13 +231,13 @@ export const ServicesMegaMenu: React.FC = () => {
                   className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-900 via-ink-900/60 to-transparent pointer-events-none"
                   aria-hidden="true"
                 />
-                <span className="absolute inset-x-0 bottom-0 p-3 flex items-center justify-between gap-2">
-                  <span className="font-display font-bold uppercase text-white text-xs leading-tight tracking-tight">
+                <span className="absolute inset-x-0 bottom-0 p-4 flex items-center justify-between gap-3">
+                  <span className="font-display font-bold uppercase text-white text-sm xl:text-base leading-tight tracking-tight">
                     {active.title}
                   </span>
                   <span
                     aria-hidden="true"
-                    className="flex items-center justify-center w-7 h-7 shrink-0 rounded-full bg-white/15 backdrop-blur-sm text-white transition-colors duration-200 group-hover:bg-white/25"
+                    className="flex items-center justify-center w-9 h-9 shrink-0 rounded-full bg-white/15 backdrop-blur-sm text-white transition-colors duration-200 group-hover:bg-white/25"
                   >
                     <ArrowIcon />
                   </span>
@@ -247,7 +249,7 @@ export const ServicesMegaMenu: React.FC = () => {
               <Link
                 href="/ypiresies"
                 onClick={close}
-                className="self-start font-sans font-semibold text-sm text-primary-link hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
+                className="self-start font-sans font-semibold text-base text-primary-link hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
               >
                 Δείτε όλες τις υπηρεσίες →
               </Link>
