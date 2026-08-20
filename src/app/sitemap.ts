@@ -4,6 +4,11 @@ import {
   servicePageHref,
   SERVICES_HUB_PATH,
 } from "@/content/service-pages";
+import {
+  conditionPages,
+  conditionPageHref,
+  CONDITIONS_HUB_PATH,
+} from "@/content/condition-pages";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -30,6 +35,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.8,
+    })),
+    // Η σελίδα-κόμβος με όλες τις παθήσεις
+    {
+      url: `${baseUrl}${CONDITIONS_HUB_PATH}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    // One entry per condition page (/pathiseis/[slug])
+    ...conditionPages.map((page) => ({
+      url: `${baseUrl}${conditionPageHref(page.slug)}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     })),
     // Η /politiki-aporritou δεν περιλαμβάνεται σκόπιμα: είναι `noindex`
     // (βλ. `src/app/politiki-aporritou/page.tsx`), οπότε η καταχώρισή της εδώ

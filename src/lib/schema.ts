@@ -34,6 +34,11 @@ import {
   SERVICES_HUB_PATH,
 } from "@/content/service-pages";
 import type { ServicePageContent } from "@/content/service-pages/types";
+import {
+  conditionPageHref,
+  CONDITIONS_HUB_PATH,
+} from "@/content/condition-pages";
+import type { ConditionPageContent } from "@/content/condition-pages/types";
 
 /* -------------------------------------------------------------------------- */
 /*  Σταθερά αναγνωριστικά οντοτήτων                                           */
@@ -52,6 +57,13 @@ export const SCHEMA_IDS = {
   breadcrumb: (slug: string) => `${SITE_URL}${servicePageHref(slug)}#breadcrumb`,
   /** Η διαδρομή πλοήγησης της σελίδας-κόμβου των υπηρεσιών. */
   servicesHubBreadcrumb: `${SITE_URL}${SERVICES_HUB_PATH}#breadcrumb`,
+  /** Μία οντότητα MedicalCondition ανά πάθηση, με βάση το slug της σελίδας. */
+  condition: (slug: string) =>
+    `${SITE_URL}${conditionPageHref(slug)}#condition`,
+  conditionBreadcrumb: (slug: string) =>
+    `${SITE_URL}${conditionPageHref(slug)}#breadcrumb`,
+  /** Η διαδρομή πλοήγησης της σελίδας-κόμβου των παθήσεων. */
+  conditionsHubBreadcrumb: `${SITE_URL}${CONDITIONS_HUB_PATH}#breadcrumb`,
   faq: (path: string) => `${SITE_URL}${path}#faq`,
   review: (id: string) => `${SITE_URL}/#${id}`,
 } as const;
@@ -404,5 +416,101 @@ export function buildServiceGraph(content: ServicePageContent): Graph {
     ...baseEntities(),
     buildBreadcrumb(content),
     ...(faq ? [faq] : []),
+  ]);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Σελίδες παθήσεων (/pathiseis)                                             */
+/* -------------------------------------------------------------------------- */
+
+/** Η διαδρομή πλοήγησης μιας σελίδας πάθησης: Αρχική → Παθήσεις → <πάθηση>. */
+function buildConditionBreadcrumb(content: ConditionPageContent) {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": SCHEMA_IDS.conditionBreadcrumb(content.slug),
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Αρχική",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Παθήσεις",
+        item: `${SITE_URL}${CONDITIONS_HUB_PATH}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: content.name,
+        item: `${SITE_URL}${conditionPageHref(content.slug)}`,
+      },
+    ],
+  };
+}
+
+function buildConditionsHubBreadcrumb() {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": SCHEMA_IDS.conditionsHubBreadcrumb,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Αρχική",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Παθήσεις",
+        item: `${SITE_URL}${CONDITIONS_HUB_PATH}`,
+      },
+    ],
+  };
+}
+
+/**
+ * Η ίδια η πάθηση, ως `MedicalCondition` (schema.org/MedicalCondition — μέρος
+ * της επέκτασης health-lifesci, την οποία η Google αναγνωρίζει). Τα συμπτώματα
+ * μπαίνουν ως `MedicalSignOrSymptom` και οι σχετικές υπηρεσίες ως
+ * `possibleTreatment`, με αναφορά στις υπάρχουσες οντότητες Service του γράφου.
+ */
+function buildMedicalCondition(content: ConditionPageContent) {
+  const treatments = content.howWeHelp.relatedServices
+    .filter((service) => servicePages.some((page) => page.slug === service.slug))
+    .map((service) => ref(SCHEMA_IDS.service(service.slug)));
+
+  return {
+    "@type": "MedicalCondition",
+    "@id": SCHEMA_IDS.condition(content.slug),
+    name: content.name,
+    description: content.meta.description,
+    url: `${SITE_URL}${conditionPageHref(content.slug)}`,
+    ...(content.symptoms.length > 0
+      ? {
+          signOrSymptom: content.symptoms.map((symptom) => ({
+            "@type": "MedicalSignOrSymptom",
+            name: symptom,
+          })),
+        }
+      : {}),
+    ...(treatments.length > 0 ? { possibleTreatment: treatments } : {}),
+  };
+}
+
+/** Ο γράφος της σελίδας-κόμβου των παθήσεων (/pathiseis). */
+export function buildConditionsHubGraph(): Graph {
+  return graph([...baseEntities(), buildConditionsHubBreadcrumb()]);
+}
+
+/** Ο γράφος μιας σελίδας πάθησης. */
+export function buildConditionGraph(content: ConditionPageContent): Graph {
+  return graph([
+    ...baseEntities(),
+    buildConditionBreadcrumb(content),
+    buildMedicalCondition(content),
   ]);
 }
