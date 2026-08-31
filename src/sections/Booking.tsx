@@ -44,14 +44,16 @@ export const Booking: React.FC = () => {
           </div>
         </div>
 
-        {/* Cal.com inline booking calendar. The min-height keeps the container
-            from collapsing to zero before Cal.com's script mounts the iframe. */}
-        <div className="w-full max-w-[1000px] bg-surface rounded-card p-2 sm:p-4 border border-white/10 shadow-xl overflow-hidden min-h-[640px] md:min-h-[720px]">
+        {/* Cal.com inline booking calendar. The min-height sits on the embed
+            itself so the card reserves space before Cal.com's script mounts the
+            iframe, then shrinks back to the widget's own height once it has —
+            a fixed height on the card would leave dead white space below it. */}
+        <div className="w-full max-w-[1000px] bg-surface rounded-card px-2 pt-2 pb-1 sm:px-4 sm:pt-4 sm:pb-2 border border-white/10 shadow-xl overflow-hidden">
           <Cal
             namespace={CAL_NAMESPACE}
             calLink={CAL_LINK}
-            style={{ width: "100%", height: "100%", minHeight: "620px", overflow: "scroll" }}
-            config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "auto" }}
+            style={{ width: "100%", height: "auto", minHeight: "620px", overflow: "scroll" }}
+            config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" }}
           />
         </div>
 
