@@ -93,6 +93,7 @@ export const Hero: React.FC = () => {
               <Button
                 variant="primary"
                 label="Κλείστε Ραντεβού"
+                calPopup
                 href="#kleiste-rantevou"
                 icon={
                   <svg

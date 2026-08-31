@@ -45,7 +45,7 @@ export const Conditions: React.FC = () => {
             </AnimatedContainer>
 
             <AnimatedContainer delay={0.2}>
-              <Button label="Κλείστε Ραντεβού" href="#kleiste-rantevou" />
+              <Button label="Κλείστε Ραντεβού" calPopup href="#kleiste-rantevou" />
             </AnimatedContainer>
           </div>
 

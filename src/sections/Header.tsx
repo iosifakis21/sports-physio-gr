@@ -147,6 +147,7 @@ export const Header: React.FC = () => {
             {/* Header Primary CTA (Desktop and Tablet) */}
             <Button
               href={anchorHref("kleiste-rantevou")}
+              calPopup
               variant="primary"
               label="Κλείστε Ραντεβού"
               className="!hidden sm:!inline-flex"
@@ -335,6 +336,7 @@ export const Header: React.FC = () => {
         <div className="flex flex-col gap-4 mt-8">
           <Button
             href={anchorHref("kleiste-rantevou")}
+            calPopup
             variant="primary"
             label="Κλείστε Ραντεβού"
             onClick={closeMobileMenu}

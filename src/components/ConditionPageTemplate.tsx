@@ -94,6 +94,7 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
             <Button
               variant="primary"
               label="Κλείστε Ραντεβού"
+              calPopup
               href="/#kleiste-rantevou"
               icon={<CalendarIcon />}
             />
@@ -184,6 +185,7 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
           <Button
             variant="secondary"
             label="Κλείστε Ραντεβού"
+            calPopup
             href="/#kleiste-rantevou"
             className="mt-2 font-semibold"
             icon={<CalendarIcon />}

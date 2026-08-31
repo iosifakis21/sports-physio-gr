@@ -213,11 +213,13 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                     {/* "Κλείστε Ραντεβού" Button */}
                     <Button
                       href="#kleiste-rantevou"
+                      calPopup
                       variant="primary"
                       className="w-full text-xs font-bold min-h-[34px] py-1.5 px-2"
                       onClick={() => {
+                        // Close the annotation popover; the Cal.com modal takes
+                        // over from here, so no scroll to the inline calendar.
                         setActiveGroupId(null);
-                        document.getElementById("kleiste-rantevou")?.scrollIntoView({ behavior: "smooth" });
                       }}
                     >
                       Κλείστε Ραντεβού

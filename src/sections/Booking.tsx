@@ -1,26 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Cal, { getCalApi } from "@calcom/embed-react";
+import React from "react";
+import Cal from "@calcom/embed-react";
 import { CheckItem } from "@/components/CheckItem";
-
-const CAL_NAMESPACE = "ραντεβου-φυσικοθεραπειας";
-const CAL_LINK = "sports-physio-nxqxxx/ραντεβου-φυσικοθεραπειας";
+import { CAL_LINK, CAL_NAMESPACE, useCalInit } from "@/lib/cal";
 
 export const Booking: React.FC = () => {
-  useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({ namespace: CAL_NAMESPACE });
-      cal("ui", {
-        cssVarsPerTheme: {
-          light: { "cal-brand": "#1D4ED8" },
-          dark: { "cal-brand": "#1D4ED8" },
-        },
-        hideEventTypeDetails: false,
-        layout: "month_view",
-      });
-    })();
-  }, []);
+  // Namespace setup is shared with the popup CTAs and runs once per page load.
+  useCalInit();
 
   return (
     <section id="kleiste-rantevou" className="py-[56px] md:py-[96px] bg-primary text-white scroll-mt-20">

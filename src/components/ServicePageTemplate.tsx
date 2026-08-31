@@ -146,6 +146,7 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
               <Button
                 variant="primary"
                 label="Κλείστε Ραντεβού"
+                calPopup
                 href="/#kleiste-rantevou"
                 icon={<CalendarIcon />}
               />
@@ -269,6 +270,7 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
           <Button
             variant="secondary"
             label="Κλείστε Ραντεβού"
+            calPopup
             href="/#kleiste-rantevou"
             className="mt-2 font-semibold"
             icon={<CalendarIcon />}

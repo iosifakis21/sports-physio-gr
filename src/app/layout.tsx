@@ -3,6 +3,7 @@ import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/sections/Header";
 import { Footer } from "@/sections/Footer";
+import { CalInit } from "@/components/CalInit";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Load Inter font with greek subset for body copy
@@ -104,6 +105,7 @@ export default function RootLayout({
       className={`${inter.variable} ${manrope.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-surface text-ink-600 font-sans">
+        <CalInit />
         <Header />
         <main className="flex-grow pt-[80px]">
           {children}

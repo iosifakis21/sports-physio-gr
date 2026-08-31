@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
+import { calPopupAttributes } from "@/lib/cal";
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -12,6 +13,11 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   className?: string;
   icon?: React.ReactNode;
+  /**
+   * Opens the Cal.com booking popup on click instead of navigating to the
+   * inline calendar. `href` is then only used as a no-script fallback.
+   */
+  calPopup?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -23,6 +29,7 @@ export const Button: React.FC<ButtonProps> = ({
   type = "button",
   className = "",
   icon,
+  calPopup = false,
 }) => {
   const content = (
     <>
@@ -71,6 +78,33 @@ export const Button: React.FC<ButtonProps> = ({
     textCheck !== "Κλείστε Ραντεβού"
   ) {
     console.warn(`WARNING: Primary CTA label "${textCheck}" violates branding rules. It must strictly be "Κλείστε Ραντεβού".`);
+  }
+
+  // Cal.com's embed script listens for clicks on any element carrying
+  // data-cal-link and opens the modal — but it does NOT preventDefault, so a
+  // real <a href="#kleiste-rantevou"> would open the popup *and* jump the page
+  // behind it. Render a plain <button> instead and keep `href` purely as a
+  // fallback: if the embed script never loaded, window.Cal is undefined at
+  // click time and we navigate to the inline calendar as before.
+  if (calPopup) {
+    return (
+      <button
+        type={type}
+        className={combinedStyles}
+        {...calPopupAttributes}
+        onClick={() => {
+          onClick?.();
+          const calLoaded =
+            typeof window !== "undefined" &&
+            (window as unknown as { Cal?: unknown }).Cal !== undefined;
+          if (!calLoaded && href) {
+            window.location.href = href;
+          }
+        }}
+      >
+        {content}
+      </button>
+    );
   }
 
   if (href) {

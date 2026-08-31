@@ -53,6 +53,7 @@ export const StickyMobileCTA: React.FC = () => {
       <Button
         variant="primary"
         label="Κλείστε Ραντεβού"
+        calPopup
         href="#kleiste-rantevou"
         className="flex-grow text-center text-sm font-semibold h-[44px]"
       />
