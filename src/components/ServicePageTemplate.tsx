@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
+import { InlineBookingCalendar } from "@/components/InlineBookingCalendar";
 import { CheckItem } from "@/components/CheckItem";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import { JsonLd } from "@/components/JsonLd";
@@ -147,7 +148,7 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
                 variant="primary"
                 label="Κλείστε Ραντεβού"
                 calPopup
-                href="/#kleiste-rantevou"
+                href="#kleiste-rantevou"
                 icon={<CalendarIcon />}
               />
             </div>
@@ -257,26 +258,12 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
         </section>
       )}
 
-      {/* ---------- Booking CTA (links back to the homepage booking form) ---------- */}
-      <section className="py-[56px] md:py-[96px] bg-primary text-white select-none">
-        <div className="max-w-[800px] mx-auto px-4 md:px-8 flex flex-col items-center text-center gap-5">
-          <h2 className="text-2xl md:text-3xl font-extrabold font-display tracking-tight">
-            Έτοιμοι να ξεκινήσετε;
-          </h2>
-          <p className="font-sans text-base md:text-lg text-white/85 leading-relaxed max-w-xl">
-            Κλείστε το ραντεβού σας σε λιγότερο από 1 λεπτό και ξεκινήστε την
-            αποκατάστασή σας με εξατομικευμένο πλάνο.
-          </p>
-          <Button
-            variant="secondary"
-            label="Κλείστε Ραντεβού"
-            calPopup
-            href="/#kleiste-rantevou"
-            className="mt-2 font-semibold"
-            icon={<CalendarIcon />}
-          />
-        </div>
-      </section>
+      {/* ---------- Inline booking calendar ----------
+           Replaces the old CTA section that linked back to the homepage: the
+           calendar now lives on this page, so there is nowhere to send people.
+           It also owns the `kleiste-rantevou` anchor this page's CTAs fall
+           back to when the Cal.com popup script is unavailable. */}
+      <InlineBookingCalendar />
     </article>
   );
 };
