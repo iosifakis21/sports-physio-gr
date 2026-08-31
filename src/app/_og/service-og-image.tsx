@@ -9,7 +9,7 @@ import { servicePages } from "@/content/service-pages";
  *
  * Κάθε `src/app/ypiresies/<slug>/opengraph-image.tsx` είναι ένα λεπτό περιτύλιγμα
  * γύρω από αυτό το αρχείο — δεν μπορεί να μπει ένα κοινό `[slug]` segment, γιατί
- * οι έξι σελίδες είναι στατικά segments και το Next αναζητά το `opengraph-image`
+ * οι σελίδες είναι στατικά segments και το Next αναζητά το `opengraph-image`
  * μέσα στο ίδιο segment με τη σελίδα.
  *
  * Το οπτικό πρότυπο (χρώματα, λογότυπο, γραμματοσειρές) είναι το ίδιο με την

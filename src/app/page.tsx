@@ -24,7 +24,7 @@ export default function Home() {
   return (
     <div className="flex flex-col w-full relative">
       {/* Ένα και μοναδικό `@graph` για όλη τη σελίδα: επιχείρηση (με
-          aggregateRating και κατάλογο υπηρεσιών), ιστότοπος, θεραπευτής, οι έξι
+          aggregateRating και κατάλογο υπηρεσιών), ιστότοπος, θεραπευτής, οι
           υπηρεσίες, οι 9 κριτικές και το FAQ. Βλ. `src/lib/schema.ts`. */}
       <JsonLd data={buildHomeGraph()} />
 

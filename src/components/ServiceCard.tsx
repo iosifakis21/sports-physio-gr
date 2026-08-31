@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 
 /**
- * Η κάρτα μιας υπηρεσίας — φωτογραφία σε πλήρη κάλυψη, αριθμός (01–06), τίτλος
+ * Η κάρτα μιας υπηρεσίας — φωτογραφία σε πλήρη κάλυψη, αριθμός (01–07), τίτλος
  * και περιγραφή. Χρησιμοποιείται τόσο από την ενότητα «Υπηρεσίες» της αρχικής
  * (`src/sections/Services.tsx`) όσο και από τη σελίδα-κόμβο `/ypiresies`, ώστε
  * η εμφάνιση να είναι ίδια και στα δύο σημεία.
@@ -101,7 +101,7 @@ export const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({
 };
 
 /**
- * Το πλέγμα των έξι καρτών, με την ίδια σταδιακή εμφάνιση — 2 στήλες σε
+ * Το πλέγμα των καρτών, με την ίδια σταδιακή εμφάνιση — 2 στήλες σε
  * κινητό/tablet, 3 σε desktop. Ίδιο πλέγμα στην αρχική και στη `/ypiresies`.
  */
 export const ServiceCardGrid: React.FC<{ services: ServiceItem[] }> = ({ services }) => (

@@ -7,6 +7,7 @@ import { kroustikosYperichosPage } from "./kroustikos-yperichos";
 import { pelmatografosPage } from "./pelmatografos";
 import { dryNeedlingPage } from "./dry-needling";
 import { kinesiotapingPage } from "./kinesiotaping";
+import { tecarTPlusPage } from "./tecar-t-plus";
 
 const SITE_NAME_SUFFIX = "Sports-Physio.gr — Μιχάλης Σιούλης";
 
@@ -18,6 +19,7 @@ export const servicePages: ServicePageContent[] = [
   pelmatografosPage,
   dryNeedlingPage,
   kinesiotapingPage,
+  tecarTPlusPage,
 ];
 
 /** Η σελίδα-κόμβος με όλες τις υπηρεσίες (βλ. `src/app/ypiresies/page.tsx`). */

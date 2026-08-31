@@ -46,5 +46,13 @@
     "iconName": "bookmark",
     "photo": "/images/kinesiotaping.webp",
     "slug": "kinesiotaping"
+  },
+  {
+    "id": "tecar-t-plus",
+    "title": "Tecar T-Plus (WINTECARE)",
+    "description": "Ηλεκτρομαγνητική θεραπεία υψηλής τεχνολογίας για επιτάχυνση της αιμάτωσης, μείωση του πόνου και ταχύτερη αποκατάσταση.",
+    "iconName": "zap",
+    "photo": "/images/services/tecar.webp",
+    "slug": "tecar-t-plus"
   }
 ]

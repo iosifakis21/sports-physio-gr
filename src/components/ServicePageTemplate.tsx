@@ -97,7 +97,7 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
   return (
     <article className="flex flex-col w-full">
       {/* Ένα και μοναδικό `@graph` για όλη τη σελίδα: επιχείρηση, ιστότοπος,
-          θεραπευτής, οι έξι υπηρεσίες, η διαδρομή πλοήγησης και το FAQ της
+          θεραπευτής, οι υπηρεσίες, η διαδρομή πλοήγησης και το FAQ της
           σελίδας (αν υπάρχει). Βλ. `src/lib/schema.ts`. */}
       <JsonLd data={buildServiceGraph(content)} />
 

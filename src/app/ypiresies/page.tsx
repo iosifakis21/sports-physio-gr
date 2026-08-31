@@ -69,14 +69,14 @@ export default function Page() {
           </h1>
 
           <p className="font-sans text-base md:text-lg text-slate-300 leading-relaxed max-w-2xl">
-            Έξι εξειδικευμένες θεραπείες φυσικοθεραπείας και αθλητικής
+            Επτά εξειδικευμένες θεραπείες φυσικοθεραπείας και αθλητικής
             αποκατάστασης — επιλέξτε μια υπηρεσία για να δείτε αναλυτικά πώς
             λειτουργεί και σε ποιες περιπτώσεις βοηθά.
           </p>
         </div>
       </section>
 
-      {/* ---------- Grid με τις έξι υπηρεσίες ---------- */}
+      {/* ---------- Grid με τις επτά υπηρεσίες ---------- */}
       <section className="py-[56px] md:py-[96px] bg-surface select-none">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           <ServiceCardGrid services={services} />
