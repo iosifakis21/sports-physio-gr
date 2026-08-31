@@ -5,7 +5,6 @@ import { Button } from "./Button";
 
 export const StickyMobileCTA: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [isInputFocused, setIsInputFocused] = useState(false);
 
   useEffect(() => {
     // Check if we are on a mobile device/viewport
@@ -34,31 +33,14 @@ export const StickyMobileCTA: React.FC = () => {
       observer.observe(bookingSection);
     }
 
-    // Monitor input focus to prevent blocking/overlap issues on mobile keyboards
-    const handleFocusIn = (e: FocusEvent) => {
-      const target = e.target as HTMLElement;
-      if (target && (target.tagName === "INPUT" || target.tagName === "SELECT" || target.tagName === "TEXTAREA")) {
-        setIsInputFocused(true);
-      }
-    };
-
-    const handleFocusOut = () => {
-      setIsInputFocused(false);
-    };
-
-    document.addEventListener("focusin", handleFocusIn);
-    document.addEventListener("focusout", handleFocusOut);
-
     return () => {
       window.removeEventListener("resize", handleResize);
       if (observer) observer.disconnect();
-      document.removeEventListener("focusin", handleFocusIn);
-      document.removeEventListener("focusout", handleFocusOut);
     };
   }, []);
 
-  // Determine visibility condition: must be visible, viewport is mobile, and no input is focused
-  const shouldRender = isVisible && !isInputFocused;
+  // Visible only on mobile viewports while the booking section is off-screen.
+  const shouldRender = isVisible;
 
   return (
     <div
