@@ -7,6 +7,7 @@ import { AnimatedContainer } from "@/components/AnimatedContainer";
 // fold, so it loads as its own chunk after hydration.
 const Tilt = dynamic(() => import("@/components/Tilt").then((m) => m.Tilt));
 import { CredentialsStrip } from "@/components/CredentialsStrip";
+import { TeamCarousel } from "@/components/TeamCarousel";
 
 export const About: React.FC = () => {
   const credentials = [
@@ -149,6 +150,17 @@ export const About: React.FC = () => {
           </AnimatedContainer>
 
         </div>
+
+        {/* Η υπόλοιπη ομάδα — μία σταθερή καρτέλα που εναλλάσσει μέλη με τα
+            βέλη. Ό,τι είναι από πάνω (ο Μιχάλης) μένει ως έχει. */}
+        <AnimatedContainer className="flex flex-col gap-8 md:gap-10">
+          <SectionHeading
+            eyebrow="Η ομάδα"
+            heading="Η Ομάδα μας"
+            subcopy="Οι συνεργάτες που πλαισιώνουν το SportsPhysio και συμμετέχουν στην αποκατάστασή σας."
+          />
+          <TeamCarousel />
+        </AnimatedContainer>
 
       </div>
     </section>

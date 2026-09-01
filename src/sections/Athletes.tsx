@@ -1,45 +1,14 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { AthleteCard, Athlete } from "@/components/AthleteCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
+import { CarouselArrow } from "@/components/CarouselArrow";
 import athletesData from "@/content/athletes.json";
 
 // Matches the `gap-6` between cards; used to work out one card's scroll step.
 const CARD_GAP = 24;
-
-const ChevronIcon: React.FC<{ direction: "left" | "right" }> = ({ direction }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    stroke="currentColor"
-    className="w-5 h-5"
-    aria-hidden="true"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d={direction === "left" ? "M15.75 19.5 8.25 12l7.5-7.5" : "m8.25 4.5 7.5 7.5-7.5 7.5"}
-    />
-  </svg>
-);
-
-const ArrowButton: React.FC<{
-  direction: "left" | "right";
-  onClick: () => void;
-}> = ({ direction, onClick }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    aria-label={direction === "left" ? "Προηγούμενοι αθλητές" : "Επόμενοι αθλητές"}
-    className="pointer-events-auto flex items-center justify-center w-11 h-11 rounded-full border shadow-lg transition-all duration-200 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary bg-slate-900/90 border-white/20 text-white cursor-pointer hover:bg-primary hover:border-primary hover:scale-105 active:scale-95"
-  >
-    <ChevronIcon direction={direction} />
-  </button>
-);
 
 const AthleteScroller: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -138,8 +107,18 @@ const AthleteScroller: React.FC<{ athletes: Athlete[] }> = ({ athletes }) => {
 
       {/* Arrow buttons — always visible and never disabled since the loop is infinite */}
       <div className="pointer-events-none absolute inset-x-0 top-2 h-[220px] sm:h-[260px] z-50 flex items-center justify-between">
-        <ArrowButton direction="left" onClick={() => scrollByCards(-1)} />
-        <ArrowButton direction="right" onClick={() => scrollByCards(1)} />
+        <CarouselArrow
+          direction="left"
+          label="Προηγούμενοι αθλητές"
+          className="pointer-events-auto"
+          onClick={() => scrollByCards(-1)}
+        />
+        <CarouselArrow
+          direction="right"
+          label="Επόμενοι αθλητές"
+          className="pointer-events-auto"
+          onClick={() => scrollByCards(1)}
+        />
       </div>
     </div>
   );
