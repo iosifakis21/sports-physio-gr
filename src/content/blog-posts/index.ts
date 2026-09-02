@@ -11,6 +11,10 @@ import { megaliEpitychiaAlloEnaSeminarioCutmanMichalisSioulisPost } from "./mega
 import { megaliEpitychiaGiaEnaAkomiSeminarioTechnisCutmanPost } from "./megali-epitychia-gia-ena-akomi-seminario-technis-cutman";
 import { seminarioCutman4NoemvriouMichalisSioulisVideoPost } from "./seminario-cutman-4-noemvriou-michalis-sioulis-video";
 import { seminarioCutman18OktovriouMichalisSioulisAthinaPost } from "./seminario-cutman-18-oktovriou-michalis-sioulis-athina";
+import { tenontopatheiaAchilleiouTenontaPost } from "./tenontopatheia-achilleiou-tenonta";
+import { stinEthnikiOmadaMouaiTaiFysikotherapeutisMichalisSioulisPost } from "./stin-ethniki-omada-mouai-tai-fysikotherapeutis-michalis-sioulis";
+import { stinElladaJacobStitchDuranEliteCutmenPost } from "./stin-ellada-jacob-stitch-duran-elite-cutmen";
+import { wyndhamGrandSynentefxiTypouProtathlimaIcaPost } from "./wyndham-grand-synentefxi-typou-protathlima-ica";
 
 const SITE_NAME_SUFFIX = "Sports-Physio.gr — Μιχάλης Σιούλης";
 
@@ -30,6 +34,10 @@ export const blogPosts: BlogPostContent[] = [
   megaliEpitychiaGiaEnaAkomiSeminarioTechnisCutmanPost,
   seminarioCutman4NoemvriouMichalisSioulisVideoPost,
   seminarioCutman18OktovriouMichalisSioulisAthinaPost,
+  tenontopatheiaAchilleiouTenontaPost,
+  stinEthnikiOmadaMouaiTaiFysikotherapeutisMichalisSioulisPost,
+  stinElladaJacobStitchDuranEliteCutmenPost,
+  wyndhamGrandSynentefxiTypouProtathlimaIcaPost,
 ];
 
 /** Η σελίδα-κόμβος με όλα τα άρθρα (βλ. `src/app/blog/page.tsx`). */
