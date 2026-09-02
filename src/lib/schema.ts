@@ -39,6 +39,8 @@ import {
   CONDITIONS_HUB_PATH,
 } from "@/content/condition-pages";
 import type { ConditionPageContent } from "@/content/condition-pages/types";
+import { blogPostHref, BLOG_HUB_PATH } from "@/content/blog-posts";
+import type { BlogPostContent } from "@/content/blog-posts/types";
 
 /* -------------------------------------------------------------------------- */
 /*  Σταθερά αναγνωριστικά οντοτήτων                                           */
@@ -64,6 +66,12 @@ export const SCHEMA_IDS = {
     `${SITE_URL}${conditionPageHref(slug)}#breadcrumb`,
   /** Η διαδρομή πλοήγησης της σελίδας-κόμβου των παθήσεων. */
   conditionsHubBreadcrumb: `${SITE_URL}${CONDITIONS_HUB_PATH}#breadcrumb`,
+  /** Μία οντότητα BlogPosting ανά άρθρο, με βάση το slug της σελίδας του. */
+  blogPost: (slug: string) => `${SITE_URL}${blogPostHref(slug)}#blogposting`,
+  blogPostBreadcrumb: (slug: string) =>
+    `${SITE_URL}${blogPostHref(slug)}#breadcrumb`,
+  /** Η διαδρομή πλοήγησης της σελίδας-κόμβου του blog. */
+  blogHubBreadcrumb: `${SITE_URL}${BLOG_HUB_PATH}#breadcrumb`,
   faq: (path: string) => `${SITE_URL}${path}#faq`,
   review: (id: string) => `${SITE_URL}/#${id}`,
 } as const;
@@ -512,5 +520,89 @@ export function buildConditionGraph(content: ConditionPageContent): Graph {
     ...baseEntities(),
     buildConditionBreadcrumb(content),
     buildMedicalCondition(content),
+  ]);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Άρθρα blog (/blog)                                                        */
+/* -------------------------------------------------------------------------- */
+
+/** Η διαδρομή πλοήγησης ενός άρθρου: Αρχική → Blog → <τίτλος>. */
+function buildBlogPostBreadcrumb(content: BlogPostContent) {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": SCHEMA_IDS.blogPostBreadcrumb(content.slug),
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Αρχική",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${SITE_URL}${BLOG_HUB_PATH}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: content.title,
+        item: `${SITE_URL}${blogPostHref(content.slug)}`,
+      },
+    ],
+  };
+}
+
+function buildBlogHubBreadcrumb() {
+  return {
+    "@type": "BreadcrumbList",
+    "@id": SCHEMA_IDS.blogHubBreadcrumb,
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Αρχική",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${SITE_URL}${BLOG_HUB_PATH}`,
+      },
+    ],
+  };
+}
+
+/** Ένα άρθρο, ως `BlogPosting` (schema.org/BlogPosting). */
+function buildBlogPosting(content: BlogPostContent) {
+  return {
+    "@type": "BlogPosting",
+    "@id": SCHEMA_IDS.blogPost(content.slug),
+    headline: content.title,
+    description: content.meta.description,
+    url: `${SITE_URL}${blogPostHref(content.slug)}`,
+    datePublished: content.publishedAt,
+    author: ref(SCHEMA_IDS.person),
+    publisher: ref(SCHEMA_IDS.business),
+    ...(content.coverImage
+      ? { image: `${SITE_URL}${content.coverImage.src}` }
+      : {}),
+  };
+}
+
+/** Ο γράφος της σελίδας-κόμβου του blog (/blog). */
+export function buildBlogHubGraph(): Graph {
+  return graph([...baseEntities(), buildBlogHubBreadcrumb()]);
+}
+
+/** Ο γράφος ενός άρθρου. */
+export function buildBlogPostGraph(content: BlogPostContent): Graph {
+  return graph([
+    ...baseEntities(),
+    buildBlogPostBreadcrumb(content),
+    buildBlogPosting(content),
   ]);
 }

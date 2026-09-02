@@ -140,6 +140,12 @@ export const Header: React.FC = () => {
                 {link.label}
               </a>
             ))}
+            <Link
+              href="/blog"
+              className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
+            >
+              Blog
+            </Link>
           </nav>
 
           {/* Right Header Actions */}
@@ -329,6 +335,13 @@ export const Header: React.FC = () => {
                 {link.label}
               </a>
             ))}
+            <Link
+              href="/blog"
+              onClick={closeMobileMenu}
+              className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+            >
+              Blog
+            </Link>
           </nav>
         </div>
 

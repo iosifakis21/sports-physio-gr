@@ -1,0 +1,55 @@
+import type { BlogPostContent } from "./types";
+
+/**
+ * ΑΡΘΡΟ: /blog/antiproedros-pagkosmias-omospondias-cutmen-wca
+ *
+ * Μεταφορά από το παλιό blog (sports-physio.gr/journal2/blog), αρχική
+ * δημοσίευση 14/04/2021.
+ */
+export const antiproedrosPagkosmiasOmospondiasCutmenWcaPost: BlogPostContent = {
+  slug: "antiproedros-pagkosmias-omospondias-cutmen-wca",
+  category: "nea",
+  title: "Αντιπρόεδρος της Παγκόσμιας Ομοσπονδίας των Cutmen WCA, ο Μιχάλης Σιούλης",
+  excerpt:
+    "Ο Μιχάλης Σιούλης εξελέγη δημοκρατικά αντιπρόεδρος (2nd Chairman) της παγκόσμιας ομοσπονδίας Cutmen WCA (World Cutman Association) — ιστορική στιγμή για την ελληνική τέχνη του Cutman.",
+  publishedAt: "2021-04-14",
+  author: "Μιχάλης Σιούλης",
+
+  coverImage: {
+    src: "/images/blog/antiproedros-pagkosmias-omospondias-cutmen-wca/cover.jpg",
+    alt: "Πορτρέτο του Μιχάλη Σιούλη με τη στολή Cutman",
+  },
+
+  meta: {
+    title: "Αντιπρόεδρος της Παγκόσμιας Ομοσπονδίας των Cutmen WCA, ο Μιχάλης Σιούλης",
+    description:
+      "Ο Μιχάλης Σιούλης εξελέγη αντιπρόεδρος της World Cutman Association (WCA) — πρώτη φορά που Έλληνας τοποθετείται σε τόσο σημαντική θέση παγκόσμιου οργανισμού Cutmen.",
+  },
+
+  body: [
+    {
+      type: "paragraph",
+      text: "Μετά από ψηφοφορία που ολοκληρώθηκε ηλεκτρονικά για 2nd Chairman, στην παγκόσμια ομοσπονδία των Cutmen WCA (World Cutman Association), κορυφαίοι Cutmen και Cutwomen από όλα τα κράτη του κόσμου εξέλεξαν, στις 08.04.2021, δημοκρατικά αντιπρόεδρό τους τον κορυφαίο Έλληνα Cutman, Μιχάλη Σιούλη.",
+    },
+    {
+      type: "paragraph",
+      text: "Πρόεδρος της παγκόσμιας ομοσπονδίας παραμένει ο Mr. Markus Schwer και υπεύθυνη των οικονομικών η Mrs. Carola Schwer, με χώρα προέλευσης τη Γερμανία.",
+    },
+    {
+      type: "paragraph",
+      text: "Εκτός από την τιμητική αναγνώριση στο πρόσωπο του ανθρώπου που έφερε και δίδαξε την τέχνη του Cutman στη χώρα μας, σε δεκάδες προπονητές και αθλητές, αποτελεί ιστορικό γεγονός καθώς για πρώτη φορά Έλληνας τοποθετείται σε τόσο σημαντική θέση ενός παγκόσμιου οργανισμού στον συγκεκριμένο τομέα, μάλιστα με κοινή αποδοχή.",
+    },
+    {
+      type: "paragraph",
+      text: "Ο Μιχάλης Σιούλης διοργάνωσε στις 18 Μαΐου του 2018 με τεράστια επιτυχία το 2ο παγκόσμιο πρωτάθλημα Hand Wrapping στην ιστορία όλων των ομοσπονδιών παγκοσμίως, με τον ερχομό κορυφαίων Cutmen και Cutwomen και με αποκορύφωμα την παρουσία του Jacob «Stitch» Duran.",
+    },
+    {
+      type: "paragraph",
+      text: "Οι συνάδελφοι του Μιχάλη Σιούλη εντυπωσιάστηκαν με την τέλεια οργάνωση και τη φιλοξενία της χώρας μας, γεγονός που συζητούν μέχρι και σήμερα.",
+    },
+    {
+      type: "paragraph",
+      text: "Ένας καινούργιος κύκλος ανοίγει για τον Έλληνα Cutman, με κορυφαίες συναντήσεις και διοργανώσεις εκτός και εντός Ελλάδας.",
+    },
+  ],
+};
