@@ -9,7 +9,7 @@ import {
   conditionPageHref,
   CONDITIONS_HUB_PATH,
 } from "@/content/condition-pages";
-import { blogPosts, blogPostHref, BLOG_HUB_PATH } from "@/content/blog-posts";
+import { BLOG_HUB_PATH, blogPostHref, getBlogPosts } from "@/lib/blog";
 import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -51,19 +51,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    // Η σελίδα-κόμβος με όλα τα άρθρα του blog
+    // Η σελίδα-κόμβος του blog
     {
       url: `${baseUrl}${BLOG_HUB_PATH}`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    // One entry per blog post (/blog/[slug])
-    ...blogPosts.map((post) => ({
-      url: `${baseUrl}${blogPostHref(post.slug)}`,
-      lastModified: post.publishedAt,
-      changeFrequency: "monthly" as const,
       priority: 0.6,
+    },
+    // Ένα entry ανά άρθρο (/blog/[slug]) — προκύπτουν αυτόματα από τα αρχεία
+    // του `src/content/blog/`, οπότε ένα νέο άρθρο μπαίνει μόνο του εδώ.
+    ...getBlogPosts().map((post) => ({
+      url: `${baseUrl}${blogPostHref(post.slug)}`,
+      lastModified: new Date(post.date),
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
     })),
     // Η /politiki-aporritou δεν περιλαμβάνεται σκόπιμα: είναι `noindex`
     // (βλ. `src/app/politiki-aporritou/page.tsx`), οπότε η καταχώρισή της εδώ

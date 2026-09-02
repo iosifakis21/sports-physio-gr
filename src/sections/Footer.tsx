@@ -185,6 +185,14 @@ export const Footer: React.FC = () => {
             >
               Γνωρίστε με
             </Link>
+            {/* Το blog είναι σκόπιμα προσβάσιμο μόνο από εδώ — δεν μπαίνει
+                στην κύρια πλοήγηση του `Header`. */}
+            <Link
+              href="/blog"
+              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+            >
+              Blog
+            </Link>
             <Link
               href="/politiki-aporritou"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5 mt-2"
