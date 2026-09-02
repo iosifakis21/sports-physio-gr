@@ -6,6 +6,11 @@ import { diastremmaPodoknimikisPost } from "./diastremma-podoknimikis";
 import { epistrefeiStisProponiseisGiaToUfcAndreasMichailidisPost } from "./epistrefei-stis-proponiseis-gia-to-ufc-andreas-michailidis";
 import { kineoGlobusRobotikoMichanimaApokatastasisPost } from "./kineo-globus-robotiko-michanima-apokatastasis";
 import { antiproedrosPagkosmiasOmospondiasCutmenWcaPost } from "./antiproedros-pagkosmias-omospondias-cutmen-wca";
+import { tecarWintecareTPlusSportsPhysioSioulisPost } from "./tecar-wintecare-t-plus-sports-physio-sioulis";
+import { megaliEpitychiaAlloEnaSeminarioCutmanMichalisSioulisPost } from "./megali-epitychia-allo-ena-seminario-cutman-michalis-sioulis";
+import { megaliEpitychiaGiaEnaAkomiSeminarioTechnisCutmanPost } from "./megali-epitychia-gia-ena-akomi-seminario-technis-cutman";
+import { seminarioCutman4NoemvriouMichalisSioulisVideoPost } from "./seminario-cutman-4-noemvriou-michalis-sioulis-video";
+import { seminarioCutman18OktovriouMichalisSioulisAthinaPost } from "./seminario-cutman-18-oktovriou-michalis-sioulis-athina";
 
 const SITE_NAME_SUFFIX = "Sports-Physio.gr — Μιχάλης Σιούλης";
 
@@ -20,6 +25,11 @@ export const blogPosts: BlogPostContent[] = [
   epistrefeiStisProponiseisGiaToUfcAndreasMichailidisPost,
   kineoGlobusRobotikoMichanimaApokatastasisPost,
   antiproedrosPagkosmiasOmospondiasCutmenWcaPost,
+  tecarWintecareTPlusSportsPhysioSioulisPost,
+  megaliEpitychiaAlloEnaSeminarioCutmanMichalisSioulisPost,
+  megaliEpitychiaGiaEnaAkomiSeminarioTechnisCutmanPost,
+  seminarioCutman4NoemvriouMichalisSioulisVideoPost,
+  seminarioCutman18OktovriouMichalisSioulisAthinaPost,
 ];
 
 /** Η σελίδα-κόμβος με όλα τα άρθρα (βλ. `src/app/blog/page.tsx`). */
