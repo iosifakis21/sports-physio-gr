@@ -103,8 +103,18 @@ export const ServiceCard: React.FC<{ service: ServiceItem; index: number }> = ({
 /**
  * Το πλέγμα των καρτών, με την ίδια σταδιακή εμφάνιση — 2 στήλες σε
  * κινητό/tablet, 3 σε desktop. Ίδιο πλέγμα στην αρχική και στη `/ypiresies`.
+ *
+ * Το `indexes` υπάρχει για τα υποσύνολα υπηρεσιών (π.χ. οι «Σχετικές
+ * υπηρεσίες» μιας πάθησης): εκεί ο αριθμός της κάρτας πρέπει να παραμένει ο
+ * κανονικός αριθμός της υπηρεσίας (01–07) και όχι η θέση της στο υποσύνολο.
+ * Δίνεται ως πίνακας — και όχι ως συνάρτηση — γιατί το πλέγμα είναι client
+ * component και οι σελίδες που το καλούν είναι server components.
+ * Αν παραλειφθεί, η αρίθμηση βγαίνει από τη σειρά του `services`, όπως πριν.
  */
-export const ServiceCardGrid: React.FC<{ services: ServiceItem[] }> = ({ services }) => (
+export const ServiceCardGrid: React.FC<{
+  services: ServiceItem[];
+  indexes?: number[];
+}> = ({ services, indexes }) => (
   <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 lg:gap-8">
     {services.map((service, index) => (
       <AnimatedContainer
@@ -113,7 +123,7 @@ export const ServiceCardGrid: React.FC<{ services: ServiceItem[] }> = ({ service
         initial={{ opacity: 0, translateY: 16, filter: "blur(4px)" }}
         whileInView={{ opacity: 1, translateY: 0, filter: "blur(0px)" }}
       >
-        <ServiceCard service={service} index={index} />
+        <ServiceCard service={service} index={indexes?.[index] ?? index} />
       </AnimatedContainer>
     ))}
   </div>

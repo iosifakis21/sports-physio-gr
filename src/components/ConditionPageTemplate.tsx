@@ -5,7 +5,7 @@ import { InlineBookingCalendar } from "@/components/InlineBookingCalendar";
 import { CheckItem } from "@/components/CheckItem";
 import { JsonLd } from "@/components/JsonLd";
 import { buildConditionGraph } from "@/lib/schema";
-import { servicePageHref } from "@/content/service-pages";
+import { ServiceCardGrid, type ServiceItem } from "@/components/ServiceCard";
 import servicesData from "@/content/services.json";
 import type {
   ConditionBlock,
@@ -107,16 +107,24 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
 }) => {
   const { hero, whatIs, symptoms, howWeHelp } = content;
 
-  // Οι σχετικές υπηρεσίες, με τον τίτλο τους από το `services.json` όταν το
-  // αρχείο περιεχομένου δεν δίνει δικό του `label`. Υπηρεσίες που δεν υπάρχουν
-  // στο `services.json` απορρίπτονται, ώστε να μη βγει ποτέ σπασμένος σύνδεσμος.
+  // Οι σχετικές υπηρεσίες, ως ολόκληρες κάρτες από το `services.json` — ίδιες
+  // με τις κάρτες της αρχικής και της `/ypiresies`. Ένα `label` στο αρχείο
+  // περιεχομένου αντικαθιστά τον τίτλο της κάρτας. Υπηρεσίες που δεν υπάρχουν
+  // στο `services.json` απορρίπτονται, ώστε να μη βγει ποτέ σπασμένη κάρτα.
+  const services = servicesData as ServiceItem[];
   const relatedServices = howWeHelp.relatedServices
     .map((related) => {
-      const service = servicesData.find((item) => item.slug === related.slug);
+      const service = services.find((item) => item.slug === related.slug);
       if (!service) return null;
-      return { slug: related.slug, label: related.label ?? service.title };
+      return related.label ? { ...service, title: related.label } : service;
     })
-    .filter((item): item is { slug: string; label: string } => item !== null);
+    .filter((item): item is ServiceItem => item !== null);
+
+  // Ο αριθμός της κάρτας μένει ο κανονικός αριθμός της υπηρεσίας (01–07), όχι
+  // η θέση της μέσα στις σχετικές υπηρεσίες αυτής της πάθησης.
+  const relatedServiceIndexes = relatedServices.map((related) =>
+    services.findIndex((item) => item.slug === related.slug)
+  );
 
   return (
     <article className="flex flex-col w-full">
@@ -210,27 +218,22 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
           {howWeHelp.paragraphs.map((block, index) => (
             <Block key={index} block={block} />
           ))}
-
-          {relatedServices.length > 0 && (
-            <div className="flex flex-col gap-3 mt-2">
-              <h3 className="font-display font-bold text-lg text-ink-900">
-                Σχετικές υπηρεσίες
-              </h3>
-              <ul className="flex flex-col gap-2">
-                {relatedServices.map((service) => (
-                  <li key={service.slug}>
-                    <Link
-                      href={servicePageHref(service.slug)}
-                      className="font-sans font-semibold text-primary-link hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
-                    >
-                      {service.label} →
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
+
+        {/* Οι σχετικές υπηρεσίες ως κάρτες με φωτογραφία — έξω από τη στήλη
+            κειμένου των 800px, στο κανονικό πλάτος του πλέγματος, ώστε οι
+            κάρτες να είναι ίδιες με της αρχικής και της `/ypiresies`. */}
+        {relatedServices.length > 0 && (
+          <div className="max-w-[1280px] mx-auto px-4 md:px-8 mt-10 md:mt-14 flex flex-col gap-5 md:gap-6">
+            <h3 className="font-display font-bold text-xl md:text-2xl text-ink-900">
+              Σχετικές υπηρεσίες
+            </h3>
+            <ServiceCardGrid
+              services={relatedServices}
+              indexes={relatedServiceIndexes}
+            />
+          </div>
+        )}
       </section>
 
       {/* ---------- Inline booking calendar ----------
