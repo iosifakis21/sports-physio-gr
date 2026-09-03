@@ -8,6 +8,33 @@
 
 import type { ConditionCategoryId } from "./categories";
 
+/**
+ * Ένα μπλοκ κειμένου μέσα σε μια ενότητα της σελίδας.
+ *
+ * Το σκέτο `string` είναι παράγραφος — έτσι τα περισσότερα αρχεία γράφονται
+ * απλά ως λίστα από παραγράφους. Τα υπόλοιπα είδη υπάρχουν για να μπορεί το
+ * περιεχόμενο του παλιού sports-physio.gr να μεταφερθεί **αυτούσιο**, με τις
+ * υπο-επικεφαλίδες, τις αριθμημένες λίστες και τους πίνακές του.
+ */
+export type ConditionBlock =
+  | string
+  | { kind: "heading"; text: string }
+  | {
+      kind: "list";
+      items: string[];
+      /**
+       * `disc` = κουκκίδες (προεπιλογή), `none` = χωρίς σύμβολο — για λίστες
+       * που κουβαλάνε ήδη τη δική τους αρίθμηση μέσα στο κείμενο («1.», «α.»).
+       */
+      marker?: "disc" | "none";
+    }
+  | {
+      kind: "table";
+      /** Οι δύο επικεφαλίδες των στηλών. Αν λείπουν, ο πίνακας δεν έχει head. */
+      head?: [string, string];
+      rows: [string, string][];
+    };
+
 /** Ένας σύνδεσμος προς μια υπάρχουσα σελίδα υπηρεσίας. */
 export interface RelatedServiceLink {
   /** Το slug της υπηρεσίας — βλ. `src/content/services.json`. */
@@ -38,15 +65,15 @@ export interface ConditionPageContent {
     intro: string;
   };
 
-  /** Ενότητα «Τι Είναι» — μία ή περισσότερες παράγραφοι. */
-  whatIs: string[];
+  /** Ενότητα «Τι Είναι» — παράγραφοι και, όπου χρειάζεται, λίστες/πίνακες. */
+  whatIs: ConditionBlock[];
 
   /** Ενότητα «Συμπτώματα» — λίστα με κουκκίδες. */
   symptoms: string[];
 
-  /** Ενότητα «Πώς Βοηθάμε» — παράγραφοι + σύνδεσμοι σε σελίδες υπηρεσιών. */
+  /** Ενότητα «Πώς Βοηθάμε» — μπλοκ κειμένου + σύνδεσμοι σε σελίδες υπηρεσιών. */
   howWeHelp: {
-    paragraphs: string[];
+    paragraphs: ConditionBlock[];
     /** Σχετικές υπηρεσίες (/ypiresies/<slug>). Κενό = δεν εμφανίζονται. */
     relatedServices: RelatedServiceLink[];
   };

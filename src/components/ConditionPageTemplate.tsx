@@ -7,7 +7,10 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildConditionGraph } from "@/lib/schema";
 import { servicePageHref } from "@/content/service-pages";
 import servicesData from "@/content/services.json";
-import type { ConditionPageContent } from "@/content/condition-pages/types";
+import type {
+  ConditionBlock,
+  ConditionPageContent,
+} from "@/content/condition-pages/types";
 
 const CalendarIcon: React.FC = () => (
   <svg
@@ -26,6 +29,73 @@ const CalendarIcon: React.FC = () => (
     />
   </svg>
 );
+
+/**
+ * Ένα μπλοκ περιεχομένου: παράγραφος, υπο-επικεφαλίδα, λίστα ή πίνακας. Έτσι
+ * το κείμενο του παλιού sports-physio.gr μεταφέρεται αυτούσιο, με τη δομή του.
+ */
+const Block: React.FC<{ block: ConditionBlock }> = ({ block }) => {
+  if (typeof block === "string") {
+    return (
+      <p className="text-base md:text-lg text-ink-600 font-sans leading-relaxed">
+        {block}
+      </p>
+    );
+  }
+
+  if (block.kind === "heading") {
+    return (
+      <h3 className="font-display font-bold text-lg md:text-xl text-ink-900 mt-2">
+        {block.text}
+      </h3>
+    );
+  }
+
+  if (block.kind === "list") {
+    return (
+      <ul
+        className={`flex flex-col gap-2 text-base md:text-lg text-ink-600 font-sans leading-relaxed ${
+          block.marker === "none" ? "" : "list-disc pl-5 md:pl-6"
+        }`}
+      >
+        {block.items.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    );
+  }
+
+  // Πίνακας δύο στηλών — σε στενές οθόνες κυλάει οριζόντια μέσα στο πλαίσιό
+  // του, ώστε να μη «σπρώχνει» ποτέ όλη τη σελίδα.
+  return (
+    <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+      <table className="w-full min-w-[320px] border-collapse font-sans text-base md:text-lg">
+        {block.head && (
+          <thead>
+            <tr className="border-b border-ink-900/15">
+              <th className="text-left font-display font-bold text-ink-900 py-2 pr-4">
+                {block.head[0]}
+              </th>
+              <th className="text-right font-display font-bold text-ink-900 py-2">
+                {block.head[1]}
+              </th>
+            </tr>
+          </thead>
+        )}
+        <tbody>
+          {block.rows.map(([label, value], index) => (
+            <tr key={index} className="border-b border-ink-900/5">
+              <td className="text-ink-600 py-2 pr-4 leading-relaxed">{label}</td>
+              <td className="text-ink-900 font-semibold py-2 text-right whitespace-nowrap align-top">
+                {value}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 /**
  * Shared layout for every `/pathiseis/[slug]` page — the conditions counterpart
@@ -109,13 +179,8 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
           <h2 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 tracking-tight">
             Τι Είναι
           </h2>
-          {whatIs.map((paragraph, index) => (
-            <p
-              key={index}
-              className="text-base md:text-lg text-ink-600 font-sans leading-relaxed"
-            >
-              {paragraph}
-            </p>
+          {whatIs.map((block, index) => (
+            <Block key={index} block={block} />
           ))}
         </div>
       </section>
@@ -142,13 +207,8 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
           <h2 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 tracking-tight">
             Πώς Βοηθάμε
           </h2>
-          {howWeHelp.paragraphs.map((paragraph, index) => (
-            <p
-              key={index}
-              className="text-base md:text-lg text-ink-600 font-sans leading-relaxed"
-            >
-              {paragraph}
-            </p>
+          {howWeHelp.paragraphs.map((block, index) => (
+            <Block key={index} block={block} />
           ))}
 
           {relatedServices.length > 0 && (
