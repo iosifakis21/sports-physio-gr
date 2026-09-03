@@ -5,21 +5,15 @@ import { JsonLd } from "@/components/JsonLd";
 import { buildConditionsHubGraph } from "@/lib/schema";
 import {
   CONDITIONS_HUB_PATH,
+  conditionCategories,
   conditionPageHref,
-  conditionPagesByGroup,
+  conditionPagesByCategory,
 } from "@/content/condition-pages";
 import { SITE_NAME } from "@/lib/site";
-import conditionsData from "@/content/conditions.json";
-
-interface ConditionGroup {
-  id: string;
-  areaTitle: string;
-  items: string[];
-}
 
 const TITLE = "Παθήσεις | Sports-Physio.gr — Μιχάλης Σιούλης";
 const DESCRIPTION =
-  "Όλες οι παθήσεις που αντιμετωπίζουμε στο Sports-Physio.gr: μέση και αυχένας, ώμος, ισχίο και γόνατο, αστράγαλος και άκρο πόδι, αθλητικοί τραυματισμοί και μετεγχειρητική αποκατάσταση.";
+  "Όλες οι παθήσεις που αντιμετωπίζουμε στο Sports-Physio.gr: σπονδυλική στήλη, γόνατο, ώμος, ποδοκνημική, αγκώνας, ισχίο και άκρα χείρα.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -38,8 +32,6 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  const groups = conditionsData as ConditionGroup[];
-
   return (
     <article className="flex flex-col w-full">
       <JsonLd data={buildConditionsHubGraph()} />
@@ -75,26 +67,27 @@ export default function Page() {
           </h1>
 
           <p className="font-sans text-base md:text-lg text-slate-300 leading-relaxed max-w-2xl">
-            Είκοσι παθήσεις σε έξι κατηγορίες — επιλέξτε μια πάθηση για να δείτε
-            τι είναι, ποια είναι τα συμπτώματά της και πώς την αντιμετωπίζουμε.
+            Είκοσι μία παθήσεις σε επτά κατηγορίες — επιλέξτε μια πάθηση για να
+            δείτε τι είναι, ποια είναι τα συμπτώματά της και πώς την
+            αντιμετωπίζουμε.
           </p>
         </div>
       </section>
 
-      {/* ---------- Οι έξι κατηγορίες ---------- */}
+      {/* ---------- Οι επτά κατηγορίες ---------- */}
       <section className="py-[56px] md:py-[96px] bg-surface">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {groups.map((group) => {
-            const pages = conditionPagesByGroup(group.id);
+        <div className="max-w-[1280px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
+          {conditionCategories.map((category) => {
+            const pages = conditionPagesByCategory(category.id);
             if (pages.length === 0) return null;
 
             return (
               <div
-                key={group.id}
+                key={category.id}
                 className="bg-surface-alt p-6 rounded-card border border-ink-900/5 flex flex-col gap-4"
               >
                 <h2 className="font-display font-bold text-lg md:text-xl text-ink-900">
-                  {group.areaTitle}
+                  {category.title}
                 </h2>
                 <ul className="flex flex-col gap-2">
                   {pages.map((page) => (

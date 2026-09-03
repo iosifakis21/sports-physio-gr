@@ -6,14 +6,7 @@
  * της σελίδας φτιάχνεται από το `ConditionPageTemplate`.
  */
 
-/** Το `id` μιας ομάδας παθήσεων στο `src/content/conditions.json`. */
-export type ConditionGroupId =
-  | "back-neck"
-  | "shoulder"
-  | "hip-knee"
-  | "ankle-foot"
-  | "sports-injuries"
-  | "post-op";
+import type { ConditionCategoryId } from "./categories";
 
 /** Ένας σύνδεσμος προς μια υπάρχουσα σελίδα υπηρεσίας. */
 export interface RelatedServiceLink {
@@ -26,8 +19,8 @@ export interface RelatedServiceLink {
 export interface ConditionPageContent {
   /** Το τμήμα του URL: /pathiseis/<slug> */
   slug: string;
-  /** Η ομάδα στην οποία ανήκει η πάθηση (βλ. `conditions.json`). */
-  groupId: ConditionGroupId;
+  /** Η κατηγορία στην οποία ανήκει η πάθηση (βλ. `categories.ts`). */
+  categoryId: ConditionCategoryId;
   /** Το όνομα της πάθησης, όπως εμφανίζεται σε breadcrumbs και λίστες. */
   name: string;
 

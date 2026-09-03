@@ -1,51 +1,54 @@
 import type { Metadata } from "next";
 import type { ConditionPageContent } from "./types";
 import { SITE_NAME } from "@/lib/site";
+import { conditionCategories } from "./categories";
+import { aychenikonSyndromoPage } from "./aychenikon-syndromo";
+import { ierolagonitidaPage } from "./ierolagonitida";
+import { kiliMesospondylioyDiskoyPage } from "./kili-mesospondylioy-diskoy";
+import { kyfosiPage } from "./kyfosi";
 import { osfyalgiaPage } from "./osfyalgia";
-import { ischialgiaDiskopatheiaPage } from "./ischialgia-diskopatheia";
-import { afxenikoSyndromoPage } from "./afxeniko-syndromo";
-import { ponokefaloiAfxenogeneisPage } from "./ponokefaloi-afxenogeneis";
-import { tenontitidaOmouPage } from "./tenontitida-omou";
-import { pagomenosOmosPage } from "./pagomenos-omos";
-import { rixiStrofikouPetalouPage } from "./rixi-strofikou-petalou";
-import { rixiMiniskouChiastouPage } from "./rixi-miniskou-chiastou";
-import { osteoarthritidaIschiouGonatouPage } from "./osteoarthritida-ischiou-gonatou";
-import { chondropatheiaEpigonatidasPage } from "./chondropatheia-epigonatidas";
-import { syndromoLagonoknimiaiasTainiasPage } from "./syndromo-lagonoknimiaias-tainias";
+import { skoliosiPage } from "./skoliosi";
+import { spondyloarthropatheiaPage } from "./spondyloarthropatheia";
+import { spondylolisthisiPage } from "./spondylolisthisi";
+import { spondylolysiPage } from "./spondylolysi";
+import { syndromoThorakikisExodoyPage } from "./syndromo-thorakikis-exodoy";
+import { miniskoiPage } from "./miniskoi";
+import { prosthiosChiastosSyndesmosPage } from "./prosthios-chiastos-syndesmos";
+import { tenontopatheiaEpigonatidikoyTenontaPage } from "./tenontopatheia-epigonatidikoy-tenonta";
+import { syndromoProskroysisYpakromiakisProstrivisPage } from "./syndromo-proskroysis-ypakromiakis-prostrivis";
 import { diastremmaPodoknimikisPage } from "./diastremma-podoknimikis";
-import { pelmatiaiaAponevrositidaPage } from "./pelmatiaia-aponevrositida";
-import { tenontopatheiaAchilleiouPage } from "./tenontopatheia-achilleiou";
-import { thlaseisMyonPage } from "./thlaseis-myon";
-import { exoEpikondylitidaPage } from "./exo-epikondylitida";
-import { syndromoKoiliakonProsagogonPage } from "./syndromo-koiliakon-prosagogon";
-import { apokatastasiArthroplastikisPage } from "./apokatastasi-arthroplastikis";
-import { apokatastasiSyndesmoplastikisChiastouPage } from "./apokatastasi-syndesmoplastikis-chiastou";
-import { apokatastasiSyrrafisStrofikouPetalouPage } from "./apokatastasi-syrrafis-strofikou-petalou";
+import { pelmatiaiaAponeyrositidaPage } from "./pelmatiaia-aponeyrositida";
+import { rixiAchilleioyTenontaPage } from "./rixi-achilleioy-tenonta";
+import { epikondylitidaPage } from "./epikondylitida";
+import { arthroplastikiIschioyPage } from "./arthroplastiki-ischioy";
+import { stenotikiTenontoelytritidaDeQuervainPage } from "./stenotiki-tenontoelytritida-de-quervain";
+import { syndromoKarpiaioySolinaPage } from "./syndromo-karpiaioy-solina";
 
 const SITE_NAME_SUFFIX = "Sports-Physio.gr — Μιχάλης Σιούλης";
 
-/** Όλες οι σελίδες παθήσεων, ομαδοποιημένες όπως στο `conditions.json`. */
+/** Όλες οι σελίδες παθήσεων, ομαδοποιημένες ανά κατηγορία (βλ. `categories.ts`). */
 export const conditionPages: ConditionPageContent[] = [
+  aychenikonSyndromoPage,
+  ierolagonitidaPage,
+  kiliMesospondylioyDiskoyPage,
+  kyfosiPage,
   osfyalgiaPage,
-  ischialgiaDiskopatheiaPage,
-  afxenikoSyndromoPage,
-  ponokefaloiAfxenogeneisPage,
-  tenontitidaOmouPage,
-  pagomenosOmosPage,
-  rixiStrofikouPetalouPage,
-  rixiMiniskouChiastouPage,
-  osteoarthritidaIschiouGonatouPage,
-  chondropatheiaEpigonatidasPage,
-  syndromoLagonoknimiaiasTainiasPage,
+  skoliosiPage,
+  spondyloarthropatheiaPage,
+  spondylolisthisiPage,
+  spondylolysiPage,
+  syndromoThorakikisExodoyPage,
+  miniskoiPage,
+  prosthiosChiastosSyndesmosPage,
+  tenontopatheiaEpigonatidikoyTenontaPage,
+  syndromoProskroysisYpakromiakisProstrivisPage,
   diastremmaPodoknimikisPage,
-  pelmatiaiaAponevrositidaPage,
-  tenontopatheiaAchilleiouPage,
-  thlaseisMyonPage,
-  exoEpikondylitidaPage,
-  syndromoKoiliakonProsagogonPage,
-  apokatastasiArthroplastikisPage,
-  apokatastasiSyndesmoplastikisChiastouPage,
-  apokatastasiSyrrafisStrofikouPetalouPage,
+  pelmatiaiaAponeyrositidaPage,
+  rixiAchilleioyTenontaPage,
+  epikondylitidaPage,
+  arthroplastikiIschioyPage,
+  stenotikiTenontoelytritidaDeQuervainPage,
+  syndromoKarpiaioySolinaPage,
 ];
 
 /** Η σελίδα-κόμβος με όλες τις παθήσεις (βλ. `src/app/pathiseis/page.tsx`). */
@@ -55,9 +58,9 @@ export const CONDITIONS_HUB_PATH = "/pathiseis";
 export const conditionPageHref = (slug: string) =>
   `${CONDITIONS_HUB_PATH}/${slug}`;
 
-/** Οι σελίδες μιας ομάδας παθήσεων, με τη σειρά δήλωσής τους. */
-export const conditionPagesByGroup = (groupId: string) =>
-  conditionPages.filter((page) => page.groupId === groupId);
+/** Οι σελίδες μιας κατηγορίας παθήσεων, με τη σειρά δήλωσής τους. */
+export const conditionPagesByCategory = (categoryId: string) =>
+  conditionPages.filter((page) => page.categoryId === categoryId);
 
 /**
  * Χτίζει τα SEO metadata μιας σελίδας πάθησης — ίδια λογική τίτλου/canonical
@@ -84,4 +87,6 @@ export function buildConditionMetadata(content: ConditionPageContent): Metadata 
   };
 }
 
+export { conditionCategories };
+export type { ConditionCategory, ConditionCategoryId } from "./categories";
 export type { ConditionPageContent } from "./types";
