@@ -23,6 +23,7 @@ export const pelmatiaiaAponeyrositidaPage: ConditionPageContent = {
 
   hero: {
     title: "Πελματιαία Απονευρωσίτιδα",
+    photo: "/images/conditions/pelmatiaia-aponeyrositida.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Περίπου ένας στους δέκα ανθρώπους θα υποφέρουν μια φορά στη ζωή τους από πόνο στο πέλμα.",

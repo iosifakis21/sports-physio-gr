@@ -26,6 +26,7 @@ export const prosthiosChiastosSyndesmosPage: ConditionPageContent = {
 
   hero: {
     title: "Πρόσθιος Χιαστός Σύνδεσμος",
+    photo: "/images/conditions/prosthios-chiastos-syndesmos.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η ρήξη του προσθίου χιαστού συνδέσμου αποτελεί μία από τις συχνότερες και σοβαρότερες αθλητικές κακώσεις του γόνατος και συνδέεται με μεγάλο διάστημα απουσίας από την αθλητική δραστηριότητα.",

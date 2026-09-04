@@ -26,6 +26,7 @@ export const stenotikiTenontoelytritidaDeQuervainPage: ConditionPageContent = {
 
   hero: {
     title: "Στενωτική Τενοντοελυτρίτιδα του De Quervain",
+    photo: "/images/conditions/stenotiki-tenontoelytritida-de-quervain.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η νόσος του De Quervain αποτελεί ουσιαστικά μια στενωτικού τύπου τενοντοελυτρίτιδα των δύο εκ των τενόντων του αντίχειρα.",

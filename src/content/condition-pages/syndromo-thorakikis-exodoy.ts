@@ -26,6 +26,7 @@ export const syndromoThorakikisExodoyPage: ConditionPageContent = {
 
   hero: {
     title: "Σύνδρομο Θωρακικής Εξόδου",
+    photo: "/images/conditions/syndromo-thorakikis-exodoy.png",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Το σύνδρομο θωρακικής εξόδου είναι ένα σύνολο συμπτωμάτων το οποίο προκαλείται από την πίεση αγγείων και νεύρων στην περιοχή του άνω θωρακικού στομίου.",

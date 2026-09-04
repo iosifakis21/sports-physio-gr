@@ -27,6 +27,7 @@ export const syndromoKarpiaioySolinaPage: ConditionPageContent = {
 
   hero: {
     title: "Σύνδρομο Καρπιαίου Σωλήνα",
+    photo: "/images/conditions/syndromo-karpiaioy-solina.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Το σύνδρομο καρπιαίου σωλήνα (ΣΚΣ, The Carpal Tunnel Syndrome) είναι μια συχνή πάθηση των χεριών, ιδίως των γυναικών η οποία προκαλεί πόνο, μουδιάσματα και ατροφίες στην άκρα χείρα.",

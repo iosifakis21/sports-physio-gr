@@ -26,6 +26,7 @@ export const tenontopatheiaEpigonatidikoyTenontaPage: ConditionPageContent = {
 
   hero: {
     title: "Τενοντοπάθεια Επιγονατιδικού Τένοντα — Γόνατο Αλτών / Jumper's Knee",
+    photo: "/images/conditions/tenontopatheia-epigonatidikoy-tenonta.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Συχνά ακούγεται στον χώρο του αθλητισμού ο όρος «το γόνατο του άλτη», που δεν είναι κάτι άλλο παρά η τενοντοπάθεια του επιγονατιδικού τένοντα.",

@@ -26,6 +26,7 @@ export const arthroplastikiIschioyPage: ConditionPageContent = {
 
   hero: {
     title: "Αρθροπλαστική Ισχίου",
+    photo: "/images/conditions/arthroplastiki-ischioy.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Το ισχίο αποτελείται από ένα σφαιρικό τμήμα – την κεφαλή του μηριαίου οστού – και μια κοίλη υποδοχή – την κοτύλη της πυέλου (λεκάνης).",

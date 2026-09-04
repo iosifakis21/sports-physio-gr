@@ -42,6 +42,16 @@ export type ConditionBlock =
       /** Οι δύο επικεφαλίδες των στηλών. Αν λείπουν, ο πίνακας δεν έχει head. */
       head?: [string, string];
       rows: [string, string][];
+    }
+  | {
+      /** Εικόνα μέσα στη ροή του κειμένου (π.χ. σκίτσο άσκησης). */
+      kind: "image";
+      /** Διαδρομή μέσα στο `public/`, π.χ. "/images/conditions/…png". */
+      src: string;
+      alt: string;
+      /** Πλάτος/ύψος του αρχείου — χρειάζονται στο `next/image`. */
+      width: number;
+      height: number;
     };
 
 /** Ένας σύνδεσμος προς μια υπάρχουσα σελίδα υπηρεσίας. */
@@ -72,6 +82,12 @@ export interface ConditionPageContent {
   hero: {
     title: string;
     intro: string;
+    /**
+     * Η εικόνα της πάθησης (ανατομικό σκίτσο από το παλιό sports-physio.gr).
+     * Διαδρομή μέσα στο `public/`. Αν λείπει ή το αρχείο δεν υπάρχει, το hero
+     * μένει μονόστηλο, όπως πριν.
+     */
+    photo?: string;
   };
 
   /** Ενότητα «Τι Είναι» — παράγραφοι και, όπου χρειάζεται, λίστες/πίνακες. */

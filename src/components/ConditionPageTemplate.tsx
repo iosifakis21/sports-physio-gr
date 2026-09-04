@@ -1,4 +1,7 @@
+import fs from "fs";
+import path from "path";
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 import { InlineBookingCalendar } from "@/components/InlineBookingCalendar";
@@ -29,6 +32,19 @@ const CalendarIcon: React.FC = () => (
     />
   </svg>
 );
+
+/**
+ * Ίδια λογική με τις σελίδες υπηρεσιών: αν λείπει το αρχείο, η στήλη της
+ * εικόνας απλώς δεν μπαίνει, αντί να σπάσει το build.
+ */
+const heroPhotoExists = (photo?: string): boolean => {
+  if (!photo) return false;
+  try {
+    return fs.existsSync(path.join(process.cwd(), "public", photo));
+  } catch {
+    return false;
+  }
+};
 
 /**
  * Ένα μπλοκ περιεχομένου: παράγραφος, υπο-επικεφαλίδα, λίστα ή πίνακας. Έτσι
@@ -62,6 +78,20 @@ const Block: React.FC<{ block: ConditionBlock }> = ({ block }) => {
           <li key={index}>{item}</li>
         ))}
       </ul>
+    );
+  }
+
+  if (block.kind === "image") {
+    return (
+      <figure className="my-2">
+        <Image
+          src={block.src}
+          alt={block.alt}
+          width={block.width}
+          height={block.height}
+          className="h-auto w-full max-w-[280px] rounded-card bg-white"
+        />
+      </figure>
     );
   }
 
@@ -126,6 +156,8 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
     services.findIndex((item) => item.slug === related.slug)
   );
 
+  const hasHeroPhoto = heroPhotoExists(hero.photo);
+
   return (
     <article className="flex flex-col w-full">
       {/* Ένα ενιαίο `@graph`: επιχείρηση, ιστότοπος, θεραπευτής, οι υπηρεσίες,
@@ -139,7 +171,14 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
           aria-hidden="true"
         />
 
-        <div className="relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-16 lg:py-20 flex flex-col gap-4 md:gap-5">
+        <div
+          className={`relative z-10 max-w-[1280px] mx-auto px-4 md:px-8 py-12 md:py-16 lg:py-20 ${
+            hasHeroPhoto
+              ? "grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 lg:gap-14 items-center"
+              : ""
+          }`}
+        >
+          <div className="flex flex-col gap-4 md:gap-5">
           <nav
             aria-label="Διαδρομή πλοήγησης"
             className="font-sans text-xs md:text-sm text-slate-400 flex items-center gap-2 flex-wrap"
@@ -178,6 +217,24 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
               icon={<CalendarIcon />}
             />
           </div>
+          </div>
+
+          {/* Το ανατομικό σκίτσο της πάθησης, όπως στο παλιό site. Μπαίνει σε
+              λευκή κάρτα και με `object-contain`: είναι διάγραμμα με ετικέτες,
+              οπότε δεν πρέπει ποτέ να κοπεί. */}
+          {hasHeroPhoto && hero.photo && (
+            <div className="relative w-full lg:w-[380px] xl:w-[420px] rounded-card overflow-hidden ring-1 ring-white/10 shadow-2xl bg-white order-first lg:order-last">
+              <Image
+                src={hero.photo}
+                alt={`${content.name} — ανατομική απεικόνιση`}
+                width={600}
+                height={600}
+                priority
+                sizes="(max-width: 1023px) 100vw, 420px"
+                className="w-full h-auto object-contain"
+              />
+            </div>
+          )}
         </div>
       </section>
 

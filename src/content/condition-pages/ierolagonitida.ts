@@ -23,6 +23,7 @@ export const ierolagonitidaPage: ConditionPageContent = {
 
   hero: {
     title: "Ιερολαγονίτιδα",
+    photo: "/images/conditions/ierolagonitida.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η ιερολαγονίτιδα, όπως λέει και η ονομασία είναι ένα είδος φλεγμονής που αφορά την μία ή και τις δύο αρθρώσεις της λεκάνης προς την σπονδυλική στήλη.",

@@ -25,6 +25,7 @@ export const diastremmaPodoknimikisPage: ConditionPageContent = {
 
   hero: {
     title: "Διάστρεμμα Ποδοκνημικής",
+    photo: "/images/conditions/diastremma-podoknimikis.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Διάστρεμμα της ποδοκνημικής άρθρωσης ονομάζεται η τραυματική ρήξη (διατομή) διαφόρων συνδέσμων της άρθρωσης, χωρίς κάταγμα στα οστά.",

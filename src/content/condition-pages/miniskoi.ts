@@ -27,6 +27,7 @@ export const miniskoiPage: ConditionPageContent = {
 
   hero: {
     title: "Μηνίσκοι",
+    photo: "/images/conditions/miniskoi.jpg",
     // Οι δύο πρώτες προτάσεις του κειμένου της πηγής, αυτούσιες.
     intro:
       "Ο μηνίσκος είναι βιολογικό εξάρτημα εντός του γόνατος. Κάθε γόνατο έχει δύο Μηνίσκους τον έσω (medial meniscus) και τον έξω μηνίσκο (lateral meniscus).",

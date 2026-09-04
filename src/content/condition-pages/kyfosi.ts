@@ -25,6 +25,7 @@ export const kyfosiPage: ConditionPageContent = {
 
   hero: {
     title: "Κύφωση",
+    photo: "/images/conditions/kyfosi.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η κύφωση (από την λέξη «κύφος») ή καμπούρα είναι μια κοινή κατάσταση καμπυλότητας της ανώτερης σπονδυλικής στήλης.",

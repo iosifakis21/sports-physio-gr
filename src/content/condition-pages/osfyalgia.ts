@@ -25,6 +25,7 @@ export const osfyalgiaPage: ConditionPageContent = {
 
   hero: {
     title: "Οσφυαλγία",
+    photo: "/images/conditions/osfyalgia.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η λέξη οσφυαλγία προέρχεται από τις λέξεις οσφύ (μέση) και άλγος (πόνος).",

@@ -26,6 +26,7 @@ export const spondylolisthisiPage: ConditionPageContent = {
 
   hero: {
     title: "Σπονδυλολίσθηση",
+    photo: "/images/conditions/spondylolisthisi.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Σπονδυλολίσθηση είναι η μετατόπιση (ολίσθηση) του υπερκείμενου τμήματος της σπονδυλικής στήλης, επί του υποκειμένου, με όριο το σημείο της βλάβης.",

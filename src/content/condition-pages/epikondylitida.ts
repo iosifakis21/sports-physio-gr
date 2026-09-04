@@ -23,6 +23,7 @@ export const epikondylitidaPage: ConditionPageContent = {
 
   hero: {
     title: "Επικονδυλίτιδα",
+    photo: "/images/conditions/epikondylitida.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η επικονδυλίτιδα του αγκώνα (Epicondylitis ή Tennis elbow) είναι συχνή πάθηση με πόνο στον αγκώνα που αντανακλά στον πήχη και στον βραχίονα.",

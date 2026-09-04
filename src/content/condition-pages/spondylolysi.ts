@@ -26,6 +26,7 @@ export const spondylolysiPage: ConditionPageContent = {
 
   hero: {
     title: "Σπονδυλόλυση",
+    photo: "/images/conditions/spondylolysi.jpg",
     // Οι δύο πρώτες προτάσεις του κειμένου της πηγής, αυτούσιες.
     intro:
       "Σπονδυλόλυση ονομάζουμε τη λύση της συνέχειας του οστού (σπονδύλου) μεταξύ των άνω και των κάτω αρθρικών αποφύσεων (facets). Το τμήμα αυτό ονομάζεται «ισθμός».",

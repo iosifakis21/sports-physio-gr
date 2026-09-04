@@ -25,6 +25,7 @@ export const kiliMesospondylioyDiskoyPage: ConditionPageContent = {
 
   hero: {
     title: "Κήλη Μεσοσπονδύλιου Δίσκου",
+    photo: "/images/conditions/kili-mesospondylioy-diskoy.jpg",
     // Η πρώτη πρόταση του κειμένου της πηγής, αυτούσια.
     intro:
       "Η οσφυϊκή δισκοκήλη (κήλη μεσοσπονδυλίου δίσκου) είναι μια σχετικά συχνή πάθηση της σπονδυλικής στήλης στην περιοχή της μέσης.",
