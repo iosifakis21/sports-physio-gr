@@ -34,10 +34,9 @@ import {
   SERVICES_HUB_PATH,
 } from "@/content/service-pages";
 import type { ServicePageContent } from "@/content/service-pages/types";
-import {
-  conditionPageHref,
-  CONDITIONS_HUB_PATH,
-} from "@/content/condition-pages";
+// Μόνο οι διαδρομές των παθήσεων — όχι το `@/content/condition-pages`, που
+// φορτώνει και τα 21 αρχεία περιεχομένου.
+import { conditionPageHref, CONDITIONS_HUB_PATH } from "@/lib/condition-paths";
 import type { ConditionPageContent } from "@/content/condition-pages/types";
 // Μόνο οι διαδρομές του blog — όχι το `@/lib/blog`, που διαβάζει τον δίσκο.
 import { BLOG_HUB_PATH, blogPostHref } from "./blog-paths";

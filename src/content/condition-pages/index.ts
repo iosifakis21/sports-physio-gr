@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ConditionPageContent } from "./types";
 import { SITE_NAME } from "@/lib/site";
+import { CONDITIONS_HUB_PATH, conditionPageHref } from "@/lib/condition-paths";
 import { conditionCategories } from "./categories";
 import { aychenikonSyndromoPage } from "./aychenikon-syndromo";
 import { ierolagonitidaPage } from "./ierolagonitida";
@@ -51,12 +52,9 @@ export const conditionPages: ConditionPageContent[] = [
   syndromoKarpiaioySolinaPage,
 ];
 
-/** Η σελίδα-κόμβος με όλες τις παθήσεις (βλ. `src/app/pathiseis/page.tsx`). */
-export const CONDITIONS_HUB_PATH = "/pathiseis";
-
-/** Το URL μιας σελίδας πάθησης, π.χ. "/pathiseis/osfyalgia". */
-export const conditionPageHref = (slug: string) =>
-  `${CONDITIONS_HUB_PATH}/${slug}`;
+// Οι διαδρομές ζουν στο `src/lib/condition-paths.ts`, ώστε να μπορεί να τις
+// χρησιμοποιεί και client code χωρίς να φορτώνει όλο το περιεχόμενο.
+export { CONDITIONS_HUB_PATH, conditionPageHref };
 
 /** Οι σελίδες μιας κατηγορίας παθήσεων, με τη σειρά δήλωσής τους. */
 export const conditionPagesByCategory = (categoryId: string) =>

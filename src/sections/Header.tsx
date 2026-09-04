@@ -6,23 +6,31 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/Button";
 import { ServicesMegaMenu } from "@/components/ServicesMegaMenu";
 import { serviceMenuItems } from "@/content/service-menu";
+import { CONDITIONS_HUB_PATH } from "@/lib/condition-paths";
+import { BLOG_HUB_PATH } from "@/lib/blog-paths";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface NavLinkItem {
   label: string;
-  /** Id of the homepage section this link scrolls to. */
-  anchor: string;
+  /**
+   * Είτε ενότητα της αρχικής (`anchor`), είτε ξεχωριστή σελίδα (`href`).
+   * Ακριβώς ένα από τα δύο.
+   */
+  anchor?: string;
+  href?: string;
 }
 
 // Οι «Υπηρεσίες» δεν είναι απλός σύνδεσμος: στο desktop ανοίγουν mega menu
 // (βλ. ServicesMegaMenu) και στο κινητό ακορντεόν με τις 6 σελίδες υπηρεσιών.
 const navLinks: NavLinkItem[] = [
+  { label: "Παθήσεις", href: CONDITIONS_HUB_PATH },
   { label: "Φυσικοθεραπεία", anchor: "fysikotherapeia" },
   { label: "Διαδικασία", anchor: "diadikasia" },
   { label: "Γνωρίστε με", anchor: "gnoriste-me" },
   { label: "Αξιολογήσεις", anchor: "axiologiseis" },
+  { label: "Blog", href: BLOG_HUB_PATH },
   { label: "FAQ", anchor: "faq" },
 ];
 
@@ -34,6 +42,10 @@ export const Header: React.FC = () => {
   // in place; anywhere else (e.g. a /ypiresies/... page) the link has to route
   // back to "/" first, so it needs the leading slash.
   const anchorHref = (anchor: string) => (isHomePage ? `#${anchor}` : `/#${anchor}`);
+
+  /** Το τελικό href ενός στοιχείου του μενού: σελίδα ή ενότητα της αρχικής. */
+  const navHref = (link: NavLinkItem) =>
+    link.href ?? anchorHref(link.anchor as string);
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -124,17 +136,24 @@ export const Header: React.FC = () => {
       >
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           {/* Logo Mark */}
-          <a href={isHomePage ? "#" : "/"} className="flex items-center gap-2 group focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
+          <a href={isHomePage ? "#" : "/"} className="flex items-center gap-2 group shrink-0 focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
             <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority sizes="(min-width: 768px) 112px, 96px" className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Κύριο Μενού Πλοήγησης">
+          {/* Με 7 συνδέσμους + mega menu + CTA, η μπάρα δεν χωράει κάτω από τα
+              1280px: ο λογότυπος στριμώχνεται, τα «Γνωρίστε με» σπάνε σε δύο
+              γραμμές και το CTA ακουμπάει το FAQ. Ως τα 1280 μπαίνει το
+              συρτάρι, που τα χωράει άνετα. */}
+          <nav
+            className="hidden xl:flex items-center gap-6 whitespace-nowrap"
+            aria-label="Κύριο Μενού Πλοήγησης"
+          >
             <ServicesMegaMenu />
             {navLinks.map((link) => (
               <a
-                key={link.anchor}
-                href={anchorHref(link.anchor)}
+                key={link.label}
+                href={navHref(link)}
                 className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
               >
                 {link.label}
@@ -175,7 +194,7 @@ export const Header: React.FC = () => {
               ref={hamburgerRef}
               onClick={toggleMenu}
               type="button"
-              className="lg:hidden p-2 text-ink-900 hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded-md cursor-pointer"
+              className="xl:hidden p-2 text-ink-900 hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded-md cursor-pointer"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation-drawer"
               aria-label={isMenuOpen ? "Κλείσιμο μενού" : "Άνοιγμα μενού"}
@@ -211,7 +230,7 @@ export const Header: React.FC = () => {
       {/* Mobile Drawer Backdrop */}
       {isMenuOpen && (
         <div
-          className="fixed inset-0 z-40 bg-ink-900/40 backdrop-blur-sm lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 z-40 bg-ink-900/40 backdrop-blur-sm xl:hidden transition-opacity duration-300"
           onClick={() => setIsMenuOpen(false)}
           aria-hidden="true"
         />
@@ -221,7 +240,7 @@ export const Header: React.FC = () => {
       <div
         id="mobile-navigation-drawer"
         ref={menuRef}
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[300px] bg-surface shadow-2xl p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-[300px] bg-surface shadow-2xl p-6 flex flex-col justify-between transform transition-transform duration-300 ease-in-out xl:hidden ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-label="Μενού πλοήγησης κινητού"
@@ -321,8 +340,8 @@ export const Header: React.FC = () => {
 
             {navLinks.map((link) => (
               <a
-                key={link.anchor}
-                href={anchorHref(link.anchor)}
+                key={link.label}
+                href={navHref(link)}
                 onClick={closeMobileMenu}
                 className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
               >

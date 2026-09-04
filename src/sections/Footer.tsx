@@ -6,6 +6,8 @@ import { AnimatedContainer } from "@/components/AnimatedContainer";
 // σταθερά, ώστε να μην μπορούν ποτέ να αποκλίνουν. Το δομημένο σχήμα του
 // υποσέλιδου έχει μεταφερθεί στον ενιαίο γράφο του `src/lib/schema.ts`.
 import { SOCIAL_LINKS } from "@/lib/schema";
+import { CONDITIONS_HUB_PATH } from "@/lib/condition-paths";
+import { BLOG_HUB_PATH } from "@/lib/blog-paths";
 
 export const Footer: React.FC = () => {
   return (
@@ -174,6 +176,12 @@ export const Footer: React.FC = () => {
               Υπηρεσίες
             </Link>
             <Link
+              href={CONDITIONS_HUB_PATH}
+              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+            >
+              Παθήσεις
+            </Link>
+            <Link
               href="/#fysikotherapeia"
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
@@ -185,10 +193,8 @@ export const Footer: React.FC = () => {
             >
               Γνωρίστε με
             </Link>
-            {/* Το blog είναι σκόπιμα προσβάσιμο μόνο από εδώ — δεν μπαίνει
-                στην κύρια πλοήγηση του `Header`. */}
             <Link
-              href="/blog"
+              href={BLOG_HUB_PATH}
               className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Blog
