@@ -215,22 +215,31 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
         </section>
       )}
 
-      {/* ---------- Πώς Βοηθάμε ---------- */}
+      {/* ---------- Πώς Βοηθάμε ----------
+           Η επικεφαλίδα μπαίνει μόνο όταν υπάρχει κείμενο από κάτω: μερικές
+           σελίδες του παλιού site δεν έχουν καθόλου ενότητα θεραπείας, οπότε
+           μένουν μόνο οι σχετικές υπηρεσίες. */}
       <section className="py-[56px] md:py-[96px] bg-surface">
-        <div className="max-w-[800px] mx-auto px-4 md:px-8 flex flex-col gap-5">
-          <h2 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 tracking-tight">
-            Πώς Βοηθάμε
-          </h2>
-          {howWeHelp.paragraphs.map((block, index) => (
-            <Block key={index} block={block} />
-          ))}
-        </div>
+        {howWeHelp.paragraphs.length > 0 && (
+          <div className="max-w-[800px] mx-auto px-4 md:px-8 flex flex-col gap-5">
+            <h2 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 tracking-tight">
+              Πώς Βοηθάμε
+            </h2>
+            {howWeHelp.paragraphs.map((block, index) => (
+              <Block key={index} block={block} />
+            ))}
+          </div>
+        )}
 
         {/* Οι σχετικές υπηρεσίες ως κάρτες με φωτογραφία — έξω από τη στήλη
             κειμένου των 800px, στο κανονικό πλάτος του πλέγματος, ώστε οι
             κάρτες να είναι ίδιες με της αρχικής και της `/ypiresies`. */}
         {relatedServices.length > 0 && (
-          <div className="max-w-[1280px] mx-auto px-4 md:px-8 mt-10 md:mt-14 flex flex-col gap-5 md:gap-6">
+          <div
+            className={`max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-5 md:gap-6 ${
+              howWeHelp.paragraphs.length > 0 ? "mt-10 md:mt-14" : ""
+            }`}
+          >
             <h3 className="font-display font-bold text-xl md:text-2xl text-ink-900">
               Σχετικές υπηρεσίες
             </h3>
