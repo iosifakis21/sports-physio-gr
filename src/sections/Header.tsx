@@ -145,8 +145,13 @@ export const Header: React.FC = () => {
               1280px: ο λογότυπος στριμώχνεται, τα «Γνωρίστε με» σπάνε σε δύο
               γραμμές και το CTA ακουμπάει το FAQ. Ως τα 1280 μπαίνει το
               συρτάρι, που τα χωράει άνετα. */}
+          {/* ΠΡΟΣΟΧΗ: το `whitespace-nowrap` πάει στους ίδιους τους
+              συνδέσμους, ΟΧΙ εδώ. Το mega menu των υπηρεσιών ζει μέσα σε αυτό
+              το <nav>, οπότε θα κληρονομούσε τον κανόνα: οι μεγάλοι τίτλοι
+              υπηρεσιών δεν θα τύλιγαν και θα έβγαιναν έξω από τα κελιά τους,
+              πέφτοντας πάνω στη διπλανή στήλη. */}
           <nav
-            className="hidden xl:flex items-center gap-6 whitespace-nowrap"
+            className="hidden xl:flex items-center gap-6"
             aria-label="Κύριο Μενού Πλοήγησης"
           >
             <ServicesMegaMenu />
@@ -154,7 +159,7 @@ export const Header: React.FC = () => {
               <a
                 key={link.label}
                 href={navHref(link)}
-                className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
+                className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm whitespace-nowrap transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
               >
                 {link.label}
               </a>
