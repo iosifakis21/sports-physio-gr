@@ -35,10 +35,10 @@ const CalendarIcon: React.FC = () => (
  * το κείμενο του παλιού sports-physio.gr μεταφέρεται αυτούσιο, με τη δομή του.
  */
 const Block: React.FC<{ block: ConditionBlock }> = ({ block }) => {
-  if (typeof block === "string") {
+  if (typeof block === "string" || block.kind === "paragraph") {
     return (
       <p className="text-base md:text-lg text-ink-600 font-sans leading-relaxed">
-        {block}
+        {typeof block === "string" ? block : block.text}
       </p>
     );
   }
@@ -200,10 +200,16 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
             <h2 className="font-display font-extrabold text-2xl md:text-3xl text-ink-900 tracking-tight">
               Συμπτώματα
             </h2>
+            {/* Σύμπτωμα-σύμπτωμα με ✓ όταν η πηγή έχει λίστα· παράγραφοι όταν
+                η πηγή τα περιγράφει σε κείμενο. */}
             <div className="flex flex-col gap-3">
-              {symptoms.map((symptom) => (
-                <CheckItem key={symptom} text={symptom} />
-              ))}
+              {symptoms.map((symptom, index) =>
+                typeof symptom === "string" ? (
+                  <CheckItem key={index} text={symptom} />
+                ) : (
+                  <Block key={index} block={symptom} />
+                )
+              )}
             </div>
           </div>
         </section>

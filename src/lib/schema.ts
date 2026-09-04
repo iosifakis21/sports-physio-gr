@@ -490,15 +490,22 @@ function buildMedicalCondition(content: ConditionPageContent) {
     .filter((service) => servicePages.some((page) => page.slug === service.slug))
     .map((service) => ref(SCHEMA_IDS.service(service.slug)));
 
+  // Μόνο τα συμπτώματα-λίστα γίνονται `MedicalSignOrSymptom`. Οι σελίδες που
+  // περιγράφουν τα συμπτώματα σε παραγράφους δεν έχουν διακριτά ονόματα
+  // συμπτωμάτων, οπότε δεν μπαίνει τίποτα στο schema.
+  const symptomNames = content.symptoms.filter(
+    (symptom): symptom is string => typeof symptom === "string"
+  );
+
   return {
     "@type": "MedicalCondition",
     "@id": SCHEMA_IDS.condition(content.slug),
     name: content.name,
     description: content.meta.description,
     url: `${SITE_URL}${conditionPageHref(content.slug)}`,
-    ...(content.symptoms.length > 0
+    ...(symptomNames.length > 0
       ? {
-          signOrSymptom: content.symptoms.map((symptom) => ({
+          signOrSymptom: symptomNames.map((symptom) => ({
             "@type": "MedicalSignOrSymptom",
             name: symptom,
           })),
