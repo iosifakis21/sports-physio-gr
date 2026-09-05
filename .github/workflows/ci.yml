@@ -1,0 +1,41 @@
+name: CI
+
+# Το `next build` δεν τρέχει πλέον ESLint από μόνο του στο Next.js 16, οπότε
+# χωρίς αυτό το workflow τίποτα δεν εμπόδιζε ένα lint σφάλμα να φτάσει στην
+# παραγωγή — το build περνούσε κανονικά.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm ci` και όχι `npm install`: εγκαθιστά ακριβώς ό,τι λέει το
+      # package-lock.json και αποτυγχάνει αν τα δύο αρχεία έχουν αποκλίνει.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      # Ενημερωτικό: αποτυγχάνει μόνο σε high/critical ευπάθειες, ώστε ένα νέο
+      # advisory σε transitive dependency να γίνεται ορατό αντί να περνά
+      # απαρατήρητο μέχρι τον επόμενο έλεγχο.
+      - name: Audit dependencies
+        run: npm audit --audit-level=high

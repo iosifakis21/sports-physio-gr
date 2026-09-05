@@ -25,7 +25,6 @@
  * Google να βλέπει μία επιχείρηση, έναν ιστότοπο και ένα πρόσωπο.
  */
 import { SITE_NAME, SITE_URL } from "./site";
-import reviewsData from "@/content/reviews.json";
 import servicesData from "@/content/services.json";
 import faqData from "@/content/faq.json";
 import {
@@ -71,7 +70,6 @@ export const SCHEMA_IDS = {
   /** Η διαδρομή πλοήγησης της σελίδας-κόμβου του blog. */
   blogHubBreadcrumb: `${SITE_URL}${BLOG_HUB_PATH}#breadcrumb`,
   faq: (path: string) => `${SITE_URL}${path}#faq`,
-  review: (id: string) => `${SITE_URL}/#${id}`,
 } as const;
 
 /** Συντομογραφία για μια αναφορά σε υπάρχουσα οντότητα του γράφου. */
@@ -110,37 +108,6 @@ const MEMBER_ORGANISATIONS = [
 /* -------------------------------------------------------------------------- */
 /*  Βοηθητικά                                                                 */
 /* -------------------------------------------------------------------------- */
-
-/** Ανώτατο μήκος για το `reviewBody` μιας κριτικής. */
-const REVIEW_EXCERPT_MAX = 200;
-
-/**
- * Κόβει μια κριτική σε απόσπασμα κάτω από `REVIEW_EXCERPT_MAX` χαρακτήρες,
- * τερματίζοντας καθαρά: κατά προτίμηση στο τέλος πρότασης, αλλιώς στο τελευταίο
- * ολόκληρο λέξη με αποσιωπητικά. Ποτέ στη μέση λέξης.
- */
-export function truncateReview(text: string, max = REVIEW_EXCERPT_MAX): string {
-  const clean = text.replace(/\s+/g, " ").trim();
-  if (clean.length <= max) return clean;
-
-  // Κρατάμε όσες ΟΛΟΚΛΗΡΕΣ προτάσεις χωρούν στο όριο, ώστε το απόσπασμα να
-  // τελειώνει πάντα σε φυσικό σημείο. Στα ελληνικά το «;» είναι ερωτηματικό.
-  const sentences = clean.match(/[^.!;]+[.!;]+|[^.!;]+$/g) ?? [clean];
-  let excerpt = "";
-  for (const sentence of sentences) {
-    if ((excerpt + sentence).trim().length > max) break;
-    excerpt += sentence;
-  }
-  excerpt = excerpt.trim();
-  if (excerpt.length > 0) return excerpt;
-
-  // Εφεδρικό: ακόμη και η πρώτη πρόταση ξεπερνά το όριο — κόβουμε στο τελευταίο
-  // ολόκληρο λέξη και προσθέτουμε αποσιωπητικά. Ποτέ στη μέση λέξης.
-  const window = clean.slice(0, max - 1);
-  const lastSpace = window.lastIndexOf(" ");
-  const cut = lastSpace > 0 ? window.slice(0, lastSpace) : window;
-  return `${cut.replace(/[\s,·—-]+$/u, "")}…`;
-}
 
 /** Το απλό κείμενο μιας απάντησης FAQ, ανεξαρτήτως μορφής στο JSON. */
 type FaqAnswer = { blocks: unknown[]; plainText: string } | string;
@@ -210,12 +177,21 @@ function buildBusiness() {
       SOCIAL_LINKS.instagram,
       GOOGLE_BUSINESS_PROFILE_URL,
     ],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5.0",
-      reviewCount: "73",
-      bestRating: "5",
-    },
+    // ΔΕΝ δηλώνεται `aggregateRating` ούτε οντότητες `Review`.
+    //
+    // Οι 73 αξιολογήσεις 5 αστέρων είναι πραγματικές, αλλά συλλέχθηκαν από το
+    // Google Business Profile. Η πολιτική της Google για τα review snippets δεν
+    // επιτρέπει σε μια επιχείρηση να σημειώνει ως δικά της δομημένα δεδομένα
+    // αξιολογήσεις που συγκεντρώθηκαν σε πλατφόρμα τρίτου — το σύνηθες
+    // αποτέλεσμα είναι απόσυρση των rich results, με ενδεχόμενο και χειροκίνητη
+    // ποινή. Επιπλέον, ο αριθμός ήταν γραμμένος σταθερά στον κώδικα και θα
+    // έπαυε να ισχύει με την επόμενη κριτική.
+    //
+    // Οι κριτικές ΠΑΡΑΜΕΝΟΥΝ ορατές στη σελίδα (βλ. `src/sections/Reviews.tsx`)
+    // — εκεί είναι απολύτως θεμιτές. Μόνο ο ισχυρισμός στα structured data
+    // αφαιρέθηκε. Οι βαθμολογίες εμφανίζονται ήδη μέσω του Google Business
+    // Profile στα τοπικά αποτελέσματα, που είναι ο σωστός δίαυλος.
+
     // Ο θεραπευτής ως εργαζόμενος — αναφορά, όχι διπλότυπο αντικείμενο.
     employee: ref(SCHEMA_IDS.person),
     // Ο κατάλογος υπηρεσιών δείχνει στις οντότητες Service του ίδιου γράφου.
@@ -277,26 +253,6 @@ function buildServices() {
       areaServed: "Αθήνα",
     };
   });
-}
-
-/** Οι πραγματικές κριτικές Google, ως ξεχωριστές οντότητες Review. */
-function buildReviews() {
-  return reviewsData.map((review) => ({
-    "@type": "Review",
-    "@id": SCHEMA_IDS.review(review.id),
-    itemReviewed: ref(SCHEMA_IDS.business),
-    // Μόνο όνομα — καμία φωτογραφία ή προφίλ στο schema (GDPR).
-    author: {
-      "@type": "Person",
-      name: review.authorName,
-    },
-    reviewRating: {
-      "@type": "Rating",
-      ratingValue: String(review.rating),
-      bestRating: "5",
-    },
-    reviewBody: truncateReview(review.text),
-  }));
 }
 
 /** Το FAQ της αρχικής σελίδας. */
@@ -407,7 +363,7 @@ const graph = (entities: unknown[]): Graph => ({
 
 /** Ο γράφος της αρχικής σελίδας. */
 export function buildHomeGraph(): Graph {
-  return graph([...baseEntities(), ...buildReviews(), buildHomeFaq()]);
+  return graph([...baseEntities(), buildHomeFaq()]);
 }
 
 /** Ο γράφος της σελίδας-κόμβου των υπηρεσιών (/ypiresies). */

@@ -84,11 +84,17 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           />
         </svg>
 
+        {/* Ήταν `/images/athletenobg copy.png` — αντίγραφο εργασίας 132 KB που
+            είχε φύγει κατά λάθος στην παραγωγή (και με κενό στο όνομα αρχείου).
+            Το `athletenobg.webp` είναι η ίδια εικόνα, 900×1240 με κανάλι alpha,
+            στα 78 KB. Ήταν η βαρύτερη εικόνα της αρχικής σελίδας.
+            Οι διαστάσεις διορθώθηκαν στις πραγματικές — ήταν δηλωμένες
+            1068×1472. */}
         <Image
-          src="/images/athletenobg copy.png"
+          src="/images/athletenobg.webp"
           alt="Αθλητής σε φάση τρεξίματος με επισημασμένες περιοχές πόνου"
-          width={1068}
-          height={1472}
+          width={900}
+          height={1240}
           sizes="(max-width: 1024px) 400px, 440px"
           className="relative w-full h-auto select-none pointer-events-none"
         />
@@ -122,7 +128,12 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
                 }}
                 aria-label={`${dot.label} — δείτε σχετικές πληροφορίες`}
                 aria-expanded={isActive}
-                className="relative flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white shadow-lg ring-2 ring-white/80 cursor-pointer transition-transform hover:scale-110 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                /* Το `before:` μεγαλώνει ΜΟΝΟ την περιοχή αφής σε 44×44,
+                   χωρίς να αλλάξει το ορατό μέγεθος των 28px ή τη θέση των
+                   κουκκίδων πάνω στο σώμα. Η πλησιέστερη απόσταση μεταξύ δύο
+                   κουκκίδων είναι ~66px στα 400px πλάτος εικόνας, οπότε οι
+                   διευρυμένες περιοχές δεν επικαλύπτονται. */
+                className="relative flex items-center justify-center w-7 h-7 rounded-full bg-primary text-white shadow-lg ring-2 ring-white/80 cursor-pointer transition-transform hover:scale-110 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary before:content-[''] before:absolute before:left-1/2 before:top-1/2 before:h-11 before:w-11 before:-translate-x-1/2 before:-translate-y-1/2"
               >
                 <span
                   aria-hidden="true"
@@ -198,10 +209,16 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
 
                     {/* Condition Group Image */}
                     <div className="relative w-full aspect-video rounded-md overflow-hidden mb-2 bg-white/5">
-                      <img
+                      {/* Ήταν σκέτο <img>: καμία βελτιστοποίηση μορφής, κανένα
+                          lazy loading και χωρίς δηλωμένες διαστάσεις. Ο γονέας
+                          ορίζει ήδη λόγο πλευρών, οπότε το `fill` ταιριάζει.
+                          Το tooltip είναι το πολύ 220px φαρδύ. */}
+                      <Image
                         src={dot.photo}
                         alt={dot.label}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="220px"
+                        className="object-cover"
                       />
                     </div>
 

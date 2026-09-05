@@ -33,7 +33,17 @@ export const About: React.FC = () => {
   ];
 
   return (
-    <section id="gnoriste-me" className="py-[56px] md:py-[96px] bg-surface select-none scroll-mt-20">
+    /* `overflow-x-clip`: η δεξιά στήλη ξεκινά με `translateX: 24` μέχρι να
+       μπει στο viewport, δηλαδή στέκεται 24px δεξιότερα από τη θέση της. Σε
+       οθόνες 320–430px αυτό έβγαζε το έγγραφο 8px εκτός πλάτους και η αρχική
+       σελίδα «κουνιόταν» οριζόντια από τη στιγμή της φόρτωσης, μέχρι ο χρήστης
+       να κυλήσει ως εδώ. Η αντίστοιχη `-24` της αριστερής στήλης δεν φαινόταν,
+       γιατί την έκοβε ήδη η αριστερή άκρη του viewport.
+
+       `clip` και όχι `hidden`: το `overflow-x: hidden` δημιουργεί scroll
+       container, που θα ακύρωνε το `scroll-mt-20` της ίδιας ενότητας και κάθε
+       sticky positioning μέσα της. */
+    <section id="gnoriste-me" className="py-[56px] md:py-[96px] bg-surface select-none scroll-mt-20 overflow-x-clip">
       <div className="max-w-[1280px] mx-auto px-4 md:px-8 flex flex-col gap-10 md:gap-16">
 
         {/* Section Heading */}

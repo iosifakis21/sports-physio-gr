@@ -266,7 +266,7 @@ export const AthleteCard: React.FC<AthleteCardProps> = ({
           {athlete.name}
           {athlete.nickname && (
             <span className="text-primary text-xs sm:text-sm font-normal">
-              "{athlete.nickname}"
+              &quot;{athlete.nickname}&quot;
             </span>
           )}
         </h3>

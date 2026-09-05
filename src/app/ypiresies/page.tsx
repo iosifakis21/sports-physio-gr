@@ -9,8 +9,10 @@ import { SITE_NAME } from "@/lib/site";
 import servicesData from "@/content/services.json";
 
 const TITLE = "Υπηρεσίες | Sports-Physio.gr — Μιχάλης Σιούλης";
+// 140 χαρακτήρες: κάτω από το όριο εμφάνισης της Google (~155). Η προηγούμενη
+// εκδοχή ήταν 186 και έκοβε τις τελευταίες υπηρεσίες της λίστας.
 const DESCRIPTION =
-  "Όλες οι υπηρεσίες του Sports-Physio.gr: Manual Therapy, Medical Training Therapy, Κρουστικός Υπέρηχος (PiezoWave2), Πελματογράφος, Dry Needling και Kinesiotaping στη Μεταμόρφωση Αττικής.";
+  "Manual Therapy, Medical Training Therapy, Κρουστικός Υπέρηχος, Tecar, Πελματογράφος, Dry Needling και Kinesiotaping στη Μεταμόρφωση Αττικής.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -79,6 +81,12 @@ export default function Page() {
       {/* ---------- Grid με τις επτά υπηρεσίες ---------- */}
       <section className="py-[56px] md:py-[96px] bg-surface select-none">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
+          {/* Οι κάρτες υπηρεσιών είναι h3 (σωστά στην αρχική, όπου από πάνω
+              τους υπάρχει το h2 της ενότητας). Εδώ όμως ακολουθούσαν κατευθείαν
+              το h1, αφήνοντας κενό στην ιεραρχία — το axe το αναφέρει ως
+              `heading-order`. Το h2 είναι σκόπιμα μόνο για αναγνώστες οθόνης:
+              ο τίτλος της ενότητας φαίνεται ήδη οπτικά στο hero από πάνω. */}
+          <h2 className="sr-only">Όλες οι υπηρεσίες</h2>
           <ServiceCardGrid services={services} />
         </div>
       </section>

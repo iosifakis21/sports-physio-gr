@@ -89,7 +89,11 @@ export const AnimatedContainer: React.FC<AnimatedContainerProps> = ({
         transitionDuration: `${duration}s`,
         transitionTimingFunction: "cubic-bezier(0.25, 0.1, 0.25, 1)",
         transitionDelay: `${delay}s`,
-        willChange: "opacity, translate, filter",
+        // Το `will-change` ζητά από τον browser να κρατήσει το στοιχείο σε δικό
+        // του compositor layer. Έμενε μόνιμα ενεργό: 26 μόνιμα layers στην
+        // αρχική, για κινήσεις που παίζουν ΜΙΑ φορά. Το αφαιρούμε μόλις γίνει
+        // η αποκάλυψη, ώστε ο browser να ελευθερώσει τη μνήμη.
+        willChange: revealed ? undefined : "opacity, translate, filter",
         ...toStyle(revealed ? whileInView : initial),
       }}
     >

@@ -111,7 +111,7 @@ export const TeamCarousel: React.FC = () => {
           onClick={() => step(-1)}
         />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {teamMembers.map((member, memberIndex) => {
             const isActive = memberIndex === index;
             return (
@@ -121,7 +121,12 @@ export const TeamCarousel: React.FC = () => {
                 onClick={() => setIndex(memberIndex)}
                 aria-current={isActive ? "true" : undefined}
                 aria-label={`Μέλος ${memberIndex + 1} από ${total}: ${member.name}`}
-                className={`h-2.5 rounded-full transition-all duration-200 cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary ${
+                /* Οι κουκκίδες ήταν 10×10 (και 24×10 η ενεργή) — κάτω από το
+                   ελάχιστο 24×24 του WCAG 2.2 AA. Το `before:` δίνει περιοχή
+                   αφής τουλάχιστον 24 πλάτος × 44 ύψος, χωρίς να μεγαλώσει
+                   την ορατή κουκκίδα. Το `gap-3` του γονέα κρατά το βήμα στα
+                   24px, ώστε οι περιοχές να μην επικαλύπτονται. */
+                className={`relative h-2.5 rounded-full transition-all duration-200 cursor-pointer focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary before:content-[''] before:absolute before:left-1/2 before:top-1/2 before:h-11 before:w-full before:min-w-6 before:-translate-x-1/2 before:-translate-y-1/2 ${
                   isActive ? "w-6 bg-primary" : "w-2.5 bg-ink-900/20 hover:bg-ink-900/40"
                 }`}
               />

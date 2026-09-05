@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useAnimate } from "motion/react";
+import type { AnimationPlaybackControls } from "motion/react";
 import insurersData from "@/content/insurers.json";
 
 interface Insurer {
@@ -47,7 +48,9 @@ const LogoImage: React.FC<{ insurer: Insurer; decorative?: boolean }> = ({
 const MarqueeRow: React.FC<{ insurers: Insurer[] }> = ({ insurers }) => {
   const [scope, animate] = useAnimate();
   const [isPaused, setIsPaused] = useState(false);
-  const animationRef = useRef<any>(null);
+  // Ο τύπος επιστροφής του `animate()` του motion. Ήταν `any`, που έκρυβε
+  // τα .stop()/.pause()/.play() από τον έλεγχο τύπων.
+  const animationRef = useRef<AnimationPlaybackControls | null>(null);
 
   useEffect(() => {
     const el = scope.current;

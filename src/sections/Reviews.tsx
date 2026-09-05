@@ -6,6 +6,7 @@ import { RatingBadge, GOOGLE_REVIEWS_URL } from "@/components/RatingBadge";
 import { ReviewCard, Review } from "@/components/ReviewCard";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
 import { useAnimate } from "motion/react";
+import type { AnimationPlaybackControls } from "motion/react";
 import reviewsData from "@/content/reviews.json";
 
 interface MarqueeColumnProps {
@@ -16,7 +17,9 @@ interface MarqueeColumnProps {
 const MarqueeColumn: React.FC<MarqueeColumnProps> = ({ reviews, speed }) => {
   const [scope, animate] = useAnimate();
   const [isPaused, setIsPaused] = useState(false);
-  const animationRef = useRef<any>(null);
+  // Ο τύπος επιστροφής του `animate()` του motion. Ήταν `any`, που έκρυβε
+  // τα .stop()/.pause()/.play() από τον έλεγχο τύπων.
+  const animationRef = useRef<AnimationPlaybackControls | null>(null);
 
   useEffect(() => {
     const el = scope.current;

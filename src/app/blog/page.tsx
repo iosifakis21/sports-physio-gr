@@ -78,7 +78,13 @@ export default function Page() {
       <section className="py-[56px] md:py-[96px] bg-surface select-none">
         <div className="max-w-[1280px] mx-auto px-4 md:px-8">
           {posts.length > 0 ? (
-            <BlogCardGrid posts={posts} />
+            <>
+              {/* Όπως και στο /ypiresies: οι κάρτες άρθρων είναι h3 και
+                  ακολουθούσαν κατευθείαν το h1. Το h2 αποκαθιστά την ιεραρχία
+                  χωρίς να αλλάξει η εμφάνιση — ο τίτλος φαίνεται ήδη στο hero. */}
+              <h2 className="sr-only">Όλα τα άρθρα</h2>
+              <BlogCardGrid posts={posts} />
+            </>
           ) : (
             /* Κενή κατάσταση: δεν έχει δημοσιευτεί ακόμη κανένα άρθρο. Δείχνουμε
                καθαρό μήνυμα αντί για άδειο πλέγμα. */

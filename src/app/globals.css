@@ -5,6 +5,8 @@
   --color-primary: var(--blue-700);
   --color-primary-hover: var(--blue-800);
   --color-primary-link: var(--blue-600);
+  /* Παραλλαγή του τονισμού για σκούρο φόντο — βλ. --blue-400 στο tokens.css. */
+  --color-primary-on-dark: var(--blue-400);
   --color-ink-900: var(--ink-900);
   --color-ink-600: var(--ink-600);
   --color-surface: var(--surface);

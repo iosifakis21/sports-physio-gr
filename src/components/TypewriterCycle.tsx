@@ -49,17 +49,18 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
   allowWrap = false,
 }) => {
   const reduced = usePrefersReducedMotion();
-  const [mounted, setMounted] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
   const [charCount, setCharCount] = useState(0);
   const [phase, setPhase] = useState<"typing" | "deleting">("typing");
 
+  // Δεν υπάρχει πλέον `mounted` state.
+  //
+  // Χρησίμευε μόνο ως φύλακας του effect παρακάτω — αλλά τα effects δεν
+  // τρέχουν ποτέ στον server, οπότε η συνθήκη ήταν εξ ορισμού αληθής όποτε
+  // έφτανε να ελεγχθεί. Το `setMounted(true)` μέσα σε effect προκαλούσε έναν
+  // περιττό κύκλο render σε κάθε mount (`react-hooks/set-state-in-effect`).
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted || reduced) return;
+    if (reduced) return;
 
     const currentWord = words[wordIndex];
     let timeout: ReturnType<typeof setTimeout>;
@@ -82,7 +83,7 @@ export const TypewriterCycle: React.FC<TypewriterCycleProps> = ({
     }
 
     return () => clearTimeout(timeout);
-  }, [mounted, reduced, phase, charCount, wordIndex, words]);
+  }, [reduced, phase, charCount, wordIndex, words]);
 
   // Reduced motion: a single, static, fully visible ending — no hidden
   // duplicate needed since this is the only rendered copy.

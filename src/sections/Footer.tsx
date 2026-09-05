@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
                   href="https://maps.google.com/?q=Ιερού+Λόχου+3,+Μεταμόρφωση+14451,+Αθήνα"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+                  className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
                   Ιερού Λόχου 3, Μεταμόρφωση
                   <br />
@@ -93,7 +93,7 @@ export const Footer: React.FC = () => {
                   href="https://www.google.com/maps/search/?api=1&query=%CE%99%CE%B5%CF%81%CE%BF%CF%8D+%CE%9B%CF%8C%CF%87%CE%BF%CF%85+3,+%CE%9C%CE%B5%CF%84%CE%B1%CE%BC%CF%8C%CF%81%CF%86%CF%89%CF%83%CE%B7+14451"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block mt-1 text-primary hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
+                  className="block mt-1 text-primary-on-dark hover:underline focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
                   Οδηγίες →
                 </a>
@@ -105,7 +105,7 @@ export const Footer: React.FC = () => {
                 <strong className="text-white block font-medium">Τηλέφωνο:</strong>
                 <a
                   href="tel:+302128488984"
-                  className="hover:text-primary transition-colors text-base font-semibold focus:outline focus:outline-2 focus:outline-primary rounded"
+                  className="hover:text-primary-on-dark transition-colors text-base font-semibold focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
                   210 28 48 984
                 </a>
@@ -117,7 +117,7 @@ export const Footer: React.FC = () => {
                 <strong className="text-white block font-medium">Email:</strong>
                 <a
                   href="mailto:msioulis@yahoo.gr"
-                  className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+                  className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
                 >
                   msioulis@yahoo.gr
                 </a>
@@ -171,37 +171,37 @@ export const Footer: React.FC = () => {
           <nav className="font-sans text-sm text-slate-400 flex flex-col gap-2" aria-label="Σύνδεσμοι υποσέλιδου">
             <Link
               href="/#ypiresies"
-              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+              className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Υπηρεσίες
             </Link>
             <Link
               href={CONDITIONS_HUB_PATH}
-              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+              className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Παθήσεις
             </Link>
             <Link
               href="/#fysikotherapeia"
-              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+              className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Φυσικοθεραπεία
             </Link>
             <Link
               href="/#gnoriste-me"
-              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+              className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Γνωρίστε με
             </Link>
             <Link
               href={BLOG_HUB_PATH}
-              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
+              className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5"
             >
               Blog
             </Link>
             <Link
               href="/politiki-aporritou"
-              className="hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5 mt-2"
+              className="hover:text-primary-on-dark transition-colors focus:outline focus:outline-2 focus:outline-primary rounded p-0.5 mt-2"
             >
               Πολιτική Απορρήτου
             </Link>
@@ -210,7 +210,11 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Legal and Copyright row */}
-      <div className="max-w-[1280px] mx-auto px-4 md:px-8 mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500 font-sans">
+      {/* `text-slate-400`, όχι `text-slate-500`: πάνω στο ink-900 του
+          υποσέλιδου το 500 δίνει λόγο αντίθεσης 3.7:1 και κόβεται από το
+          ελάχιστο 4.5:1 του WCAG AA — ήταν η μοναδική παραβίαση axe που
+          εμφανιζόταν και στις 52 σελίδες. Το 400 δίνει 7.0:1. */}
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400 font-sans">
         <div>
           &copy; {new Date().getFullYear()} Sports-Physio.gr. Με επιφύλαξη παντός δικαιώματος.
         </div>

@@ -47,6 +47,33 @@ export const Header: React.FC = () => {
   const navHref = (link: NavLinkItem) =>
     link.href ?? anchorHref(link.anchor as string);
 
+  /**
+   * Σύνδεσμος μενού που διαλέγει μόνος του `<Link>` ή `<a>`.
+   *
+   * Όλοι οι σύνδεσμοι της κεφαλίδας ήταν σκέτα `<a>`, παρότι το `next/link`
+   * ήταν ήδη εισαγόμενο: κάθε κλικ σε «Παθήσεις» ή «Blog» ξαναφόρτωνε ΟΛΟ το
+   * έγγραφο αντί για client-side πλοήγηση, χάνοντας και το prefetch. Ήταν η πιο
+   * αργή διαδρομή μέσα στο site — και ήταν αυτή της κεφαλίδας.
+   *
+   * Τα σκέτα fragments (`#diadikasia` στην αρχική) μένουν `<a>`: δείχνουν σε
+   * ενότητα της ίδιας σελίδας, δεν υπάρχει πλοήγηση να επιταχυνθεί.
+   */
+  const NavLink: React.FC<{
+    href: string;
+    className: string;
+    onClick?: () => void;
+    children: React.ReactNode;
+  }> = ({ href, className, onClick, children }) =>
+    href.startsWith("#") ? (
+      <a href={href} className={className} onClick={onClick}>
+        {children}
+      </a>
+    ) : (
+      <Link href={href} className={className} onClick={onClick}>
+        {children}
+      </Link>
+    );
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
@@ -136,9 +163,14 @@ export const Header: React.FC = () => {
       >
         <div className="max-w-[1280px] mx-auto w-full flex items-center justify-between">
           {/* Logo Mark */}
-          <a href={isHomePage ? "#" : "/"} className="flex items-center gap-2 group shrink-0 focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
+          {/* Ήταν `href={isHomePage ? "#" : "/"}`. Στην αρχική αυτό έδινε σκέτο
+              `#`: ο πρώτος στόχος του πληκτρολογίου σε όλο το site, με
+              accessible name «Αρχική σελίδα», που δεν πήγαινε πουθενά και
+              άφηνε ένα ορφανό `#` στο URL. Το `<Link href="/">` κυλά στην
+              κορυφή στην αρχική και πλοηγεί κανονικά από παντού αλλού. */}
+          <Link href="/" className="flex items-center gap-2 group shrink-0 focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
             <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority sizes="(min-width: 768px) 112px, 96px" className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           {/* Με 7 συνδέσμους + mega menu + CTA, η μπάρα δεν χωράει κάτω από τα
@@ -156,13 +188,13 @@ export const Header: React.FC = () => {
           >
             <ServicesMegaMenu />
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.label}
                 href={navHref(link)}
                 className="font-sans font-medium text-ink-600 hover:text-primary-link text-sm whitespace-nowrap transition-colors duration-200 focus:outline focus:outline-2 focus:outline-primary rounded p-1"
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
 
@@ -199,7 +231,8 @@ export const Header: React.FC = () => {
               ref={hamburgerRef}
               onClick={toggleMenu}
               type="button"
-              className="xl:hidden p-2 text-ink-900 hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded-md cursor-pointer"
+              /* p-2.5 (όχι p-2): με εικονίδιο 24px δίνει στόχο αφής 44×44. */
+              className="xl:hidden p-2.5 text-ink-900 hover:text-primary transition-colors focus:outline focus:outline-2 focus:outline-primary rounded-md cursor-pointer"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation-drawer"
               aria-label={isMenuOpen ? "Κλείσιμο μενού" : "Άνοιγμα μενού"}
@@ -265,7 +298,10 @@ export const Header: React.FC = () => {
             </span>
             <button
               onClick={() => setIsMenuOpen(false)}
-              className="p-1 text-ink-600 hover:text-ink-900 focus:outline focus:outline-2 focus:outline-primary rounded-md cursor-pointer"
+              /* p-2.5 (όχι p-1): με εικονίδιο 24px δίνει στόχο αφής 44×44
+                 αντί για 32×32. Το -mr-2.5 κρατά το εικονίδιο οπτικά
+                 ευθυγραμμισμένο με το padding του drawer. */
+              className="p-2.5 -mr-2.5 text-ink-600 hover:text-ink-900 focus:outline focus:outline-2 focus:outline-primary rounded-md cursor-pointer"
               aria-label="Κλείσιμο μενού"
             >
               <svg
@@ -344,14 +380,14 @@ export const Header: React.FC = () => {
             </div>
 
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.label}
                 href={navHref(link)}
                 onClick={closeMobileMenu}
                 className="font-sans font-semibold text-lg text-ink-900 hover:text-primary p-2 border-b border-ink-900/5 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
         </div>
