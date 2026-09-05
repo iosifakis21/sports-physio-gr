@@ -169,7 +169,7 @@ export const Header: React.FC = () => {
               άφηνε ένα ορφανό `#` στο URL. Το `<Link href="/">` κυλά στην
               κορυφή στην αρχική και πλοηγεί κανονικά από παντού αλλού. */}
           <Link href="/" className="flex items-center gap-2 group shrink-0 focus:outline focus:outline-2 focus:outline-primary rounded-md p-1" aria-label="Αρχική σελίδα Sports Physio">
-            <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} priority sizes="(min-width: 768px) 112px, 96px" className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
+            <Image src="/images/logonobg.png" alt="Sports-Physio.gr — Μιχάλης Σιούλης" width={220} height={148} sizes="(min-width: 768px) 112px, 96px" className="h-12 md:h-14 w-auto group-hover:scale-[1.03] transition-transform duration-200" />
           </Link>
 
           {/* Desktop Navigation */}

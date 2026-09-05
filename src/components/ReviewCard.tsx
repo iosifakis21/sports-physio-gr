@@ -50,9 +50,14 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           width={44}
           height={44}
           sizes="44px"
-          // Avatars are tiny and the marquee scrolls cards into view on its own,
-          // so lazy-loading would show empty circles mid-scroll.
-          loading="eager"
+          // ΗΤΑΝ `loading="eager"`. Στο Next 16 αυτό βάζει την εικόνα σε
+          // `<link rel="preload">` στο <head>: και τα 9 avatar των κριτικών
+          // — 44px το καθένα, πολύ κάτω από το fold — προφορτώνονταν μαζί με
+          // το στοιχείο LCP, σε αργό 4G.
+          //
+          // Το προεπιλεγμένο lazy τα ξεκινά όταν πλησιάσουν το viewport, πολύ
+          // πριν φανούν· είναι 2–11 KB το καθένα και ο γκρίζος κύκλος από
+          // κάτω (`bg-ink-900/5`) καλύπτει το ενδιάμεσο.
           className="w-11 h-11 rounded-full object-cover flex-shrink-0 bg-ink-900/5"
         />
 

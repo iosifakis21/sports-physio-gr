@@ -1,43 +1,103 @@
 import React from "react";
-import Image from "next/image";
+import ReactDOM from "react-dom";
+import { getImageProps } from "next/image";
 import { Button } from "@/components/Button";
 import { CheckItem } from "@/components/CheckItem";
 import { RatingBadge } from "@/components/RatingBadge";
 import { HeroReveal } from "@/components/HeroReveal";
 import { TypewriterCycle } from "@/components/TypewriterCycle";
 
+/**
+ * Η φωτογραφία του hero σε δύο κοψίματα (art direction).
+ *
+ * ΓΙΑΤΙ `<picture>` ΚΑΙ ΟΧΙ ΔΥΟ `<Image>`:
+ * Πριν υπήρχαν δύο `<Image>` — μία με `lg:hidden`, μία με `hidden lg:block` —
+ * και οι δύο με `priority`. Το `display:none` ΔΕΝ εμποδίζει τη λήψη, οπότε στο
+ * κινητό κατέβαιναν και τα δύο αρχεία (91 KB + 123 KB) και επιπλέον έμπαιναν
+ * ΚΑΙ ΤΑ ΔΥΟ σε `<link rel="preload">`, ανταγωνιζόμενα το ίδιο το στοιχείο LCP
+ * πάνω σε αργό 4G.
+ *
+ * Με `<picture>` + `<source media>` ο browser κατεβάζει ΑΚΡΙΒΩΣ ΜΙΑ εικόνα ανά
+ * viewport, και ο preload scanner τη βρίσκει στο markup σχεδόν τόσο νωρίς όσο
+ * ένα preload — χωρίς όμως καθόλου χαμένα bytes. Είναι το μοτίβο που
+ * τεκμηριώνει το Next 16 για art direction (`getImageProps`).
+ *
+ * Το `getImageProps` παράγει τα σωστά `srcSet` του image optimizer, ώστε να μη
+ * γράφονται στο χέρι URL της μορφής `/_next/image?...`.
+ */
+const HERO_COMMON = { alt: "", quality: 65, sizes: "100vw" } as const;
+
+const {
+  props: { srcSet: heroDesktopSrcSet },
+} = getImageProps({ ...HERO_COMMON, src: "/images/hero.webp", width: 1838, height: 856 });
+
+const {
+  props: { srcSet: heroMobileSrcSet, ...heroImgProps },
+} = getImageProps({
+  ...HERO_COMMON,
+  src: "/images/heromobile.webp",
+  width: 941,
+  height: 1672,
+});
+
 export const Hero: React.FC = () => {
+  /* Preload ΜΕ `media`, ένα ανά breakpoint.
+     ----------------------------------------------------------------------
+     Το `<picture>` από μόνο του αφήνει τον browser να ανακαλύψει την εικόνα
+     μόνο όταν ο parser φτάσει στο σώμα. Αυτά τα δύο preload τη μετακινούν στο
+     <head>, ΑΛΛΑ — χάρη στο `media` — ο browser κατεβάζει μόνο εκείνο που
+     ταιριάζει στο viewport του.
+
+     Έτσι κρατάμε το όφελος του παλιού `priority` (πρώιμη έναρξη λήψης) χωρίς
+     το κόστος του (τη δεύτερη, αόρατη εικόνα των 123 KB).
+
+     Χρησιμοποιείται το `ReactDOM.preload` και όχι σκέτο `<link>`: το React 19
+     ΔΕΝ ανεβάζει τα `<link rel="preload">` στο <head> — μένουν στο σώμα, όπου
+     ο preload scanner τα βρίσκει αργότερα.
+
+     Τα υπόλοιπα 10 preload που υπήρχαν (λογότυπο + 9 avatar κριτικών) έχουν
+     αφαιρεθεί: κανένα τους δεν ήταν ποτέ το στοιχείο LCP. */
+  ReactDOM.preload(heroImgProps.src, {
+    as: "image",
+    media: "(max-width: 1023px)",
+    imageSrcSet: heroMobileSrcSet,
+    imageSizes: "100vw",
+    fetchPriority: "high",
+  });
+  ReactDOM.preload(heroImgProps.src, {
+    as: "image",
+    media: "(min-width: 1024px)",
+    imageSrcSet: heroDesktopSrcSet,
+    imageSizes: "100vw",
+    fetchPriority: "high",
+  });
+
   return (
     <section className="relative bg-slate-950 text-white overflow-hidden min-h-[400px] md:min-h-[500px] lg:min-h-screen flex items-center py-6 sm:py-8 md:py-20 z-10">
       {/* Background Photo & Overlay */}
       {/* Mobile / tablet photo, zoomed in and shifted right so the doctor's
           upper body/face sits in the lighter, right-hand side of the overlay
           gradient (mirroring the desktop crop). */}
-      <Image
-        src="/images/heromobile.webp"
-        alt=""
-        fill
-        priority
-        // This is the LCP element on phones, which is what the field data is
-        // measured on: the explicit hint puts it ahead of the rest of the
-        // page's images in the browser's queue.
-        fetchPriority="high"
-        quality={65}
-        sizes="100vw"
-        className="object-cover object-[45%_22%] scale-[1.6] translate-x-[22%] z-0 lg:hidden"
-        aria-hidden="true"
-      />
-      {/* Desktop photo (doctor sits on the right-hand side of this crop) */}
-      <Image
-        src="/images/hero.webp"
-        alt=""
-        fill
-        priority
-        quality={65}
-        sizes="100vw"
-        className="object-cover z-0 hidden lg:block"
-        aria-hidden="true"
-      />
+      {/* Μία εικόνα ανά viewport — βλ. το σχόλιο στο `HERO_COMMON` παραπάνω.
+          Το κόψιμο για κινητό είναι ζουμαρισμένο και μετατοπισμένο δεξιά ώστε
+          το πρόσωπο να πέφτει στη φωτεινή πλευρά του gradient· στο desktop η
+          φωτογραφία είναι ήδη καδραρισμένη σωστά, οπότε οι μετασχηματισμοί
+          μηδενίζονται στο `lg:`. */}
+      <picture>
+        <source media="(min-width: 1024px)" srcSet={heroDesktopSrcSet} sizes="100vw" />
+        <source srcSet={heroMobileSrcSet} sizes="100vw" />
+        <img
+          {...heroImgProps}
+          /* Το `alt=""` έρχεται ήδη μέσα από το spread· δηλώνεται ξανά ρητά
+             επειδή ο κανόνας jsx-a11y δεν βλέπει μέσα σε spread. Διακοσμητική
+             εικόνα: το νόημα το κουβαλά το κείμενο δίπλα της. */
+          alt=""
+          aria-hidden="true"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover object-[45%_22%] scale-[1.6] translate-x-[22%] lg:object-center lg:scale-100 lg:translate-x-0 z-0"
+        />
+      </picture>
       {/* Mobile overlay: horizontal gradient, darkest on the left behind the
           copy/CTA and clearing towards the right (same logic as desktop). */}
       <div

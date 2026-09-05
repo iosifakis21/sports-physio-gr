@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Cal from "@calcom/embed-react";
 import { CheckItem } from "@/components/CheckItem";
-import { CAL_LINK, CAL_NAMESPACE, useCalInit } from "@/lib/cal";
+import { CAL_LINK, CAL_NAMESPACE, initCal } from "@/lib/cal";
 
 /**
  * The inline Cal.com booking calendar, with its headline, trust row and phone
@@ -13,8 +13,47 @@ import { CAL_LINK, CAL_NAMESPACE, useCalInit } from "@/lib/cal";
  * that page's own calendar rather than the homepage's.
  */
 export const InlineBookingCalendar: React.FC = () => {
-  // Namespace setup is shared with the popup CTAs and runs once per page load.
-  useCalInit();
+  /**
+   * Το ημερολόγιο μπαίνει στο DOM μόνο όταν πλησιάσει το viewport.
+   *
+   * Βρίσκεται στο τέλος της σελίδας, πολύ κάτω από το fold, αλλά το
+   * `<Cal>` κατέβαζε το script του Cal.com και ανέβαζε iframe αμέσως στο
+   * mount — δηλαδή σε ΚΑΘΕ φόρτωση της αρχικής, ακόμη κι αν ο επισκέπτης
+   * δεν έφτανε ποτέ ως εδώ. Ήταν από τα βαρύτερα στοιχεία της σελίδας και
+   * έτρεχε ενώ ζωγραφιζόταν ακόμη το πάνω μέρος.
+   *
+   * Το `rootMargin` των 800px το ξεκινά αρκετά νωρίς ώστε, όταν το
+   * ημερολόγιο φτάσει στην οθόνη, να είναι ήδη εκεί.
+   */
+  const holderRef = useRef<HTMLDivElement>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  useEffect(() => {
+    const el = holderRef.current;
+    if (!el || showCalendar) return;
+
+    // Χωρίς IntersectionObserver (πολύ παλιοί browsers): εμφάνισέ το στο
+    // επόμενο frame, αντί να μείνει ο επισκέπτης χωρίς ημερολόγιο. Το
+    // requestAnimationFrame — και όχι σκέτο setState εδώ — αποφεύγει τον
+    // επιπλέον κύκλο render που εντοπίζει το `react-hooks/set-state-in-effect`.
+    if (typeof IntersectionObserver === "undefined") {
+      const frame = requestAnimationFrame(() => setShowCalendar(true));
+      return () => cancelAnimationFrame(frame);
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect();
+          void initCal();
+          setShowCalendar(true);
+        }
+      },
+      { rootMargin: "800px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [showCalendar]);
 
   return (
     <section id="kleiste-rantevou" className="py-[56px] md:py-[96px] bg-primary text-white scroll-mt-20">
@@ -42,13 +81,29 @@ export const InlineBookingCalendar: React.FC = () => {
             itself so the card reserves space before Cal.com's script mounts the
             iframe, then shrinks back to the widget's own height once it has —
             a fixed height on the card would leave dead white space below it. */}
-        <div className="w-full max-w-[1000px] bg-surface rounded-card px-2 pt-2 pb-1 sm:px-4 sm:pt-4 sm:pb-2 border border-white/10 shadow-xl overflow-hidden">
-          <Cal
-            namespace={CAL_NAMESPACE}
-            calLink={CAL_LINK}
-            style={{ width: "100%", height: "auto", minHeight: "620px", overflow: "scroll" }}
-            config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" }}
-          />
+        {/* Το `min-h-[620px]` κρατά τον χώρο ΚΑΙ πριν μπει το ημερολόγιο,
+            ώστε η καθυστερημένη προσάρτηση να μη μετακινεί τίποτα (CLS 0). */}
+        <div
+          ref={holderRef}
+          className="w-full max-w-[1000px] min-h-[620px] bg-surface rounded-card px-2 pt-2 pb-1 sm:px-4 sm:pt-4 sm:pb-2 border border-white/10 shadow-xl overflow-hidden"
+        >
+          {showCalendar ? (
+            <Cal
+              namespace={CAL_NAMESPACE}
+              calLink={CAL_LINK}
+              style={{ width: "100%", height: "auto", minHeight: "620px", overflow: "scroll" }}
+              config={{ layout: "month_view", useSlotsViewOnSmallScreen: "true", theme: "light" }}
+            />
+          ) : (
+            <div
+              className="w-full min-h-[620px] flex items-center justify-center text-ink-600 font-sans text-sm"
+              /* Δεν είναι σφάλμα ούτε κενό: απλώς δεν έχει φτάσει ακόμη ο
+                 επισκέπτης εδώ. Το `aria-live` ανακοινώνει την άφιξη. */
+              aria-live="polite"
+            >
+              Φόρτωση ημερολογίου…
+            </div>
+          )}
         </div>
 
         {/* Outbound call alternative below the calendar */}

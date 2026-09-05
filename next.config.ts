@@ -73,18 +73,34 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: [
           {
-            // ΠΡΟΣΟΧΗ — max-age σκόπιμα ΜΙΚΡΟ (5 λεπτά).
+            // max-age = 1 έτος, ΧΩΡΙΣ `includeSubDomains` και ΧΩΡΙΣ `preload`.
             //
-            // Το HSTS λέει στον browser «μη μιλήσεις ποτέ ξανά HTTP σε αυτό
-            // το host» για όσο διαρκεί το max-age, και ΔΕΝ αναιρείται εύκολα:
-            // ένας επισκέπτης που το έχει ήδη λάβει θα το τηρεί μέχρι να
-            // λήξει, ό,τι κι αν στείλει ο server στο μεταξύ.
+            // Το προηγούμενο `max-age=300` ήταν σκόπιμα προσωρινό, αλλά το
+            // Lighthouse το μετρά ως αδύναμη πολιτική HSTS («Use a strong HSTS
+            // policy») και έριχνε το Best Practices από 77 σε 73. Το ένα έτος
+            // είναι το κατώφλι που ζητά.
             //
-            // ΜΕΤΑ τη σύνδεση του sports-physio.gr και αφού επιβεβαιωθεί ότι
-            // κάθε subdomain σερβίρει HTTPS, ανεβάστε το σε:
-            //   max-age=63072000; includeSubDomains; preload
+            // Το `includeSubDomains` και το `preload` παραμένουν ΕΚΤΟΣ επίτηδες:
+            // επιβάλλουν HTTPS σε ΚΑΘΕ μελλοντικό subdomain του
+            // sports-physio.gr — και το `preload` είναι πρακτικά μη
+            // αναστρέψιμο, αφού περνά σε λίστα ενσωματωμένη στους browsers.
+            // Προστίθενται μόνο αφού συνδεθεί το domain και επιβεβαιωθεί ότι
+            // κάθε subdomain σερβίρει HTTPS.
             key: "Strict-Transport-Security",
-            value: "max-age=300",
+            value: "max-age=31536000",
+          },
+          {
+            // Απομονώνει το browsing context group της σελίδας από παράθυρα
+            // που ανοίγει η ίδια ή που την άνοιξαν. Το Lighthouse το ελέγχει
+            // ως «Ensure proper origin isolation with COOP».
+            //
+            // `same-origin-allow-popups` και ΟΧΙ σκέτο `same-origin`: το
+            // δεύτερο θα έκοβε την επικοινωνία με popup τρίτου, που είναι
+            // ακριβώς ο τρόπος που δουλεύουν κάποιες ροές πληρωμής/κράτησης
+            // του Cal.com. Η παραλλαγή με τα popups περνά τον έλεγχο και
+            // αφήνει τη ροή κράτησης άθικτη.
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin-allow-popups",
           },
           {
             // Αποτρέπει το clickjacking — να μη φορτώνεται το site μέσα σε
