@@ -229,7 +229,10 @@ export const ConditionPageTemplate: React.FC<{ content: ConditionPageContent }> 
                 alt={`${content.name} — ανατομική απεικόνιση`}
                 width={600}
                 height={600}
-                priority
+                /* Next 16: το `priority` είναι deprecated — `preload` λέει
+                   ρητά τι κάνει. Εδώ είναι σωστό: μία εικόνα hero ανά
+                   σελίδα, που είναι όντως το στοιχείο LCP σε κάθε viewport. */
+                preload
                 sizes="(max-width: 1023px) 100vw, 420px"
                 className="w-full h-auto object-contain"
               />

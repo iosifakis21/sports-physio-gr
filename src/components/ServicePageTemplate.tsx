@@ -161,7 +161,10 @@ export const ServicePageTemplate: React.FC<{ content: ServicePageContent }> = ({
                 src={hero.photo}
                 alt={hero.title}
                 fill
-                priority
+                /* Next 16: το `priority` είναι deprecated — `preload` λέει
+                   ρητά τι κάνει. Εδώ είναι σωστό: μία εικόνα hero ανά
+                   σελίδα, που είναι όντως το στοιχείο LCP σε κάθε viewport. */
+                preload
                 sizes="(max-width: 1023px) 100vw, 50vw"
                 className="object-cover"
               />
