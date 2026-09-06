@@ -1,11 +1,12 @@
 import React from "react";
-import dynamic from "next/dynamic";
+
 import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
-// Tilt is the last motion/react consumer on the homepage and lives below the
-// fold, so it loads as its own chunk after hydration.
-const Tilt = dynamic(() => import("@/components/Tilt").then((m) => m.Tilt));
+// Το Tilt είναι ο τελευταίος καταναλωτής της motion/react. Το TiltOnDemand
+// αναβάλλει τη φόρτωσή του μέχρι την πρώτη επαφή με τη φωτογραφία, ώστε τα
+// 120 KB της βιβλιοθήκης να μην κατεβαίνουν σε κάθε φόρτωση της αρχικής.
+import { TiltOnDemand } from "@/components/TiltOnDemand";
 import { CredentialsStrip } from "@/components/CredentialsStrip";
 import { TeamCarousel } from "@/components/TeamCarousel";
 
@@ -64,7 +65,7 @@ export const About: React.FC = () => {
             initial={{ opacity: 0, translateX: -24 }}
             whileInView={{ opacity: 1, translateX: 0 }}
           >
-            <Tilt
+            <TiltOnDemand
               rotationFactor={9}
               scaleFactor={1.02}
               shadow
@@ -89,7 +90,7 @@ export const About: React.FC = () => {
               <div className="absolute bottom-4 right-4 lg:bottom-5 lg:right-5 bg-primary text-white text-xs font-semibold px-3 py-1.5 rounded-btn shadow z-10">
                 20+ Χρόνια Εμπειρίας
               </div>
-            </Tilt>
+            </TiltOnDemand>
           </AnimatedContainer>
 
           {/* Right Column - Credentials and Bio text (7/12 width) */}

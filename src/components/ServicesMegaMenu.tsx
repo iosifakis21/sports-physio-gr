@@ -3,9 +3,7 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
 import { serviceMenuItems } from "@/content/service-menu";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 const ArrowIcon: React.FC = () => (
   <svg
@@ -53,7 +51,6 @@ export const ServicesMegaMenu: React.FC = () => {
   // που μόλις έκλεισε ο χρήστης.
   const suppressFocusOpen = useRef(false);
   const panelId = useId();
-  const prefersReducedMotion = usePrefersReducedMotion();
 
   const active = serviceMenuItems[activeIndex] ?? serviceMenuItems[0];
 
@@ -130,7 +127,6 @@ export const ServicesMegaMenu: React.FC = () => {
     }
   };
 
-  const fade = prefersReducedMotion ? 0 : 0.35;
 
   return (
     <div
@@ -158,20 +154,19 @@ export const ServicesMegaMenu: React.FC = () => {
         <ChevronIcon open={isOpen} />
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
+      {isOpen && (
+        <div
             id={panelId}
-            initial={prefersReducedMotion ? false : { opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -8 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.22, ease: "easeOut" }}
+            /* Ήταν motion.div. Το keyframe εισόδου καλύπτει το άνοιγμα· το
+               κλείσιμο γίνεται ακαριαία, αφού χωρίς AnimatePresence δεν
+               υπάρχει exit animation. Η προτίμηση για λιγότερη κίνηση
+               καλύπτεται από τον γενικό κανόνα του globals.css. */
             // Το padding-top γεφυρώνει το κενό ανάμεσα στο header και το πάνελ,
             // ώστε η μετακίνηση του ποντικιού προς τα κάτω να μην το κλείνει.
             // Η λωρίδα πιάνει όλο το πλάτος του viewport, οπότε η διαδρομή του
             // ποντικιού από το «Υπηρεσίες» ως το κεντραρισμένο πάνελ μένει μέσα
             // στον container και δεν πυροδοτεί mouse leave.
-            className="absolute top-full pt-4 z-50 flex justify-center px-4 sm:px-6"
+            className="animate-menu-in absolute top-full pt-4 z-50 flex justify-center px-4 sm:px-6"
             style={strip ? { left: strip.left, width: strip.width } : { visibility: "hidden" }}
           >
             {/* `max-w-full`: η λωρίδα έχει ήδη τα side paddings, οπότε σε στενές
@@ -208,15 +203,10 @@ export const ServicesMegaMenu: React.FC = () => {
                 aria-label={`${active.title} — μάθετε περισσότερα`}
                 className="relative block w-[320px] xl:w-[368px] shrink-0 aspect-[4/3] overflow-hidden rounded-card bg-ink-900 group focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-primary"
               >
-                <AnimatePresence initial={false}>
-                  <motion.span
-                    key={active.slug}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: fade, ease: "easeOut" }}
-                    className="absolute inset-0"
-                  >
+                {/* Το `key` κάνει remount σε κάθε αλλαγή υπηρεσίας, οπότε το
+                    keyframe fade-in παίζει από την αρχή — η νέα εικόνα
+                    εμφανίζεται πάνω από την προηγούμενη, όπως και πριν. */}
+                <span key={active.slug} className="absolute inset-0 animate-fade-in">
                     <Image
                       src={active.photo}
                       alt=""
@@ -224,8 +214,7 @@ export const ServicesMegaMenu: React.FC = () => {
                       sizes="(min-width: 1280px) 368px, 320px"
                       className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                     />
-                  </motion.span>
-                </AnimatePresence>
+                </span>
 
                 <span
                   className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-ink-900 via-ink-900/60 to-transparent pointer-events-none"
@@ -254,9 +243,8 @@ export const ServicesMegaMenu: React.FC = () => {
                 Δείτε όλες τις υπηρεσίες →
               </Link>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 };

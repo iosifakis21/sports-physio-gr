@@ -75,6 +75,63 @@
       opacity: 0;
     }
   }
+
+  /* Τα δύο marquee (ασφαλιστικές οριζόντια, αξιολογήσεις κάθετα). Κάθε
+     λωρίδα κρατά ΔΥΟ αντίγραφα της λίστας, οπότε η μετατόπιση κατά -50%
+     διανύει ακριβώς ένα αντίγραφο και ο βρόχος κλείνει αδιόρατα. */
+  --animate-marquee-x: marquee-x 35s linear infinite;
+  /* Η διάρκεια εδώ είναι απλώς προεπιλογή: κάθε στήλη των αξιολογήσεων
+     περνά τη δική της μέσω inline `animation-duration`.
+
+     ΠΡΟΣΟΧΗ — να ΜΗΝ μπει `var(--kati)` μέσα σε αυτή την τιμή: οι custom
+     properties του `@theme` δηλώνονται στο `:root`, οπότε τυχόν εμφωλευμένο
+     `var()` αποτιμάται ΕΚΕΙ (όπου η μεταβλητή της στήλης δεν υπάρχει) και
+     πέφτει πάντα στο fallback. */
+  --animate-marquee-y: marquee-y 40s linear infinite;
+
+  @keyframes marquee-x {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes marquee-y {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+
+  /* Είσοδος του mega menu και crossfade της εικόνας του — και τα δύο έτρεχαν
+     μέσω motion/react. Η έξοδος είναι πλέον ακαριαία αντί για fade· είναι η
+     μόνη ορατή διαφορά και δεν δικαιολογεί 72 KiB βιβλιοθήκης. */
+  --animate-menu-in: menu-in 0.22s ease-out both;
+  --animate-fade-in: fade-in 0.35s ease-out both;
+
+  @keyframes menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 }
 
 html {
@@ -93,7 +150,7 @@ body {
   html {
     scroll-behavior: auto !important;
   }
-  
+
   *,
   *::before,
   *::after {
@@ -101,5 +158,45 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Marquees
+   ---------------------------------------------------------------------------
+   Και τα δύο marquee έτρεχαν με το `animate()` του motion/react σε ατέρμονο
+   βρόχο. Αυτό είχε δύο κόστη: κρατούσε τη βιβλιοθήκη μέσα στο αρχικό bundle
+   (72 KiB, 1.628 ms αποτίμησης script στο PageSpeed) και ανάγκαζε το κύριο
+   νήμα σε Style & Layout σε ΚΑΘΕ frame — 1.984 ms Style & Layout συν 1.283 ms
+   Rendering στη μέτρηση για desktop.
+
+   Ως καθαρό keyframe πάνω σε `transform`, η ίδια κίνηση τρέχει στον
+   compositor και δεν αγγίζει καθόλου το κύριο νήμα.
+--------------------------------------------------------------------------- */
+.marquee-track {
+  /* Εδώ το `will-change` είναι στη θέση του, σε αντίθεση με το
+     AnimatedContainer: το στοιχείο όντως κινείται συνεχώς, οπότε το δικό του
+     compositor layer δεν είναι σπατάλη αλλά ο σκοπός. */
+  will-change: transform;
+}
+
+/* Παύση χωρίς καθόλου JavaScript — δείκτης από πάνω, εστίαση με πληκτρολόγιο,
+   ή κρατημένο δάχτυλο (`:active`) για να προλάβει να διαβάσει κανείς μια
+   κάρτα στο κινητό. Αντικαθιστά τους έξι onMouse/onTouch/onFocus handlers και
+   το `isPaused` state που υπήρχαν σε κάθε λωρίδα. */
+.marquee-viewport:hover .marquee-track,
+.marquee-viewport:focus-within .marquee-track,
+.marquee-viewport:active .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Ο γενικός κανόνας παραπάνω μηδενίζει τη διάρκεια και βάζει
+     `animation-iteration-count: 1`. Σε ένα marquee αυτό θα το πάγωνε στο
+     -50%, δηλαδή ακριβώς στη μέση του βρόχου, με τη λίστα μισοκομμένη. Εδώ
+     σταματά ολότελα, στην αρχή της. */
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
   }
 }

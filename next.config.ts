@@ -37,7 +37,15 @@ const cspDirectives = [
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
-  "upgrade-insecure-requests",
+  // ΣΗΜΕΙΩΣΗ: το `upgrade-insecure-requests` ΔΕΝ μπαίνει εδώ.
+  //
+  // Οι browsers το αγνοούν όταν η πολιτική είναι Report-Only και γράφουν
+  // σφάλμα στην κονσόλα γι' αυτό — ήταν το ΜΟΝΑΔΙΚΟ σφάλμα κονσόλας του site
+  // και κρατούσε το Best Practices στο 96.
+  //
+  // Προστίθεται ΜΑΖΙ με τη μετατροπή σε enforcing πολιτική (βλ. παρακάτω),
+  // όπου και έχει νόημα. Στο μεταξύ δεν χάνεται τίποτα: το HSTS ήδη
+  // εξαναγκάζει HTTPS.
 ].join("; ");
 
 const nextConfig: NextConfig = {

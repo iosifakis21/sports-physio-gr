@@ -1,9 +1,5 @@
-"use client";
-
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { useAnimate } from "motion/react";
-import type { AnimationPlaybackControls } from "motion/react";
 import insurersData from "@/content/insurers.json";
 
 interface Insurer {
@@ -32,6 +28,21 @@ const LogoImage: React.FC<{ insurer: Insurer; decorative?: boolean }> = ({
   decorative = false,
 }) => {
   const dim = LOGO_DIMENSIONS[insurer.logo] ?? { width: 200, height: 60 };
+
+  // Το `sizes` ήταν σταθερό «120px / 160px» για όλα τα λογότυπα, αλλά αυτά
+  // εμφανίζονται με σταθερό ΥΨΟΣ (h-10 = 40px, md:h-12 = 48px) και αυτόματο
+  // πλάτος — άρα το πραγματικό πλάτος εξαρτάται από την αναλογία του καθενός.
+  //
+  // Το Generali (400×329) πιάνει 58px και κατέβαζε παραλλαγή 256px· το
+  // PageSpeed το ανέφερε ως 23,7 KiB σπατάλη σε ένα μόνο λογότυπο. Αντίθετα,
+  // ένα πολύ πλατύ λογότυπο (400×51 → 376px) υποφορτωνόταν και έβγαινε θολό.
+  //
+  // Υπολογίζοντας το πλάτος από την αναλογία, κάθε λογότυπο ζητά αυτό που
+  // πραγματικά χρειάζεται.
+  const widthAt = (heightPx: number) =>
+    Math.ceil((heightPx * dim.width) / dim.height);
+  const sizes = `(max-width: 768px) ${widthAt(40)}px, ${widthAt(48)}px`;
+
   return (
     <Image
       src={insurer.logo}
@@ -39,92 +50,36 @@ const LogoImage: React.FC<{ insurer: Insurer; decorative?: boolean }> = ({
       aria-hidden={decorative || undefined}
       width={dim.width}
       height={dim.height}
-      sizes="(max-width: 768px) 120px, 160px"
+      sizes={sizes}
       className="h-10 md:h-12 w-auto object-contain opacity-70 shrink-0"
     />
   );
 };
 
-const MarqueeRow: React.FC<{ insurers: Insurer[] }> = ({ insurers }) => {
-  const [scope, animate] = useAnimate();
-  const [isPaused, setIsPaused] = useState(false);
-  // Ο τύπος επιστροφής του `animate()` του motion. Ήταν `any`, που έκρυβε
-  // τα .stop()/.pause()/.play() από τον έλεγχο τύπων.
-  const animationRef = useRef<AnimationPlaybackControls | null>(null);
-
-  useEffect(() => {
-    const el = scope.current;
-    if (!el) return;
-
-    // Seamless loop: the row holds two copies of the list, translating by -50%
-    // moves exactly one full copy before repeating.
-    // Both marquees sit well below the fold, and an infinite JS animation
-    // started at mount competes with the first paint of the Hero for the main
-    // thread. Hold it until the row is (nearly) on screen.
-    const start = () => {
-      animationRef.current = animate(
-        el,
-        { x: ["0%", "-50%"] },
-        {
-          duration: 35,
-          ease: "linear",
-          repeat: Infinity,
-        }
-      );
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          observer.disconnect();
-          start();
-        }
-      },
-      { rootMargin: "200px" }
-    );
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      if (animationRef.current) {
-        animationRef.current.stop();
-      }
-    };
-  }, [animate, scope]);
-
-  useEffect(() => {
-    if (animationRef.current) {
-      if (isPaused) {
-        animationRef.current.pause();
-      } else {
-        animationRef.current.play();
-      }
-    }
-  }, [isPaused]);
-
-  return (
-    <div
-      className="w-full overflow-hidden"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocus={() => setIsPaused(true)}
-      onBlur={() => setIsPaused(false)}
-      onTouchStart={() => setIsPaused(true)}
-      onTouchEnd={() => setIsPaused(false)}
-      onTouchCancel={() => setIsPaused(false)}
-    >
-      <div ref={scope} className="flex items-center gap-12 md:gap-20 w-max">
-        {[...insurers, ...insurers].map((insurer, idx) => (
-          <LogoImage
-            key={`${insurer.name}-${idx}`}
-            insurer={insurer}
-            decorative={idx >= insurers.length}
-          />
-        ))}
-      </div>
+/**
+ * Μία λωρίδα λογοτύπων που κυλά ατέρμονα.
+ *
+ * ΗΤΑΝ client component με `useAnimate` του motion/react, `isPaused` state,
+ * IntersectionObserver και έξι handlers ποντικιού/αφής/εστίασης. Όλα αυτά
+ * αντικαταστάθηκαν από ένα CSS keyframe και τρεις κανόνες `:hover/:focus-
+ * within/:active` — η κίνηση τρέχει πλέον στον compositor, το αρχείο δεν
+ * χρειάζεται καθόλου JavaScript, και έγινε server component.
+ */
+const MarqueeRow: React.FC<{ insurers: Insurer[] }> = ({ insurers }) => (
+  <div className="marquee-viewport w-full overflow-hidden">
+    <div className="marquee-track animate-marquee-x flex items-center gap-12 md:gap-20 w-max">
+      {[...insurers, ...insurers].map((insurer, idx) => (
+        <LogoImage
+          key={`${insurer.name}-${idx}`}
+          insurer={insurer}
+          /* Το δεύτερο αντίγραφο υπάρχει μόνο για να κλείνει ο βρόχος
+             αδιόρατα — για τους αναγνώστες οθόνης είναι διακοσμητικό. */
+          decorative={idx >= insurers.length}
+        />
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
 export const InsuranceMarquee: React.FC = () => {
   const insurers = insurersData as Insurer[];

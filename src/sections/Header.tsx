@@ -8,9 +8,7 @@ import { ServicesMegaMenu } from "@/components/ServicesMegaMenu";
 import { serviceMenuItems } from "@/content/service-menu";
 import { CONDITIONS_HUB_PATH } from "@/lib/condition-paths";
 import { BLOG_HUB_PATH } from "@/lib/blog-paths";
-import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface NavLinkItem {
   label: string;
@@ -77,7 +75,6 @@ export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const prefersReducedMotion = usePrefersReducedMotion();
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -353,30 +350,43 @@ export const Header: React.FC = () => {
                 </svg>
               </button>
 
-              <AnimatePresence initial={false}>
-                {isServicesOpen && (
-                  <motion.ul
-                    id="mobile-services-submenu"
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: "easeOut" }}
-                    className="overflow-hidden ml-2 border-l border-ink-900/10"
-                  >
-                    {serviceMenuItems.map((item) => (
-                      <li key={item.slug}>
-                        <Link
-                          href={item.href}
-                          onClick={closeMobileMenu}
-                          className="block font-sans text-base text-ink-600 hover:text-primary py-2 pl-4 pr-2 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
-                        >
-                          {item.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </motion.ul>
-                )}
-              </AnimatePresence>
+              {/* Άνοιγμα/κλείσιμο σε ύψος `auto` χωρίς motion/react.
+                  Το κόλπο είναι το grid: μια γραμμή που πάει από `0fr` σε
+                  `1fr` κινείται ομαλά ως το πραγματικό ύψος του περιεχομένου,
+                  κάτι που το σκέτο `height: auto` δεν μπορεί να κάνει.
+
+                  Το `inert` όταν είναι κλειστό αντικαθιστά ό,τι έκανε πριν το
+                  AnimatePresence αφαιρώντας τα στοιχεία από το DOM: χωρίς
+                  αυτό οι σύνδεσμοι θα έμεναν εστιάσιμοι με το πληκτρολόγιο
+                  ενώ είναι αόρατοι.
+
+                  Η προτίμηση για λιγότερη κίνηση καλύπτεται πλέον από τον
+                  γενικό κανόνα του globals.css, οπότε δεν χρειάζεται εδώ. */}
+              <div
+                className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-200 ease-out ${
+                  isServicesOpen
+                    ? "grid-rows-[1fr] opacity-100"
+                    : "grid-rows-[0fr] opacity-0"
+                }`}
+                inert={!isServicesOpen}
+              >
+                <ul
+                  id="mobile-services-submenu"
+                  className="min-h-0 overflow-hidden ml-2 border-l border-ink-900/10"
+                >
+                  {serviceMenuItems.map((item) => (
+                    <li key={item.slug}>
+                      <Link
+                        href={item.href}
+                        onClick={closeMobileMenu}
+                        className="block font-sans text-base text-ink-600 hover:text-primary py-2 pl-4 pr-2 transition-colors focus:outline focus:outline-2 focus:outline-primary rounded"
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
             {navLinks.map((link) => (

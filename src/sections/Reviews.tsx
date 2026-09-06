@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { SectionHeading } from "@/components/SectionHeading";
 import { RatingBadge, GOOGLE_REVIEWS_URL } from "@/components/RatingBadge";
 import { ReviewCard, Review } from "@/components/ReviewCard";
 import { AnimatedContainer } from "@/components/AnimatedContainer";
-import { useAnimate } from "motion/react";
-import type { AnimationPlaybackControls } from "motion/react";
 import reviewsData from "@/content/reviews.json";
 
 interface MarqueeColumnProps {
@@ -14,82 +12,29 @@ interface MarqueeColumnProps {
   speed: number;
 }
 
-const MarqueeColumn: React.FC<MarqueeColumnProps> = ({ reviews, speed }) => {
-  const [scope, animate] = useAnimate();
-  const [isPaused, setIsPaused] = useState(false);
-  // Ο τύπος επιστροφής του `animate()` του motion. Ήταν `any`, που έκρυβε
-  // τα .stop()/.pause()/.play() από τον έλεγχο τύπων.
-  const animationRef = useRef<AnimationPlaybackControls | null>(null);
-
-  useEffect(() => {
-    const el = scope.current;
-    if (!el) return;
-
-    // Start the infinite scrolling animation using motion's animate function.
-    // Both marquees sit well below the fold, and an infinite JS animation
-    // started at mount competes with the first paint of the Hero for the main
-    // thread. Hold it until the row is (nearly) on screen.
-    const start = () => {
-      animationRef.current = animate(
-        el,
-        { y: ["0%", "-50%"] },
-        {
-          duration: speed,
-          ease: "linear",
-          repeat: Infinity,
-        }
-      );
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          observer.disconnect();
-          start();
-        }
-      },
-      { rootMargin: "200px" }
-    );
-    observer.observe(el);
-
-    return () => {
-      observer.disconnect();
-      if (animationRef.current) {
-        animationRef.current.stop();
-      }
-    };
-  }, [speed, animate, scope]);
-
-  useEffect(() => {
-    if (animationRef.current) {
-      if (isPaused) {
-        animationRef.current.pause();
-      } else {
-        animationRef.current.play();
-      }
-    }
-  }, [isPaused]);
-
-  return (
+/**
+ * Μία κάθετη στήλη κριτικών που κυλά ατέρμονα.
+ *
+ * Όπως και το InsuranceMarquee: το `useAnimate` του motion/react, το
+ * `isPaused` state, ο IntersectionObserver και οι έξι handlers έφυγαν υπέρ
+ * ενός CSS keyframe. Η ταχύτητα ανά στήλη περνά ως custom property, που τη
+ * διαβάζει το `--animate-marquee-y` στο globals.css.
+ */
+const MarqueeColumn: React.FC<MarqueeColumnProps> = ({ reviews, speed }) => (
+  <div className="marquee-viewport overflow-hidden relative h-full flex flex-col rounded-card">
     <div
-      className="overflow-hidden relative h-full flex flex-col rounded-card"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocus={() => setIsPaused(true)}
-      onBlur={() => setIsPaused(false)}
-      // Hold-to-pause on touch devices so mobile users can read a card
-      onTouchStart={() => setIsPaused(true)}
-      onTouchEnd={() => setIsPaused(false)}
-      onTouchCancel={() => setIsPaused(false)}
+      className="marquee-track animate-marquee-y flex flex-col gap-6 py-3"
+      /* Inline longhand: υπερισχύει της διάρκειας που ορίζει το shorthand
+         `animation` της utility, ώστε κάθε στήλη να κυλά με τον δικό της
+         ρυθμό (όπως έκανε πριν το `duration` του motion). */
+      style={{ animationDuration: `${speed}s` }}
     >
-      <div ref={scope} className="flex flex-col gap-6 py-3">
-        {[...reviews, ...reviews].map((review, idx) => (
-          <ReviewCard key={`${review.id}-${idx}`} review={review} />
-        ))}
-      </div>
+      {[...reviews, ...reviews].map((review, idx) => (
+        <ReviewCard key={`${review.id}-${idx}`} review={review} />
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
 export const Reviews: React.FC = () => {
   const reviews: Review[] = reviewsData as Review[];
