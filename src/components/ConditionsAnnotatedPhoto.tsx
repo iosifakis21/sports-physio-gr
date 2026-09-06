@@ -95,7 +95,12 @@ export const ConditionsAnnotatedPhoto: React.FC = () => {
           alt="Αθλητής σε φάση τρεξίματος με επισημασμένες περιοχές πόνου"
           width={900}
           height={1240}
-          sizes="(max-width: 1024px) 400px, 440px"
+          /* Το `sizes` πρέπει να ακολουθεί τα breakpoints του container
+             παραπάνω (`max-w-[360px] sm:max-w-[400px] lg:max-w-[440px]`).
+             Έλειπε το σκαλί κάτω από τα 640px: δήλωνε 400px ενώ η εικόνα
+             εμφανίζεται σε 360px, οπότε στο κινητό ο browser ζητούσε το 750w
+             αντί για το 640w. */
+          sizes="(max-width: 639px) 360px, (max-width: 1023px) 400px, 440px"
           className="relative w-full h-auto select-none pointer-events-none"
         />
 
